@@ -1,8 +1,8 @@
-#ProjetC 
+# ProjetC 
 
 PARCE QUE C'EST NOTRE PROJET !
 
-##Plan :
+## Plan :
 
 - [ ] Lecture du fichier de configs
 - [ ] Lecture du fichier d'inputs
