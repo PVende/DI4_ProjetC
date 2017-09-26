@@ -1,7 +1,9 @@
 #ProjetC 
+
 PARCE QUE C'EST NOTRE PROJET !
 
 ##Plan :
+
 - [ ] Lecture du fichier de configs
 - [ ] Lecture du fichier d'inputs
 - [ ] Créer les structures
