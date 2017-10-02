@@ -4,9 +4,9 @@ PARCE QUE C'EST NOTRE PROJET !
 
 ## Plan
 
-- [ ] Créer les structures
-- [ ] Squeulette de code
-- [ ] Lecture du fichier de configs
+- [x] Créer les structures
+- [x] Squeulette de code
+- [x] Lecture du fichier de configs
 - [ ] Lecture du fichier d'inputs
 - [ ] Initialisation des données (Solution initiale)
 - [ ] Fonction Objectif
