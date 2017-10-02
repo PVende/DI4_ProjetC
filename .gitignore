@@ -34,3 +34,7 @@ Desktop.ini
 cmake-build-debug/
 
 .idea
+
+*.cproject/
+*.project/
+*.settings/

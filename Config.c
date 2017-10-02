@@ -6,10 +6,10 @@
 
 void Config_parseFile(Config * cfg, char * filename)
 {
-
+	return;
 }
 
 void Config_parseLine(Config * cfg, char * line)
 {
-
+	return ;
 }

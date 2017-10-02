@@ -6,20 +6,20 @@
 #define DI4_PROJETC_CONFIG_H
 
 typedef struct {
-    byte SWAP_SEQ = 1;
-    byte SWAP_BATCH = 1;
-    byte SWAP_BOTH = 1;
-    byte EBSR_BOTH = 1;
-    byte EBSR_SEQ = 1;
-    byte EBSR_BATCH = 1;
-    byte EFSR_BOTH = 1;
-    byte EFSR_SEQ = 1;
-    byte EFSR_BATCH = 1;
+    int SWAP_SEQ;
+    int SWAP_BATCH;
+    int SWAP_BOTH;
+    int EBSR_BOTH;
+    int EBSR_SEQ;
+    int EBSR_BATCH;
+    int EFSR_BOTH;
+    int EFSR_SEQ;
+    int EFSR_BATCH;
 } Config;
 
 void Config_parseFile(Config * cfg, char * filename);
 
-void Config_parseLine(Config cfg, char * line)
+void Config_parseLine(Config * cfg, char * line);
 
 
 

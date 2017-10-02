@@ -6,6 +6,6 @@
 
 void fatalError(const char * error)
 {
-    printf("%s\n", error);
+    printf("*** FATAL ERROR ***\n%s\n", error);
     exit(-1);
 }

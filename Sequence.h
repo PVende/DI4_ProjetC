@@ -1,19 +1,19 @@
 #ifndef SEQUENCE_H_INCLUDED
 #define SEQUENCE_H_INCLUDED
 
-#include "Helper.h"
+#include "helpers.h"
 
 typedef struct _Sequence {
-    unsigned int sizeSequence;
+    unsigned int size;
     unsigned int * sequence;
 
 } Sequence;
 
-void Sequence_init(Sequence * sequence,  unsigned int sizeSequence);
+void Sequence_init(Sequence * sequence,  unsigned int size);
 void Sequence_finalize(Sequence * sequence);
 
-void Sequence_swap(Sequence * sequence, unsigned int position1, unsigned int position2);
-void Sequence_extractBackwardReinsert(Sequence * sequence, unsigned int position);
-void Sequence_extractForewardReinsert(Sequence * sequence, unsigned int position);
+void Sequence_swap(Sequence * sequence, unsigned int i, unsigned int j);
+void Sequence_ebsr(Sequence * sequence, unsigned int pos);
+void Sequence_efsr(Sequence * sequence, unsigned int pos);
 
 #endif

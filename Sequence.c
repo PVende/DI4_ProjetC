@@ -1,52 +1,52 @@
 #include "Sequence.h"
 
-void Sequence_init(Sequence * sequence,  unsigned int sizeSequence) {
-    if((sequence->sequence = malloc(sizeof(unsigned int) * sizeSequence)) == NULL)
+void Sequence_init(Sequence * sequence,  unsigned int size) {
+    if((sequence->sequence = malloc(sizeof(unsigned int) * size)) == NULL)
         fatalError("Error malloc");
 
-    sequence->sizeSequence = sizeSequence;
+    sequence->size = size;
 
 }
 
 void Sequence_finalize(Sequence * sequence) {
     free(sequence->sequence);
-    sequence->sizeSequence = 0;
+    sequence->size = 0;
 
 }
 
-void Sequence_swap(Sequence * sequence, unsigned int position1, unsigned int position2) {
-    if(position1 >= sequence->sizeSequence || position2 >= sequence->sizeSequence)
+void Sequence_swap(Sequence * sequence, unsigned int pos1, unsigned int pos2) {
+    if(pos1 >= sequence->size || pos2 >= sequence->size)
         fatalError("Error argument");
 
-    if(position1 != position2) {
-        unsigned int temp = sequence->sequence[position1];
-        sequence->sequence[position1] = sequence->sequence[position2];
-        sequence->sequence[position2] = temp;
+    if(pos1 != pos2) {
+        unsigned int temp = sequence->sequence[pos1];
+        sequence->sequence[pos1] = sequence->sequence[pos2];
+        sequence->sequence[pos2] = temp;
 
     }
 
 }
 
-void Sequence_extractBackwardReinsert(Sequence * sequence, unsigned int position) {
-    if(position >= sequence->sizeSequence)
+void Sequence_ebsr(Sequence * sequence, unsigned int pos) {
+    if(pos >= sequence->size)
         fatalError("Error argument");
 
-    unsigned int i, value = sequence->sequence[position];
+    unsigned int i, value = sequence->sequence[pos];
 
-    for(i = position + 1; i < sequence->sizeSequence; i++)
+    for(i = pos + 1; i < sequence->size; i++)
         sequence->sequence[i - 1] = sequence->sequence[i];
 
-    sequence->sequence[sequence->sizeSequence - 1] = value;
+    sequence->sequence[sequence->size - 1] = value;
 
 }
 
-void Sequence_extractForewardReinsert(Sequence * sequence, unsigned int position) {
-    if(position >= sequence->sizeSequence)
+void Sequence_efsr(Sequence * sequence, unsigned int pos) {
+    if(pos >= sequence->size)
         fatalError("Error argument");
 
-    unsigned int i, value = sequence->sequence[position];
+    unsigned int i, value = sequence->sequence[pos];
 
-    for(i = position; i > 0; i--)
+    for(i = pos; i > 0; i--)
         sequence->sequence[i] = sequence->sequence[i - 1];
 
     sequence->sequence[0] = value;

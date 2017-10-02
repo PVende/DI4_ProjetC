@@ -1,14 +1,20 @@
 #ifndef INSTANCE_H_INCLUDED
 #define INSTANCE_H_INCLUDED
 
+#include "Solution.h"
+
 typedef struct _Instance {
-    Sequence sequence;
-    Batches batches;
+    Solution * solution
+	unsigned ing nbJobs;
     unsigned int nbMachine;
-    unsigned int ** jobTimePerMachine;
+    unsigned int ** times;
     unsigned int ** distances;
-    unsigned int * deliveryTime;
+    unsigned int * deliveryDates;
 
 } Instance;
+
+double Solution_eval(Solution * solution);
+
+
 
 #endif

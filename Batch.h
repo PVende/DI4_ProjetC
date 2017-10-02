@@ -2,10 +2,10 @@
 #define BATCH_H_INCLUDED
 
 #include <stdlib.h>
-#include "Helper.h"
+#include "helpers.h"
 
 typedef struct _Batch {
-    unsigned int sizeBatch;
+    unsigned int size;
     unsigned int * batch;
 
 } Batch;
@@ -13,7 +13,7 @@ typedef struct _Batch {
 void Batch_init(Batch * batch);
 void Batch_finalize(Batch * batch);
 
-void Batch_insert(Batch * batch, unsigned int value, unsigned int position);
-void Batch_remove(Batch * batch, unsigned int position);
+void Batch_addJob(Batch * batch, unsigned int job, unsigned int position);
+void Batch_removeJob(Batch * batch, unsigned int position);
 
 #endif
