@@ -4,18 +4,17 @@
 #include "Batch.h"
 #include "Sequence.h"
 #include "helpers.h"
+#include "Config.h"
+
+#define CONFIG_FILENAME "configs.txt"
 
 int main(void)
 {
-    MALLOC(test, char, 5);
 
-    test[0] = 'a';
-    test[1] = 'b';
-    test[2] = 'd';
-    test[3] = 'e';
-    test[4] = '\0';
+	Config cfg;
 
-    printf("%s\n", test);
+	Config_parseFile(&cfg, CONFIG_FILENAME);
+	Config_debug(&cfg);
 
     return 0;
 }

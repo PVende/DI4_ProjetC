@@ -4,16 +4,14 @@
 #include "Solution.h"
 
 typedef struct _Instance {
-    Solution * solution
-	unsigned ing nbJobs;
+    Solution * solution;
+    unsigned int nbJobs;
     unsigned int nbMachine;
     unsigned int ** times;
     unsigned int ** distances;
     unsigned int * deliveryDates;
 
 } Instance;
-
-double Solution_eval(Solution * solution);
 
 
 

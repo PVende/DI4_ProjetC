@@ -14,4 +14,6 @@
 
 void fatalError(const char * error);
 
+int isSpace(const char c);
+
 #endif //DI4_PROJETC_HELPERS_H

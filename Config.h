@@ -21,6 +21,8 @@ void Config_parseFile(Config * cfg, char * filename);
 
 void Config_parseLine(Config * cfg, char * line);
 
+void Config_debug(Config * cfg);
+
 
 
 

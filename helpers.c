@@ -9,3 +9,8 @@ void fatalError(const char * error)
     printf("*** FATAL ERROR ***\n%s\n", error);
     exit(-1);
 }
+
+int isSpace(char c)
+{
+	return (c == ' ' || c == '\t' || c == '\n');
+}

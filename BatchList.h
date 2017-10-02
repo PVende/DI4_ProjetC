@@ -1,7 +1,7 @@
 #ifndef BATCHLIST_H_INCLUDED
 #define BATCHLIST_H_INCLUDED
 
-##include "Batch.h"
+#include "Batch.h"
 
 typedef struct {
     unsigned int size;
