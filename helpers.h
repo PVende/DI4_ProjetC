@@ -9,6 +9,10 @@
                                     if(varname == NULL) \
                                         fatalError("Malloc failed");
 
+#define REALLOC(varname, type, size) varname = (type*) realloc(varname, size * sizeof(type)); \
+                                     if(varname == NULL) \
+                                         fatalError("Realloc failed");
+
 #include <stdio.h>
 #include <stdlib.h>
 
