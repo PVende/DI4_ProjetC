@@ -6,7 +6,21 @@ PARCE QUE C'EST NOTRE PROJET !
 
 - [x] Créer les structures
 - [x] Squeulette de code
-- [x] Lecture du fichier de configs
+- [	] Tests Unitaires
+	- [ ] Config
+	- [ ] Batch
+	- [ ] BatchList
+	- [ ] Sequence
+	- [ ] Instance
+	- [ ] Solution
+- [x] Lecture du fichier de configs.
+- [ ] Fonctions de manipulations des différentes structures
+	- [x] Config
+	- [x] Batch
+	- [ ] BatchList
+	- [ ] Sequence
+	- [ ] Instance
+	- [ ] Solution
 - [ ] Lecture du fichier d'inputs
 - [ ] Initialisation des données (Solution initiale)
 - [ ] Fonction Objectif
