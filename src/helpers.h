@@ -15,6 +15,9 @@
 
 #define DEBUG_SEPARATOR "============================================================\n"
 
+
+#define custom_assert(expr) assert(expr); printf(".");
+
 #include <stdio.h>
 #include <stdlib.h>
 
