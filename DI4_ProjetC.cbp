@@ -31,35 +31,35 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="Batch.c">
+		<Unit filename="src/Batch.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Batch.h" />
-		<Unit filename="BatchList.c">
+		<Unit filename="src/Batch.h" />
+		<Unit filename="src/BatchList.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="BatchList.h" />
-		<Unit filename="Config.c">
+		<Unit filename="src/BatchList.h" />
+		<Unit filename="src/Config.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Config.h" />
-		<Unit filename="Instance.c">
+		<Unit filename="src/Config.h" />
+		<Unit filename="src/Instance.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Instance.h" />
-		<Unit filename="Sequence.c">
+		<Unit filename="src/Instance.h" />
+		<Unit filename="src/Sequence.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Sequence.h" />
-		<Unit filename="Solution.c">
+		<Unit filename="src/Sequence.h" />
+		<Unit filename="src/Solution.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Solution.h" />
-		<Unit filename="helpers.c">
+		<Unit filename="src/Solution.h" />
+		<Unit filename="src/helpers.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="helpers.h" />
-		<Unit filename="main.c">
+		<Unit filename="src/helpers.h" />
+		<Unit filename="src/main.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
