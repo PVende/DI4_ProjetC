@@ -35,10 +35,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Batch.h" />
-		<Unit filename="Batches.c">
+		<Unit filename="BatchList.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Batches.h" />
+		<Unit filename="BatchList.h" />
 		<Unit filename="Config.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -51,6 +51,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Sequence.h" />
+		<Unit filename="Solution.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Solution.h" />
 		<Unit filename="helpers.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -5,13 +5,15 @@
 #ifndef DI4_PROJETC_HELPERS_H
 #define DI4_PROJETC_HELPERS_H
 
-#define MALLOC(varname, type, size) type* varname = (type*) malloc(size * sizeof(type)); \
+#define MALLOC(varname, type, size) type* varname = (type*) malloc((size) * sizeof(type)); \
                                     if(varname == NULL) \
                                         fatalError("Malloc failed");
 
-#define REALLOC(varname, type, size) varname = (type*) realloc(varname, size * sizeof(type)); \
+#define REALLOC(varname, type, size) varname = (type*) realloc(varname, (size) * sizeof(type)); \
                                      if(varname == NULL) \
                                          fatalError("Realloc failed");
+
+#define DEBUG_SEPARATOR "============================================================\n"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,5 +21,7 @@
 void fatalError(const char * error);
 
 int isSpace(const char c);
+
+int stringIsEmpty(char * str);
 
 #endif //DI4_PROJETC_HELPERS_H

@@ -30,7 +30,7 @@ void BatchList_removeBatch(BatchList * list, Batch * batch){
 	fatalError("Trying to remove a Batch that is not in the list...");
 }
 
-void BatchList_removeBatch(BatchList * list, unsigned int pos){
+void BatchList_removeBatchAt(BatchList * list, unsigned int pos){
 	if(pos >= list->size)
 		fatalError("Error while trying to remove a Batch from a list: index out of range...");
 
@@ -64,10 +64,24 @@ void BatchList_swap(Batch * batch1, unsigned int pos1, Batch * batch2, unsigned 
 }
 
 void BatchList_ebsr(BatchList * list, Batch * batch, unsigned int pos){
-	
+
 }
 
 void BatchList_efsr(BatchList * list, Batch * batch, unsigned int pos){
 
 }
 
+
+void BatchList_debug(BatchList * list)
+{
+	printf(DEBUG_SEPARATOR"BATCH LIST\n"DEBUG_SEPARATOR);
+	printf("Size: %u\n", list->size);
+	unsigned int i;
+	for(i = 0; i < list->size; i++)
+	{
+		printf("(%u)\t->\t", i);
+		Batch_debug(list->batches[i]);
+	}
+
+	printf(DEBUG_SEPARATOR);
+}

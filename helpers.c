@@ -14,3 +14,8 @@ int isSpace(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n');
 }
+
+int stringIsEmpty(char * str)
+{
+	return (*str == '\0') || (*str == '\n') || (*str == '\r' && *(str + 1) == '\n');
+}

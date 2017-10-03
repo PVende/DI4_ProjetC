@@ -40,8 +40,13 @@ void Config_parseFile(Config * cfg, char * filename)
 
 void Config_parseLine(Config * cfg, char * line)
 {
-	while(isSpace(*line))
+
+	while(isSpace(*line)){
 		line++;
+	}
+
+	if(stringIsEmpty(line))
+		return; 
 
 	// if it's a comment
 	if(*line == '#')
@@ -78,7 +83,7 @@ void Config_parseLine(Config * cfg, char * line)
 
 void Config_debug(Config * cfg)
 {
-	printf("===============\nCONFIG\n===============\n");
+	printf(DEBUG_SEPARATOR"CONFIG\n"DEBUG_SEPARATOR);
     printf("SWAP_SEQ: %d\n", cfg->SWAP_SEQ);
     printf("SWAP_BATCH: %d\n", cfg->SWAP_BATCH);
     printf("SWAP_BOTH: %d\n", cfg->SWAP_BOTH);
@@ -88,5 +93,5 @@ void Config_debug(Config * cfg)
     printf("EFSR_BOTH: %d\n", cfg->EFSR_BOTH);
     printf("EFSR_SEQ: %d\n", cfg->EFSR_SEQ);
     printf("EFSR_BATCH: %d\n", cfg->EFSR_BATCH);
-    printf("===============\n");
+    printf(DEBUG_SEPARATOR);
 }
