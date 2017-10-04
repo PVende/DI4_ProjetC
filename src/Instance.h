@@ -3,6 +3,8 @@
 
 #include "Solution.h"
 
+#include <stdio.h>
+
 typedef struct _Instance {
     Solution * solution;
     unsigned int nbJobs;
@@ -13,6 +15,9 @@ typedef struct _Instance {
 
 } Instance;
 
+void Instance_init(Instance * instance);
+void Instance_finalize(Instance * instance);
 
+void Instance_parseInstance(Instance * instance);
 
 #endif

@@ -5,5 +5,8 @@
 #include <assert.h>
 
 void InstanceTests_launchTests(){
+    Instance instance;
 
+    Instance_init(&instance);
+    Instance_parseInstance(&instance);
 }
