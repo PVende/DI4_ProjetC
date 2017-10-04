@@ -50,6 +50,4 @@ void BatchTests_launchTests()
 	custom_assert(b.batch[1] == 4);
 
 	Batch_finalize(&b);
-
-	custom_assert(b.batch == NULL);
 }

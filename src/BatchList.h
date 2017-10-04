@@ -14,7 +14,6 @@ void BatchList_finalize(BatchList * list);
 
 void BatchList_addBatch(BatchList * list, Batch * batch);
 void BatchList_removeBatch(BatchList * list, Batch * batch);
-void BatchList_removeBatchAt(BatchList * list, unsigned int pos);
 
 Batch * BatchList_getBatch(BatchList * list, unsigned int pos);
 

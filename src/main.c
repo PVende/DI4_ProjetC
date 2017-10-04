@@ -8,7 +8,7 @@
 #include "BatchList.h"
 
 #ifndef NDEBUG
-	#include "../tests/TestsRunner.h";
+	#include "../tests/TestsRunner.h"
 #endif
 
 #define CONFIG_FILENAME "configs.txt"

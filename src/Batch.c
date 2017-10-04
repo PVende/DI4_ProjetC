@@ -9,9 +9,6 @@ void Batch_init(Batch * batch) {
 
 void Batch_finalize(Batch * batch) {
     free(batch->batch);
-    batch->batch = NULL;
-    batch->size = 0;
-
 }
 
 void Batch_addJob(Batch * batch, unsigned int job)

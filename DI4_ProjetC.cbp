@@ -30,6 +30,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-Wstrict-prototypes" />
 		</Compiler>
 		<Unit filename="src/Batch.c">
 			<Option compilerVar="CC" />

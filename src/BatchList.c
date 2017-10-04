@@ -1,4 +1,5 @@
 #include "BatchList.h"
+#include "Batch.h";
 
 
 void BatchList_init(BatchList * list){
@@ -7,6 +8,11 @@ void BatchList_init(BatchList * list){
 }
 
 void BatchList_finalize(BatchList * list){
+	unsigned int i;
+	for(i = 0; i < list->size; i++){
+		Batch_finalize(list->batches[i]);
+	}
+
 	free(list->batches);
 }
 
@@ -18,32 +24,26 @@ void BatchList_addBatch(BatchList * list, Batch * batch){
 }
 
 void BatchList_removeBatch(BatchList * list, Batch * batch){
-	unsigned int i;
+	unsigned int i, j;
 	for(i = 0; i < list->size; i++)
 	{
 		if(list->batches[i] == batch)
 		{
-			BatchList_removeBatch(list, i);
+			Batch_finalize(list->batches[i]);
+
+			for(j = i; j < list->size - 1; j++)
+			{
+				list->batches[j] = list->batches[j + 1];
+			}
+
+			list->batches[j] = NULL;
+			list->size--;
+
+			return ;
 		}
 	}
 
 	fatalError("Trying to remove a Batch that is not in the list...");
-}
-
-void BatchList_removeBatchAt(BatchList * list, unsigned int pos){
-	if(pos >= list->size)
-		fatalError("Error while trying to remove a Batch from a list: index out of range...");
-
-	Batch_finalize(list->batches[pos]);
-
-	unsigned int i;
-	for(i = pos; i < list->size - 1; i++)
-	{
-		list->batches[i] = list->batches[i + 1];
-	}
-
-	list->batches[i] = NULL;
-	list->size--;
 }
 
 Batch * BatchList_getBatch(BatchList * list, unsigned int pos){
