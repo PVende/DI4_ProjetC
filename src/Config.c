@@ -14,12 +14,21 @@
 
 void Config_parseFile(Config * cfg, char * filename)
 {
-
 	int eof = 0;
 	FILE * file;
 	char line[NB_CHARS_READ];
 
-	file = fopen(filename, "r");
+	cfg->SWAP_SEQ = 0;
+	cfg->SWAP_BATCH = 0;
+	cfg->SWAP_BOTH = 0;
+	cfg->EBSR_BOTH = 0;
+	cfg->EBSR_SEQ = 0;
+	cfg->EBSR_BATCH = 0;
+	cfg->EFSR_BOTH = 0;
+	cfg->EFSR_SEQ = 0;
+	cfg->EFSR_BATCH = 0;
+
+	file = fopen(filename, "w+");
 
 	if(file == NULL)
 	{

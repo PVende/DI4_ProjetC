@@ -17,9 +17,9 @@ void BatchList_removeBatch(BatchList * list, Batch * batch);
 
 Batch * BatchList_getBatch(BatchList * list, unsigned int pos);
 
-void BatchList_swap(Batch * batch1, unsigned int pos1, Batch * batch2, unsigned int pos2);
-void BatchList_ebsr(BatchList * list, Batch * batch, unsigned int pos);
-void BatchList_efsr(BatchList * list, Batch * batch, unsigned int pos);
+void BatchList_swap(BatchList * list, unsigned int batch1Pos, unsigned int job1Pos, unsigned int batch2Pos, unsigned int job2Pos);
+void BatchList_ebsr(BatchList * list, unsigned int batchPos, unsigned int jobPos);
+void BatchList_efsr(BatchList * list, unsigned int batchPos, unsigned int jobPos);
 
 void BatchList_debug(BatchList * list);
 
