@@ -1,5 +1,5 @@
 #include "BatchList.h"
-#include "Batch.h";
+#include "Batch.h"
 
 
 void BatchList_init(BatchList * list){
@@ -19,7 +19,7 @@ void BatchList_finalize(BatchList * list){
 
 void BatchList_addBatch(BatchList * list, Batch * batch){
 	list->size++;
-	REALLOC(list->batches, Batch, list->size);
+	REALLOC(list->batches, Batch*, list->size);
 	list->batches[list->size - 1] = batch;
 }
 

@@ -27,10 +27,10 @@
 
 void fatalError(const char * error);
 
-int isSpace(const char c);
-
 int stringIsEmpty(char * str);
 
 int areArraysEqual(unsigned int * a1, unsigned int size1, unsigned int * a2, unsigned int size2);
+
+char * trim(char * str);
 
 #endif //DI4_PROJETC_HELPERS_H

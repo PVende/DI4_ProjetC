@@ -109,6 +109,8 @@ void BatchListTests_swapEbsrEfsr(){
 
 	custom_assert(list.size == 3);
 
+	BatchList_debug(&list);
+
 	custom_assert(b1.size == 2);
 	custom_assert(b1.batch[0] == 2);
 	custom_assert(b1.batch[1] == 6);

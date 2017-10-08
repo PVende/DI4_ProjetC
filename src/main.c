@@ -7,6 +7,8 @@
 #include "Config.h"
 #include "BatchList.h"
 
+#include <errno.h>
+
 #ifndef NDEBUG
 	#include "../tests/TestsRunner.h"
 #endif
@@ -22,10 +24,10 @@ int main(void)
 
 	#endif
 
-	Config cfg;
+	// Config cfg;
 
-	Config_parseFile(&cfg, CONFIG_FILENAME);
-	Config_debug(&cfg);
+	// Config_parseFile(&cfg, CONFIG_FILENAME);
+	// Config_debug(&cfg);
 
     return 0;
 }
