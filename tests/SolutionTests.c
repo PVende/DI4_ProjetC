@@ -4,7 +4,7 @@
 
 #include <assert.h>
 
-void SolutionTests_launchTests()
+void SolutionTests_launchTests(void)
 {
 
 }

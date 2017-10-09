@@ -9,7 +9,7 @@
 
 #define TEST_FILENAME "tests/unit_test_config.txt"
 
-void ConfigTests_launchTests(){
+void ConfigTests_launchTests(void){
 	Config cfg;
 
 	FILE * file = fopen(TEST_FILENAME, "w");

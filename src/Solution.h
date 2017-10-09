@@ -12,6 +12,6 @@ typedef struct{
 
 double Solution_eval(Solution * solution);
 
-Solution * Solution_createFirstSolution();
+Solution * Solution_createFirstSolution(void);
 
 #endif

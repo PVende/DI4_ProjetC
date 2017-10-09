@@ -4,7 +4,7 @@
 
 #include <assert.h>
 
-void InstanceTests_launchTests(){
+void InstanceTests_launchTests(void){
     Instance instance;
 
     Instance_init(&instance);

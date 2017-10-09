@@ -17,6 +17,7 @@ void Batch_addJob(Batch * batch, unsigned int job);
 void Batch_addJobAt(Batch * batch, unsigned int job, unsigned int position);
 void Batch_removeJob(Batch * batch, unsigned int job);
 void Batch_removeJobAt(Batch * batch, unsigned int position);
+unsigned int Batch_extractJobAt(Batch * batch, unsigned int position);
 
 void Batch_debug(Batch * batch);
 

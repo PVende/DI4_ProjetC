@@ -1,17 +1,35 @@
 #include "Sequence.h"
 
-void Sequence_init(Sequence * sequence,  unsigned int size) {
-    if((sequence->sequence = malloc(sizeof(unsigned int) * size)) == NULL)
-        fatalError("Error malloc");
-
-    sequence->size = size;
+void Sequence_init(Sequence * sequence) {
+    sequence->allocatedSize = 0;
+    sequence->size = 0;
+    sequence->sequence = NULL;
 
 }
 
 void Sequence_finalize(Sequence * sequence) {
     free(sequence->sequence);
+    sequence->allocatedSize = 0;
     sequence->size = 0;
+    sequence->sequence = NULL;
 
+}
+
+// Allocate n * (unsigned int)
+void Sequence_allocate(Sequence * sequence, unsigned int n)
+{
+    sequence->allocatedSize = n;
+    REALLOC(sequence->sequence, unsigned int, n);
+}
+
+// add value without any reallocation
+void Sequence_add(Sequence * sequence, unsigned int value)
+{
+    if(sequence->size == sequence->allocatedSize)
+        fatalError("Not enough allocated size for the sequence");
+
+    sequence->sequence[sequence->size] = value;
+    sequence->size++;
 }
 
 void Sequence_swap(Sequence * sequence, unsigned int pos1, unsigned int pos2) {
@@ -51,4 +69,22 @@ void Sequence_efsr(Sequence * sequence, unsigned int pos) {
 
     sequence->sequence[0] = value;
 
+}
+
+void Sequence_debug(Sequence * sequence)
+{
+    printf("\n"DEBUG_SEPARATOR"SEQUENCE\n"DEBUG_SEPARATOR);
+
+    printf("Allocated size: %u\n", sequence->allocatedSize);
+    printf("Size: %u\n", sequence->size);
+
+    unsigned int i;
+
+    for(i = 0; i < sequence->size; i++)
+    {
+       printf("[%u]", sequence->sequence[i]);
+    }
+
+    printf("\n");
+    printf(DEBUG_SEPARATOR);
 }

@@ -2,7 +2,14 @@
 #include "BatchTests.h"
 #include "../src/helpers.h"
 
-void TestRunner_runTests()
+#include "ConfigTests.h"
+#include "BatchListTests.h"
+#include "SequenceTests.h"
+#include "SolutionTests.h"
+#include "BatchTests.h"
+#include "InstanceTests.h"
+
+void TestRunner_runTests(void)
 {
 	printf(DEBUG_SEPARATOR);
 	printf("START OF UNIT TESTS\n");

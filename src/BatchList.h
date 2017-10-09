@@ -9,6 +9,7 @@ typedef struct {
 
 } BatchList;
 
+
 void BatchList_init(BatchList * list);
 void BatchList_finalize(BatchList * list);
 

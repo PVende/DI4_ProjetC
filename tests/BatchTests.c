@@ -4,7 +4,7 @@
 
 #include <assert.h>
 
-void BatchTests_launchTests()
+void BatchTests_launchTests(void)
 {
 	Batch b;
 
@@ -48,6 +48,11 @@ void BatchTests_launchTests()
 	custom_assert(b.size == 2);
 	custom_assert(b.batch[0] == 2);
 	custom_assert(b.batch[1] == 4);
+
+	unsigned int extracted = Batch_extractJobAt(&b, 1);
+	custom_assert(extracted == 4);
+	custom_assert(b.size == 1);
+	custom_assert(b.batch[0] == 2);
 
 	Batch_finalize(&b);
 }

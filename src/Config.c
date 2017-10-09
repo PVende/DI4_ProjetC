@@ -15,7 +15,6 @@
 
 void Config_parseFile(Config * cfg, char * filename)
 {
-	int eof = 0;
 	FILE * file;
 	char line[NB_CHARS_READ];
 
@@ -96,7 +95,7 @@ void Config_parseLine(Config * cfg, char * line)
 
 void Config_debug(Config * cfg)
 {
-	printf(DEBUG_SEPARATOR"CONFIG\n"DEBUG_SEPARATOR);
+	printf("\n"DEBUG_SEPARATOR"CONFIG\n"DEBUG_SEPARATOR);
     printf("SWAP_SEQ: %d\n", cfg->SWAP_SEQ);
     printf("SWAP_BATCH: %d\n", cfg->SWAP_BATCH);
     printf("SWAP_BOTH: %d\n", cfg->SWAP_BOTH);

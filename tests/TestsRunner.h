@@ -9,6 +9,6 @@
 #include "BatchTests.h"
 #include "InstanceTests.h"
 
-void TestRunner_runTests();
+void TestRunner_runTests(void);
 
 #endif // TESTRUNNER_H

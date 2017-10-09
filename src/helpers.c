@@ -4,6 +4,7 @@
 
 #include "helpers.h"
 #include <string.h>
+#include <ctype.h>
 
 void fatalError(const char * error)
 {
@@ -46,4 +47,11 @@ char * trim(char * str)
 	*(end + 1) = 0;
 
 	return str;
+}
+
+void on_sigabrt(int signum)
+{
+	(void) signum;
+	printf("\nSIGABRT: A unit test might have failed\n");
+	exit(-1);
 }

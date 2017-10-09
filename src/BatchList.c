@@ -71,17 +71,44 @@ void BatchList_swap(BatchList * list, unsigned int batch1Pos, unsigned int job1P
 }
 
 void BatchList_ebsr(BatchList * list, unsigned int batchPos, unsigned int jobPos){
+	unsigned int extracted;
+	Batch * batch, * lastBatch;
 
+	batch = BatchList_getBatch(list, batchPos);
+	extracted = Batch_extractJobAt(batch, jobPos);
+
+	if(batch->size == 0)
+	{
+		// Removing the batch from the batch list
+		BatchList_removeBatch(list, batch);
+	}
+
+	lastBatch = list->batches[list->size - 1];
+	Batch_addJob(lastBatch, extracted);
 }
 
 void BatchList_efsr(BatchList * list, unsigned int batchPos, unsigned int jobPos){
+	unsigned int extracted;
+	Batch * batch, * firstBatch;
 
+	batch = BatchList_getBatch(list, batchPos);
+	extracted = Batch_extractJobAt(batch, jobPos);
+
+	if(batch->size == 0)
+	{
+		// Removing the batch from the batch list
+		BatchList_removeBatch(list, batch);
+	}
+
+
+	firstBatch = list->batches[0];
+	Batch_addJobAt(firstBatch, extracted, 0);
 }
 
 
 void BatchList_debug(BatchList * list)
 {
-	printf(DEBUG_SEPARATOR"BATCH LIST\n"DEBUG_SEPARATOR);
+	printf("\n"DEBUG_SEPARATOR"BATCH LIST\n"DEBUG_SEPARATOR);
 	printf("Size: %u\n", list->size);
 	unsigned int i;
 	for(i = 0; i < list->size; i++)

@@ -44,6 +44,8 @@ void Batch_removeJobAt(Batch * batch, unsigned int position) {
     for(i = position + 1; i < batch->size; i++)
         batch->batch[i - 1] =  batch->batch[i];
 
+	unsigned int tmp = batch->size;
+
     REALLOC(batch->batch, unsigned int, batch->size - 1);
 
     batch->size--;
@@ -63,6 +65,17 @@ void Batch_removeJob(Batch * batch, unsigned int job)
             break;
         }
     }
+}
+
+
+unsigned int Batch_extractJobAt(Batch * batch, unsigned int position)
+{
+    if(position >= batch->size)
+        fatalError("Error argument");
+
+    unsigned int job = batch->batch[position];
+    Batch_removeJobAt(batch, position);
+    return job;
 }
 
 
