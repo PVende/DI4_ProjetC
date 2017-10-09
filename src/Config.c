@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <ctype.h>
 
 #include "Config.h"
 #include "helpers.h"
@@ -14,10 +15,19 @@
 
 void Config_parseFile(Config * cfg, char * filename)
 {
-
 	int eof = 0;
 	FILE * file;
 	char line[NB_CHARS_READ];
+
+	cfg->SWAP_SEQ = 0;
+	cfg->SWAP_BATCH = 0;
+	cfg->SWAP_BOTH = 0;
+	cfg->EBSR_BOTH = 0;
+	cfg->EBSR_SEQ = 0;
+	cfg->EBSR_BATCH = 0;
+	cfg->EFSR_BOTH = 0;
+	cfg->EFSR_SEQ = 0;
+	cfg->EFSR_BATCH = 0;
 
 	file = fopen(filename, "r");
 
@@ -41,12 +51,12 @@ void Config_parseFile(Config * cfg, char * filename)
 void Config_parseLine(Config * cfg, char * line)
 {
 
-	while(isSpace(*line)){
+	while(isspace(*line)){
 		line++;
 	}
 
 	if(stringIsEmpty(line))
-		return; 
+		return;
 
 	// if it's a comment
 	if(*line == '#')
@@ -63,6 +73,9 @@ void Config_parseLine(Config * cfg, char * line)
 	param = line;
 	value = equalChar + 1;
 	*equalChar = '\0';
+
+	param = trim(param);
+	value = trim(value);
 
 	intValue = (int) strtol(value, NULL, 10); // Vaut bien 1 ou 0
 
