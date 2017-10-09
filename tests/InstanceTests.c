@@ -8,5 +8,22 @@ void InstanceTests_launchTests(){
     Instance instance;
 
     Instance_init(&instance);
+
+    custom_assert(instance.nbJobs == 0);
+    custom_assert(instance.nbMachine == 0);
+
+    custom_assert(instance.times == NULL);
+    custom_assert(instance.deliveryDates == NULL);
+    custom_assert(instance.distances == NULL);
+    custom_assert(instance.solution == NULL);
+
     Instance_parseInstance(&instance);
+
+    custom_assert(instance.nbJobs > 0);
+    custom_assert(instance.nbMachine > 0);
+
+    custom_assert(instance.times != NULL);
+    custom_assert(instance.deliveryDates != NULL);
+    custom_assert(instance.distances != NULL);
+    custom_assert(instance.solution == NULL);
 }
