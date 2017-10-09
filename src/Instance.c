@@ -39,6 +39,41 @@ void Instance_parseInstance(Instance * instance) {
         if(fscanf(inputFile, "%u", &instance->deliveryDates[i]) != 1)
             fatalError("error read file");
 
+    fgetc(inputFile);
+    fgetc(inputFile);
 
+    unsigned int distributionLocation = 0, * distancesFromFirstLocation = NULL, endline = 0, tmpChar, distance;
 
+    while(!endline) {
+        distance = 0;
+        tmpChar = fgetc(inputFile);
+
+        if(tmpChar != '\n') {
+            while(tmpChar != '\t') {
+                distance = 10 * distance + (tmpChar - '0');
+                tmpChar = fgetc(inputFile);
+            }
+
+            distributionLocation++;
+            REALLOC(distancesFromFirstLocation, unsigned int, distributionLocation);
+            distancesFromFirstLocation[distributionLocation - 1] = distance;
+        } else
+            endline++;
+
+    }
+
+    MALLOC(instance->distances, unsigned int *, distributionLocation);
+
+    instance->distances[0] = distancesFromFirstLocation;
+
+    for(i = 1; i < distributionLocation; i++) {
+        MALLOC(instance->distances[i], unsigned int, distributionLocation);
+
+        for(j = 0; j < distributionLocation; j++)
+            if(fscanf(inputFile, "%u", &instance->distances[i][j]) != 1)
+                fatalError("error read file");
+    }
+
+    if(fclose(inputFile) != 0)
+       fatalError("error close input file");
 }

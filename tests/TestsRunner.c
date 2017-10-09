@@ -1,5 +1,5 @@
 
-#include "BatchTests.h"
+#include "TestsRunner.h"
 #include "../src/helpers.h"
 
 #include "ConfigTests.h"
