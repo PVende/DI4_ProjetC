@@ -9,6 +9,43 @@ void Batch_init(Batch * batch) {
 
 void Batch_finalize(Batch * batch) {
     free(batch->batch);
+    batch->size = 0;
+    batch->batch = NULL;
+}
+
+
+Batch * Batch_duplicate(Batch * batch)
+{
+    if(batch == NULL)
+        return NULL;
+
+    unsigned int i;
+
+    Batch * MALLOC(dup, Batch, 1);
+    dup->size = batch->size;
+    dup->batch = duplicateArray(batch->batch, batch->size);
+
+    return dup;
+}
+
+int Batch_equals(Batch * b1, Batch * b2)
+{
+    unsigned int i;
+
+    if(b1 == NULL && b2 == NULL)
+        return 1;
+    else if(b1 == NULL || b2 == NULL)
+        return 0;
+    else if(b1->size != b2->size)
+        return 0;
+
+    for(i = 0; i < b1->size; i++)
+    {
+        if(b1->batch[i] != b2->batch[i])
+            return 0;
+    }
+
+    return 1;
 }
 
 void Batch_addJob(Batch * batch, unsigned int job)
@@ -43,8 +80,6 @@ void Batch_removeJobAt(Batch * batch, unsigned int position) {
 
     for(i = position + 1; i < batch->size; i++)
         batch->batch[i - 1] =  batch->batch[i];
-
-	unsigned int tmp = batch->size;
 
     REALLOC(batch->batch, unsigned int, batch->size - 1);
 

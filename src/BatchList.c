@@ -14,8 +14,53 @@ void BatchList_finalize(BatchList * list){
 	}
 
 	free(list->batches);
+
+	list->size = 0;
+	list->batches = NULL;
 }
 
+
+BatchList * BatchList_duplicate(BatchList * list)
+{
+    if(list == NULL)
+        return NULL;
+
+	BatchList * dup;
+	unsigned int i;
+
+	MALLOC(dup, BatchList, 1);
+	BatchList_init(dup);
+
+	if(list->size > 0)
+	{
+		for(i = 0; i < list->size; i++)
+		{
+			BatchList_addBatch(dup, Batch_duplicate(list->batches[i]));
+		}
+	}
+
+	return dup;
+}
+
+int BatchList_equals(BatchList * l1, BatchList * l2)
+{	
+    unsigned int i;
+
+    if(l1 == NULL && l2 == NULL)
+        return 1;
+    else if(l1 == NULL || l2 == NULL)
+        return 0;
+    else if(l1->size != l2->size)
+        return 0;
+
+    for(i = 0; i < l1->size; i++)
+    {
+        if(!Batch_equals(l1->batches[i], l2->batches[i]))
+            return 0;
+    }
+
+    return 1;
+}
 
 void BatchList_addBatch(BatchList * list, Batch * batch){
 	list->size++;

@@ -8,6 +8,7 @@
 #include "SolutionTests.h"
 #include "BatchTests.h"
 #include "InstanceTests.h"
+#include "helpersTests.h"
 
 void TestRunner_runTests(void);
 
