@@ -13,6 +13,10 @@ typedef struct {
 void BatchList_init(BatchList * list);
 void BatchList_finalize(BatchList * list);
 
+BatchList * BatchList_duplicate(BatchList * list);
+
+int BatchList_equals(BatchList * l1, BatchList * l2);
+
 void BatchList_addBatch(BatchList * list, Batch * batch);
 void BatchList_removeBatch(BatchList * list, Batch * batch);
 

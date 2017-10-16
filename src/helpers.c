@@ -36,7 +36,7 @@ char * trim(char * str)
 {
 	char *end;
 
-	while(isspace((unsigned char)*str)) str++;
+	while(*str != 0 && isspace((unsigned char)*str)) str++;
 
 	if(*str == 0)
 	return str;
@@ -54,4 +54,27 @@ void on_sigabrt(int signum)
 	(void) signum;
 	printf("\nSIGABRT: A unit test might have failed\n");
 	exit(-1);
+}
+
+unsigned int * duplicateArray(unsigned int * array, unsigned int size)
+{
+	if(array == NULL)
+	{
+		if(size == 0)
+			return NULL;
+		else
+			fatalError("Error in duplicateArray(): array is NULL but size > 0.");
+	}
+
+	unsigned int i;
+	unsigned int * dup;
+	
+	MALLOC(dup, unsigned int, size);
+
+	for(i = 0; i < size; i++)
+	{
+		dup[i] = array[i];
+	}
+
+	return dup;
 }

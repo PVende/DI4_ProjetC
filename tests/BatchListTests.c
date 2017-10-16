@@ -8,6 +8,9 @@
 void BatchListTests_launchTests(void){
 	BatchListTests_basicOperations();
 	BatchListTests_swapEbsrEfsr();
+	BatchListTests_testEbsrAndEfsrOnEmptyBatches();
+	BatchListTests_testComparison();
+	BatchListTests_testDuplication();
 }
 
 void BatchListTests_basicOperations(void){
@@ -15,7 +18,7 @@ void BatchListTests_basicOperations(void){
 	Batch b1, b2, b3;
 	Batch * toRemove = &b2;
 
-	// INIT
+	// Initialization
 
 	BatchList_init(&list);
 
@@ -24,7 +27,7 @@ void BatchListTests_basicOperations(void){
 
 	prepareJobs(&b1, &b2, &b3);
 
-	// ADD
+	// Adding of a batch
 
 	BatchList_addBatch(&list, &b1);
 	BatchList_addBatch(&list, &b2);
@@ -35,14 +38,14 @@ void BatchListTests_basicOperations(void){
 	custom_assert(list.batches[1] == &b2);
 	custom_assert(list.batches[2] == &b3);
 
-	// GET
+	// Getting batch
 
 	custom_assert(BatchList_getBatch(&list, 0) == &b1);
 	custom_assert(BatchList_getBatch(&list, 1) == &b2);
 	custom_assert(BatchList_getBatch(&list, 2) == &b3);
 	custom_assert(BatchList_getBatch(&list, 10) == NULL);
 
-	// REMOVE
+	// Removal of a batch
 
 	BatchList_removeBatch(&list, toRemove);
 
@@ -50,9 +53,16 @@ void BatchListTests_basicOperations(void){
 	custom_assert(list.batches[0] == &b1);
 	custom_assert(list.batches[1] == &b3);
 
-	// FINALIZE
+	// Finalization
 
 	BatchList_finalize(&list);
+
+	custom_assert(b1.size == 0);
+	custom_assert(b1.batch == NULL);
+	custom_assert(b2.size == 0);
+	custom_assert(b2.batch == NULL);
+	custom_assert(b3.size == 0);
+	custom_assert(b3.batch == NULL);
 }
 
 void BatchListTests_swapEbsrEfsr(void){
@@ -70,7 +80,9 @@ void BatchListTests_swapEbsrEfsr(void){
 	//	(1) 4->[9][5][6][1]
 	//	(2) 2->[21][3]
 
+	// -------------------------------------
 	// SWAP
+	// -------------------------------------
 
 	BatchList_swap(&list, 0, 1, 1, 2);
 	// BATCHES :
@@ -98,7 +110,9 @@ void BatchListTests_swapEbsrEfsr(void){
 	custom_assert(b1.batch[1] == 4);
 	custom_assert(b1.batch[2] == 6);
 
+	// -------------------------------------
 	// EBSR
+	// -------------------------------------
 
 	BatchList_ebsr(&list, 0, 1);
 
@@ -143,8 +157,9 @@ void BatchListTests_swapEbsrEfsr(void){
 	unsigned int tab1[] = {21, 4, 2, 6, 3};
 	custom_assert(areArraysEqual(b3.batch, b3.size, tab1, 5) == 1);
 
-
+	// -------------------------------------
 	// EFSR
+	// -------------------------------------
 
 	BatchList_finalize(&list);
 	BatchList_init(&list);
@@ -200,14 +215,14 @@ void BatchListTests_swapEbsrEfsr(void){
 	BatchList_finalize(&list);
 }
 
-void BatchListTests_testWhenEbsrAndEfsrEmptiesBatches(void)
+void BatchListTests_testEbsrAndEfsrOnEmptyBatches(void)
 {
 	BatchList list;
 	Batch b1, b2, b3;
 
-	// ------------------
+	// -------------------------------------
 	// EBSR
-	// ------------------
+	// -------------------------------------
 
 	BatchList_init(&list);
 	prepareJobs(&b1, &b2, &b3);
@@ -235,11 +250,11 @@ void BatchListTests_testWhenEbsrAndEfsrEmptiesBatches(void)
 	custom_assert(b3.size == 6);
 	custom_assert(BatchList_getBatch(&list, 1) == &b3);
 	unsigned int tab1[] = {21, 3, 9, 5, 6, 1};
-	custom_assert(areArraysEqual(b3.batch, b3.size, tab1, sizeof(tab1)));
+	custom_assert(areArraysEqual(b3.batch, b3.size, tab1, sizeof(tab1) / sizeof(unsigned int)));
 
-	// ------------------
+	// -------------------------------------
 	// EFSR
-	// ------------------
+	// -------------------------------------
 
 	BatchList_finalize(&list);
 	BatchList_init(&list);
@@ -259,20 +274,132 @@ void BatchListTests_testWhenEbsrAndEfsrEmptiesBatches(void)
 	BatchList_efsr(&list, 1, 0);
 
 	// BATCHES :
-	// 	(0) 6->[1][6][5][9][2][7][4]
+	// 	(0) 7->[1][6][5][9][2][7][4]
 	//	(1) 2->[21][3]
 
 	custom_assert(list.size == 2);
-	custom_assert(b1.size == 6);
+	custom_assert(b1.size == 7);
 	custom_assert(b2.size == 0)
 	custom_assert(b3.size == 2);
 	custom_assert(BatchList_getBatch(&list, 1) == &b3);
 	unsigned int tab2[] = {1, 6, 5, 9, 2, 7, 4};
-	custom_assert(areArraysEqual(b1.batch, b1.size, tab2, sizeof(tab2)));
+	custom_assert(areArraysEqual(b1.batch, b1.size, tab2, sizeof(tab2) / sizeof(unsigned int)));
 
 	BatchList_finalize(&list);
 }
 
+void BatchListTests_testComparison(void)
+{
+	BatchList original, equal, notEqual;
+	Batch b1, b2, b3, b4;
+	Batch * dupB1, * dupB2, * dupB3, * dupB1_2, * dupB2_2;
+
+	// Initialization
+
+	BatchList_init(&original);
+	BatchList_init(&equal);
+	BatchList_init(&notEqual);
+
+	prepareJobs(&b1, &b2, &b3);
+
+	Batch_init(&b4);
+	Batch_addJob(&b4, 29);
+	Batch_addJob(&b4, 25);
+	Batch_addJob(&b4, 35);
+
+	// Comparisons with NULL
+
+	custom_assert(BatchList_equals(NULL, NULL) == 1);
+	custom_assert(BatchList_equals(&original, NULL) == 0);
+	custom_assert(BatchList_equals(NULL, &original) == 0);
+
+	dupB1 = Batch_duplicate(&b1);
+	dupB2 = Batch_duplicate(&b2);
+	dupB3 = Batch_duplicate(&b3);
+
+	dupB1_2 = Batch_duplicate(&b1);
+	dupB2_2 = Batch_duplicate(&b2);
+
+	// Comparison of two different lists
+
+	BatchList_addBatch(&original, &b1);
+	BatchList_addBatch(&original, &b2);
+	BatchList_addBatch(&original, &b3);
+
+	BatchList_addBatch(&equal, dupB1);
+	BatchList_addBatch(&equal, dupB2);
+
+	custom_assert(BatchList_equals(&original, &equal) == 0);
+	custom_assert(BatchList_equals(&equal, &original) == 0);
+
+	// Comparison of two equal lists
+
+	BatchList_addBatch(&equal, dupB3);
+
+	custom_assert(BatchList_equals(&original, &equal) == 1);
+	custom_assert(BatchList_equals(&equal, &original) == 1);
+
+	BatchList_addBatch(&notEqual, dupB1_2);
+	BatchList_addBatch(&notEqual, dupB2_2);
+
+	// Comparison of two list of different size
+
+	custom_assert(BatchList_equals(&original, &notEqual) == 0);
+
+	BatchList_addBatch(&notEqual, &b4);
+
+	// Comparison of two list of equal size
+
+	custom_assert(BatchList_equals(&original, &notEqual) == 0);
+
+	// Finalization
+
+	BatchList_finalize(&original);
+	BatchList_finalize(&equal);
+	BatchList_finalize(&notEqual);
+
+	free(dupB1);
+	free(dupB2);
+	free(dupB3);
+
+	free(dupB1_2);
+	free(dupB2_2);
+}
+
+void BatchListTests_testDuplication(void)
+{
+	BatchList list, * dup;
+	Batch b1, b2, b3;
+
+	// Duplicate NULL
+
+	dup = BatchList_duplicate(NULL);
+	custom_assert(dup == NULL);
+
+	// Duplicate empty batch list
+
+	BatchList_init(&list);
+
+	dup = BatchList_duplicate(&list);
+	
+	custom_assert(BatchList_equals(&list, dup) == 1);
+
+	free(dup);
+
+	// Classic duplication
+
+	prepareJobs(&b1, &b2, &b3);
+	BatchList_addBatch(&list, &b1);
+	BatchList_addBatch(&list, &b2);
+	BatchList_addBatch(&list, &b3);
+
+	dup = BatchList_duplicate(&list);
+	custom_assert(BatchList_equals(&list, dup));
+
+	BatchList_finalize(&list);
+	BatchList_finalize(dup);
+	free(dup);
+}
 
 void prepareJobs(Batch * b1, Batch * b2, Batch * b3)
 {

@@ -8,12 +8,17 @@
 #include "SolutionTests.h"
 #include "BatchTests.h"
 #include "InstanceTests.h"
+#include "helpersTests.h"
 
 void TestRunner_runTests(void)
 {
 	printf(DEBUG_SEPARATOR);
 	printf("START OF UNIT TESTS\n");
 	printf(DEBUG_SEPARATOR);
+
+	printf("Testing helpers");
+	helpersTests_launchTests();
+	printf("OK\n");
 
 	printf("Testing Config");
 	ConfigTests_launchTests();

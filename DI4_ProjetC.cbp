@@ -114,6 +114,10 @@
 		<Unit filename="tests/TestsRunner.h">
 			<Option target="Debug" />
 		</Unit>
+		<Unit filename="tests/helpersTests.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tests/helpersTests.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

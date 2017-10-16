@@ -13,6 +13,10 @@ typedef struct _Batch {
 void Batch_init(Batch * batch);
 void Batch_finalize(Batch * batch);
 
+Batch * Batch_duplicate(Batch * batch);
+
+int Batch_equals(Batch * b1, Batch * b2);
+
 void Batch_addJob(Batch * batch, unsigned int job);
 void Batch_addJobAt(Batch * batch, unsigned int job, unsigned int position);
 void Batch_removeJob(Batch * batch, unsigned int job);

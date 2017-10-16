@@ -35,4 +35,6 @@ char * trim(char * str);
 
 void on_sigabrt(int signum);
 
+unsigned int * duplicateArray(unsigned int * array, unsigned int size);
+
 #endif //DI4_PROJETC_HELPERS_H
