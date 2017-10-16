@@ -10,6 +10,7 @@ typedef struct{
 
 } Solution;
 
-Solution * Solution_createFirstSolution(void);
+void Solution_init(Solution * solution);
+void Solution_finalize(Solution * solution);
 
 #endif

@@ -10,6 +10,36 @@ void Instance_init(Instance * instance) {
 
 }
 
+void Instance_finalize(Instance * instance) {
+    unsigned int i;
+
+    if(instance->solution != NULL) {
+        Solution_finalize(instance->solution);
+        free(instance->solution);
+        instance->solution = NULL;
+    }
+
+    if(instance->deliveryDates != NULL) {
+        for(i = 0; i < instance->nbMachine; i++)
+            free(instance->times[i]);
+        free(instance->times);
+        instance->times = NULL;
+    }
+
+    if(instance->deliveryDates != NULL) {
+        for(i = 0; i < instance->nbJobs; i++)
+            free(instance->distances[i]);
+        free(instance->distances);
+        instance->distances = NULL;
+    }
+
+    if(instance->deliveryDates != NULL) {
+        free(instance->deliveryDates);
+        instance->deliveryDates = NULL;
+    }
+
+}
+
 void Instance_parseInstance(Instance * instance, char * inputFileName) {
     unsigned int i, j;
     FILE * inputFile;

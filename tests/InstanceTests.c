@@ -34,4 +34,6 @@ void InstanceTests_launchTests(void){
     custom_assert(instance.solution == NULL);
 
     custom_assert(Instance_eval(&instance, 0) == 0);
+
+    Instance_finalize(&instance);
 }
