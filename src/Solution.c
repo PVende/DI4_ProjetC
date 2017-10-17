@@ -20,6 +20,17 @@ void Solution_finalize(Solution * solution) {
     }
 }
 
+Solution * Solution_duplicate(Solution * solution) {
+    if(solution == NULL)
+        return NULL;
+
+    Solution * MALLOC(dup, Solution, 1);
+    dup->sequence = Sequence_duplicate(solution->sequence);
+    dup->batchList = BatchList_duplicate(solution->batchList);
+
+    return dup;
+}
+
 int Solution_equals(Solution * s1, Solution * s2) {
     if(s1 == NULL && s2 == NULL)
         return 1;

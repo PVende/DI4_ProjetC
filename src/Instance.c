@@ -40,6 +40,31 @@ void Instance_finalize(Instance * instance) {
 
 }
 
+Instance * Instance_duplicate(Instance * instance) {
+    if(instance == NULL)
+        return NULL;
+
+    unsigned int i;
+    Instance * MALLOC(dup, Instance, 1);
+
+    dup->nbJobs = instance->nbJobs;
+    dup->nbMachine = instance->nbMachine;
+
+    dup->deliveryDates = duplicateArray(instance->deliveryDates, instance->nbJobs);
+
+    MALLOC(dup->distances, unsigned int *, dup->nbJobs + 1);
+    for(i = 0; i < dup->nbJobs + 1; i++)
+        dup->distances[i] = duplicateArray(instance->distances[i], instance->nbJobs + 1);
+
+    MALLOC(dup->times, unsigned int *, dup->nbMachine);
+    for(i = 0; i < dup->nbMachine; i++)
+        dup->times[i] = duplicateArray(instance->times[i], instance->nbJobs);
+
+    dup->solution = Solution_duplicate(instance->solution);
+
+    return dup;
+}
+
 int Instance_equals(Instance * i1, Instance * i2) {
     if(i1 == NULL && i2 == NULL)
         return 1;
@@ -52,7 +77,7 @@ int Instance_equals(Instance * i1, Instance * i2) {
     unsigned int i, j;
 
     for(i = 0; i < i1->nbJobs; i++)
-        if(i1->deliveryDates[i] != i2->deliveryDates)
+        if(i1->deliveryDates[i] != i2->deliveryDates[i])
             return 0;
 
     for(i = 0; i < i1->nbMachine; i++)
@@ -62,7 +87,7 @@ int Instance_equals(Instance * i1, Instance * i2) {
 
     for(i = 0; i < i1->nbJobs + 1; i++)
         for(j = 0; j < i1->nbJobs + 1; i++)
-            if(i1->times[i][j] != i2->times[i][j])
+            if(i1->distances[i][j] != i2->distances[i][j])
                 return 0;
 
     if(Solution_equals(i1->solution, i2->solution) == 0)
