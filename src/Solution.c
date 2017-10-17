@@ -19,3 +19,15 @@ void Solution_finalize(Solution * solution) {
         solution->batchList = NULL;
     }
 }
+
+int Solution_equals(Solution * s1, Solution * s2) {
+    if(s1 == NULL && s2 == NULL)
+        return 1;
+    else if(s1 == NULL || s2 == NULL)
+        return 0;
+
+    if(Sequence_equals(s1->sequence, s2->sequence) == 0 || BatchList_equals(s1->batchList, s2->batchList) == 0)
+        return 0;
+
+    return 1;
+}

@@ -40,6 +40,37 @@ void Instance_finalize(Instance * instance) {
 
 }
 
+int Instance_equals(Instance * i1, Instance * i2) {
+    if(i1 == NULL && i2 == NULL)
+        return 1;
+    else if(i1 == NULL || i2 == NULL)
+        return 0;
+
+    if(i1->nbJobs != i2->nbJobs || i1->nbMachine != i2->nbMachine)
+        return 0;
+
+    unsigned int i, j;
+
+    for(i = 0; i < i1->nbJobs; i++)
+        if(i1->deliveryDates[i] != i2->deliveryDates)
+            return 0;
+
+    for(i = 0; i < i1->nbMachine; i++)
+        for(j = 0; j < i1->nbJobs; j++)
+            if(i1->times[i][j] != i2->times[i][j])
+                return 0;
+
+    for(i = 0; i < i1->nbJobs + 1; i++)
+        for(j = 0; j < i1->nbJobs + 1; i++)
+            if(i1->times[i][j] != i2->times[i][j])
+                return 0;
+
+    if(Solution_equals(i1->solution, i2->solution) == 0)
+        return 0;
+
+    return 1;
+}
+
 void Instance_parseInstance(Instance * instance, char * inputFileName) {
     unsigned int i, j;
     FILE * inputFile;

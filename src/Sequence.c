@@ -60,7 +60,7 @@ Sequence * Sequence_duplicate(Sequence * sequence){
 void Sequence_allocate(Sequence * sequence, unsigned int n)
 {
     sequence->allocatedSize = n;
-    unsigned int * t = sequence->sequence;
+    //unsigned int * t = sequence->sequence;
     REALLOC(sequence->sequence, unsigned int, n);
 }
 

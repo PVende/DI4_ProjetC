@@ -13,4 +13,6 @@ typedef struct{
 void Solution_init(Solution * solution);
 void Solution_finalize(Solution * solution);
 
+int Solution_equals(Solution * s1, Solution * s2);
+
 #endif

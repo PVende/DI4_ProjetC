@@ -19,6 +19,8 @@ typedef struct _Instance {
 void Instance_init(Instance * instance);
 void Instance_finalize(Instance * instance);
 
+int Instance_equals(Instance * i1, Instance * i2);
+
 void Instance_parseInstance(Instance * instance, char * inputFileName);
 
 unsigned int Instance_eval(Instance * instance, int diversification);
