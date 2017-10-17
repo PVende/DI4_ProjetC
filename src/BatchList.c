@@ -11,6 +11,7 @@ void BatchList_finalize(BatchList * list){
 	unsigned int i;
 	for(i = 0; i < list->size; i++){
 		Batch_finalize(list->batches[i]);
+		free(list->batches[i]);
 	}
 
 	free(list->batches);
@@ -35,7 +36,7 @@ BatchList * BatchList_duplicate(BatchList * list)
 	{
 		for(i = 0; i < list->size; i++)
 		{
-			BatchList_addBatch(dup, Batch_duplicate(list->batches[i]));
+			BatchList_addBatch(dup, list->batches[i]);
 		}
 	}
 
@@ -62,10 +63,11 @@ int BatchList_equals(BatchList * l1, BatchList * l2)
     return 1;
 }
 
+// duplicate the batch
 void BatchList_addBatch(BatchList * list, Batch * batch){
 	list->size++;
 	REALLOC(list->batches, Batch*, list->size);
-	list->batches[list->size - 1] = batch;
+	list->batches[list->size - 1] = Batch_duplicate(batch);
 }
 
 void BatchList_removeBatch(BatchList * list, Batch * batch){
@@ -75,6 +77,7 @@ void BatchList_removeBatch(BatchList * list, Batch * batch){
 		if(list->batches[i] == batch)
 		{
 			Batch_finalize(list->batches[i]);
+			free(list->batches[i]);
 
 			for(j = i; j < list->size - 1; j++)
 			{
