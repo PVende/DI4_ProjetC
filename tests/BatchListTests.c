@@ -404,7 +404,7 @@ void BatchListTests_testDuplication(void)
 	BatchList_init(&list);
 
 	dup = BatchList_duplicate(&list);
-	
+
 	custom_assert(BatchList_equals(&list, dup) == 1);
 
 	free(dup);
