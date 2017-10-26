@@ -76,19 +76,22 @@ int Instance_equals(Instance * i1, Instance * i2) {
 
     unsigned int i, j;
 
-    for(i = 0; i < i1->nbJobs; i++)
-        if(i1->deliveryDates[i] != i2->deliveryDates[i])
-            return 0;
+	if(i1->deliveryDates != i2->deliveryDates)
+		for(i = 0; i < i1->nbJobs; i++)
+			if(i1->deliveryDates[i] != i2->deliveryDates[i])
+				return 0;
 
-    for(i = 0; i < i1->nbMachine; i++)
-        for(j = 0; j < i1->nbJobs; j++)
-            if(i1->times[i][j] != i2->times[i][j])
-                return 0;
+	if(i1->times != i2->times)
+		for(i = 0; i < i1->nbMachine; i++)
+			for(j = 0; j < i1->nbJobs; j++)
+				if(i1->times[i][j] != i2->times[i][j])
+					return 0;
 
-    for(i = 0; i < i1->nbJobs + 1; i++)
-        for(j = 0; j < i1->nbJobs + 1; i++)
-            if(i1->distances[i][j] != i2->distances[i][j])
-                return 0;
+	if(i1->distances != i2->distances)
+		for(i = 0; i < i1->nbJobs + 1; i++)
+			for(j = 0; j < i1->nbJobs + 1; i++)
+				if(i1->distances[i][j] != i2->distances[i][j])
+					return 0;
 
     if(Solution_equals(i1->solution, i2->solution) == 0)
         return 0;
