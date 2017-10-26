@@ -10,13 +10,20 @@
 #include "Config.h"
 #include "helpers.h"
 
-#define NB_CHARS_READ 256
+#define NB_CHARS_TO_READ 256
 
 
-void Config_parseFile(Config * cfg, char * filename)
+/** \brief Parse a config file and set the values of the config variable in parameter
+ *
+ * \param cfg Config* the config variable to set
+ * \param filepath char* the path of the config file
+ * \return void
+ *
+ */
+void Config_parseFile(Config * cfg, char * filepath)
 {
 	FILE * file;
-	char line[NB_CHARS_READ];
+	char line[NB_CHARS_TO_READ];
 
 	cfg->SWAP_SEQ = 0;
 	cfg->SWAP_BATCH = 0;
@@ -28,14 +35,14 @@ void Config_parseFile(Config * cfg, char * filename)
 	cfg->EFSR_SEQ = 0;
 	cfg->EFSR_BATCH = 0;
 
-	file = fopen(filename, "r");
+	file = fopen(filepath, "r");
 
 	if(file == NULL)
 	{
 		fatalError("Failed to open config file");
 	}
 
-	while(fgets(line, NB_CHARS_READ, file))
+	while(fgets(line, NB_CHARS_TO_READ, file))
 	{
 		char * lineBreak = strchr(line, '\n');
 
@@ -47,6 +54,13 @@ void Config_parseFile(Config * cfg, char * filename)
 }
 
 
+/** \brief parse a line and update the config variable if necessary
+ *
+ * \param cfg Config* the config variable to set
+ * \param line char* the line to parse
+ * \return void
+ *
+ */
 void Config_parseLine(Config * cfg, char * line)
 {
 
@@ -93,6 +107,12 @@ void Config_parseLine(Config * cfg, char * line)
 }
 
 
+/** \brief Print a config to the console
+ *
+ * \param cfg Config* the config to print to the console
+ * \return void
+ *
+ */
 void Config_debug(Config * cfg)
 {
 	printf("\n"DEBUG_SEPARATOR"CONFIG\n"DEBUG_SEPARATOR);
