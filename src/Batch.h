@@ -35,12 +35,12 @@ void Batch_finalize(Batch * batch);
 Batch * Batch_duplicate(Batch * batch);
 
 /** \brief Compare two batches.
- * Two batches are equal if they have the same size and the exact same batch array
  *
  * \param b1 Batch* the first batch
  * \param b2 Batch* the second batch
- * \return int 1 (if the batches are equal) or
- *
+ * \return int 1 if the batches are equal, 0 otherwise. Two batches are equals if they have the same size and the same jobs in the same order.
+ * \note this function starts by checking if the addresses are equal.
+ * \note if both batches are NULL, it returns 1.
  */
 int Batch_equals(Batch * b1, Batch * b2);
 
