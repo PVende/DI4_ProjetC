@@ -159,7 +159,7 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
     if(instance->solution == NULL)
         return 0;
 
-    unsigned int i, j, job;
+    unsigned int i, j, job = 0;
     unsigned int * CALLOC(costJob, unsigned int, instance->nbJobs);
     unsigned int ** MALLOC(costJobMachine, unsigned int *, instance->nbJobs);
 
@@ -187,7 +187,7 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
             soonerStart[i] = ((int)costJobMachine[job][instance->nbMachine] > soonerStart[i]) ? (int)costJobMachine[job][instance->nbMachine] : soonerStart[i];
     }
 
-    unsigned int turnNb = 0, stop = instance->nbJobs, startLocation, lagTotal = 0, startTime, endTime = 0, arrivedTime;
+    unsigned int turnNb = 0, stop = instance->nbJobs, startLocation, lagTotal = 0, startTime, endTime = 0, arrivedTime = 0;
     unsigned int * CALLOC(actualDelay, unsigned int, instance->nbJobs);
     unsigned int * CALLOC(lag, unsigned int, instance->nbJobs);
     Batch * currentBatch;
@@ -230,7 +230,7 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
 void Instance_firstSolution(Instance * instance){
     Instance * currentSolution = Instance_duplicate(instance);
 
-    unsigned int i, j, indexMin, min, infinity = 0;
+    unsigned int i, j, indexMin = 0, min, infinity = 0;
     infinity--;
 
     Sequence * MALLOC(sequence, Sequence, 1);
