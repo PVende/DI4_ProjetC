@@ -63,13 +63,6 @@ void BatchListTests_basicOperations(void){
 	// Finalization
 
 	BatchList_finalize(&list);
-
-	custom_assert(pb1->size == 0);
-	custom_assert(pb1->batch == NULL);
-	custom_assert(pb2->size == 0);
-	custom_assert(pb2->batch == NULL);
-	custom_assert(pb3->size == 0);
-	custom_assert(pb3->batch == NULL);
 }
 
 void BatchListTests_swapEbsrEfsr(void){
@@ -266,7 +259,9 @@ void BatchListTests_testEbsrAndEfsrOnEmptyBatches(void)
 
 	custom_assert(list.size == 2);
 	custom_assert(pb1->size == 3);
-	custom_assert(pb2->size == 0)
+
+	// pb2 went empty, therefore it has been freed
+
 	custom_assert(pb3->size == 6);
 	custom_assert(BatchList_getBatch(&list, 1) == pb3);
 	unsigned int tab1[] = {21, 3, 9, 5, 6, 1};
@@ -302,7 +297,9 @@ void BatchListTests_testEbsrAndEfsrOnEmptyBatches(void)
 
 	custom_assert(list.size == 2);
 	custom_assert(pb1->size == 7);
-	custom_assert(pb2->size == 0)
+
+	// pb2 went empty, therefore it has been freed
+
 	custom_assert(pb3->size == 2);
 	custom_assert(BatchList_getBatch(&list, 1) == pb3);
 	unsigned int tab2[] = {1, 6, 5, 9, 2, 7, 4};
