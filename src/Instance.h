@@ -23,8 +23,11 @@ Instance * Instance_duplicate(Instance * instance);
 
 int Instance_equals(Instance * i1, Instance * i2);
 
+void Instance_setSolution(Instance * instance, Solution * solution);
+
 void Instance_parseInstance(Instance * instance, char * inputFileName);
 
 unsigned int Instance_eval(Instance * instance, int diversification);
+void Instance_firstSolution(Instance * instance);
 
 #endif

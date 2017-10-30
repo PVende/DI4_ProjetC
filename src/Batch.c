@@ -34,8 +34,6 @@ Batch * Batch_duplicate(Batch * batch)
     if(batch == NULL)
         return NULL;
 
-    unsigned int i;
-
     Batch * MALLOC(dup, Batch, 1);
     dup->size = batch->size;
     dup->batch = duplicateArray(batch->batch, batch->size);

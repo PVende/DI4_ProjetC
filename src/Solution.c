@@ -42,3 +42,29 @@ int Solution_equals(Solution * s1, Solution * s2) {
 
     return 1;
 }
+
+void Solution_setSequence(Solution * solution, Sequence * sequence) {
+    if(solution != NULL) {
+        if(solution->sequence != NULL) {
+            Sequence_finalize(solution->sequence);
+            free(solution->sequence);
+            solution->sequence = NULL;
+        }
+
+        if(sequence != NULL)
+            solution->sequence = Sequence_duplicate(sequence);
+    }
+}
+
+void Solution_setBatchList(Solution * solution, BatchList * batchList) {
+    if(solution != NULL) {
+        if(solution->batchList != NULL) {
+            BatchList_finalize(solution->batchList);
+            free(solution->batchList);
+            solution->batchList = NULL;
+        }
+
+        if(batchList != NULL)
+            solution->batchList = BatchList_duplicate(batchList);
+    }
+}

@@ -99,6 +99,19 @@ int Instance_equals(Instance * i1, Instance * i2) {
     return 1;
 }
 
+void Instance_setSolution(Instance * instance, Solution * solution){
+    if(instance != NULL) {
+        if(instance->solution != NULL) {
+            Solution_finalize(instance->solution);
+            free(instance->solution);
+            instance->solution = NULL;
+        }
+
+        if(solution != NULL)
+            instance->solution = Solution_duplicate(solution);
+    }
+}
+
 void Instance_parseInstance(Instance * instance, char * inputFileName) {
     unsigned int i, j;
     FILE * inputFile;
@@ -148,10 +161,10 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
 
     unsigned int i, j, job;
     unsigned int * CALLOC(costJob, unsigned int, instance->nbJobs);
-    unsigned int ** CALLOC(costJobMachine, unsigned int *, instance->nbJobs);
+    unsigned int ** MALLOC(costJobMachine, unsigned int *, instance->nbJobs);
 
     for(i = 0; i < instance->nbJobs; i++)
-        CALLOC(costJobMachine[i], unsigned int, instance->nbMachine);
+        CALLOC(costJobMachine[i], unsigned int, instance->nbMachine);   //error
 
     for(i = 0; i < instance->nbJobs; i++) {
         job = instance->solution->sequence->sequence[i];
@@ -212,4 +225,86 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
     free(lag);
 
     return lagTotal;
+}
+
+void Instance_firstSolution(Instance * instance){
+    Instance * currentSolution = Instance_duplicate(instance);
+
+    unsigned int i, j, indexMin, min, infinity = 0;
+    infinity--;
+
+    Sequence * MALLOC(sequence, Sequence, 1);
+    Sequence_init(sequence);
+    Sequence_allocate(sequence, instance->nbJobs);
+
+    unsigned int * deliveryDatesCopy = duplicateArray(instance->deliveryDates, instance->nbJobs);
+
+    for(i = 0; i < instance->nbJobs; i++) {
+        min = infinity;
+
+        for(j = 0; j < instance->nbJobs; j++){
+            if(deliveryDatesCopy[j] < min) {
+                min = deliveryDatesCopy[j];
+                indexMin = j;
+            }
+        }
+
+        Sequence_add(sequence, indexMin);
+        deliveryDatesCopy[indexMin] = infinity;
+    }
+
+    free(deliveryDatesCopy);
+
+    unsigned int nbJobBatch = 1, evalCurrentSolution, evalBestSolution = infinity, counter;
+    Solution * MALLOC(solution, Solution, 1);
+
+    Batch * MALLOC(batch, Batch, 1);
+    BatchList * MALLOC(batchList, BatchList, 1);
+
+    while(nbJobBatch <= instance->nbJobs/2){
+        Solution_init(solution);
+        Solution_setSequence(solution, sequence);
+
+        i = 0;
+        BatchList_init(batchList);
+       while(i < instance->nbJobs) {
+            counter = 0;
+            Batch_init(batch);
+
+            while(counter < nbJobBatch && i < instance->nbJobs) {
+                Batch_addJob(batch, solution->sequence->sequence[i]);
+                i++;
+                counter++;
+            }
+
+            BatchList_addBatch(batchList, batch);
+            Batch_finalize(batch);
+
+        }
+
+        Solution_setBatchList(solution, batchList);
+        BatchList_finalize(batchList);
+
+        Instance_setSolution(currentSolution, solution);
+        Solution_finalize(solution);
+
+        evalCurrentSolution = Instance_eval(currentSolution, 0);
+
+        if(evalCurrentSolution < evalBestSolution) {
+            evalBestSolution = evalCurrentSolution;
+            Instance_setSolution(instance, currentSolution->solution);
+        }
+
+        nbJobBatch++;
+    }
+
+    Sequence_finalize(sequence);
+    free(sequence);
+
+    free(batch);
+    free(batchList);
+    free(solution);
+
+    Instance_finalize(currentSolution);
+    free(currentSolution);
 }
