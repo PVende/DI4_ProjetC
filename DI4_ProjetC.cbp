@@ -89,7 +89,6 @@
 		</Unit>
 		<Unit filename="tests/InstanceTests.c">
 			<Option compilerVar="CC" />
-			<Option target="Debug" />
 		</Unit>
 		<Unit filename="tests/InstanceTests.h">
 			<Option target="Debug" />

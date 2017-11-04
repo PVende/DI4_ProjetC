@@ -25,7 +25,7 @@ void InstanceTests_launchTests(void){
     custom_assert(instance.nbMachine == 2);
 
     custom_assert(instance.times[0][0] == 25);
-    custom_assert(instance.times[1][4] == 10);
+    custom_assert(instance.times[4][1] == 10);
     custom_assert(instance.deliveryDates[0] == 549);
     custom_assert(instance.deliveryDates[4] == 103);
     custom_assert(instance.distances[0][0] == 0);
@@ -34,6 +34,8 @@ void InstanceTests_launchTests(void){
     custom_assert(instance.solution == NULL);
 
     custom_assert(Instance_eval(&instance, 0) == 0);
+
+    Instance_firstSolution(&instance);
 
     Instance_finalize(&instance);
 }

@@ -22,4 +22,16 @@ void Solution_setBatchList(Solution * solution, BatchList * batchList);
 
 unsigned int * Solution_getBatchInfo(Solution * solution, unsigned int jobNumber);
 
+void Solution_swap_sequence(Solution * solution, unsigned int j1, unsigned int j2);
+void Solution_ebsr_sequence(Solution * solution, unsigned int job);
+void Solution_efsr_sequence(Solution * solution, unsigned int job);
+
+void Solution_swap_batchList(Solution * solution, unsigned int j1, unsigned int j2);
+void Solution_ebsr_batchList(Solution * solution, unsigned int job);
+void Solution_efsr_batchList(Solution * solution, unsigned int job);
+
+void Solution_swap_both(Solution * solution, unsigned int j1, unsigned int j2);
+void Solution_ebsr_both(Solution * solution, unsigned int job);
+void Solution_efsr_both(Solution * solution, unsigned int job);
+
 #endif
