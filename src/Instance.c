@@ -236,16 +236,31 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
 }
 
 void Instance_firstSolution(Instance * instance){
-    Instance * currentSolution = Instance_duplicate(instance);
+	Batch * batch; // Pourquoi des pointeurs et des mallocs ?
+	BatchList * batchList;
+	Solution * solution;
+	Instance * currentSolution;
+	Sequence * sequence;
+    unsigned int * deliveryDatesCopy;
+	unsigned int infinity = 0;
+    unsigned int i,
+				j,
+				indexMin = 0,
+				min,
+				nbJobBatch = 1,
+				evalCurrentSolution,
+				evalBestSolution = infinity,
+				counter;
 
-    unsigned int i, j, indexMin = 0, min, infinity = 0;
+    currentSolution = Instance_duplicate(instance);
+
     infinity--;
 
-    Sequence * MALLOC(sequence, Sequence, 1);
+    MALLOC(sequence, Sequence, 1);
     Sequence_init(sequence);
     Sequence_allocate(sequence, instance->nbJobs);
 
-    unsigned int * deliveryDatesCopy = duplicateArray(instance->deliveryDates, instance->nbJobs);
+    deliveryDatesCopy = duplicateArray(instance->deliveryDates, instance->nbJobs);
 
     for(i = 0; i < instance->nbJobs; i++) {
         min = infinity;
@@ -263,13 +278,9 @@ void Instance_firstSolution(Instance * instance){
 
     free(deliveryDatesCopy);
 
-    unsigned int nbJobBatch = 1, evalCurrentSolution, evalBestSolution = infinity, counter;
-    Solution * MALLOC(solution, Solution, 1);
-
-    Batch * MALLOC(batch, Batch, 1);
-    BatchList * MALLOC(batchList, BatchList, 1);
-
-    printf("\n");
+    MALLOC(solution, Solution, 1);
+    MALLOC(batch, Batch, 1);
+    MALLOC(batchList, BatchList, 1);
 
     while(nbJobBatch <= instance->nbJobs/2){
         Solution_init(solution);
@@ -289,7 +300,6 @@ void Instance_firstSolution(Instance * instance){
 
             BatchList_addBatch(batchList, batch);
             Batch_finalize(batch);
-
         }
 
         Solution_setBatchList(solution, batchList);
