@@ -68,7 +68,7 @@ unsigned int * duplicateArray(unsigned int * array, unsigned int size)
 
 	unsigned int i;
 	unsigned int * dup;
-	
+
 	MALLOC(dup, unsigned int, size);
 
 	for(i = 0; i < size; i++)
@@ -77,4 +77,9 @@ unsigned int * duplicateArray(unsigned int * array, unsigned int size)
 	}
 
 	return dup;
+}
+
+int max(int a, int b)
+{
+	return a > b ? a : b;
 }

@@ -195,25 +195,29 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
 
     unsigned int turnNb = 0, stop = instance->nbJobs, startLocation, lagTotal = 0, startTime = soonerStart[turnNb], endTime = 0, arrivedTime = 0;
     unsigned int * CALLOC(actualDelay, unsigned int, instance->nbJobs);
-    unsigned int * CALLOC(lag, unsigned int, instance->nbJobs);
+    // unsigned int * CALLOC(lag, unsigned int, instance->nbJobs);
     Batch * currentBatch;
 
+    unsigned int t = instance->solution->batchList->size;
+
     for(i = 0; i < instance->solution->batchList->size; i++) {
+		int jobLag;
         currentBatch = instance->solution->batchList->batches[i];
         startLocation = stop;
         startTime = (endTime > (unsigned int)soonerStart[turnNb]) ? endTime : (unsigned int)soonerStart[turnNb];
+
+        printf("i = %d\n", i);
 
         for(j = 0; j < currentBatch->size; j++) {
             arrivedTime = startTime + instance->distances[startLocation][currentBatch->batch[j]];
             actualDelay[currentBatch->batch[j]] = arrivedTime;
 
             if(!diversification)
-                lag[currentBatch->batch[j]] = (actualDelay[currentBatch->batch[j]] - instance->deliveryDates[currentBatch->batch[j]] > 0) ?
-                    actualDelay[currentBatch->batch[j]] - instance->deliveryDates[currentBatch->batch[j]] : 0;
+				jobLag = max(actualDelay[currentBatch->batch[j]] - instance->deliveryDates[currentBatch->batch[j]], 0);
             else
-                lag[currentBatch->batch[j]] = actualDelay[currentBatch->batch[j]];
+                jobLag = (int) actualDelay[currentBatch->batch[j]];
 
-            lagTotal += lag[currentBatch->batch[j]];
+            lagTotal += jobLag;
             startTime = arrivedTime;
             startLocation = currentBatch->batch[j];
         }
@@ -230,7 +234,7 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
     free(soonerStart);
 
     free(actualDelay);
-    free(lag);
+//    free(lag);
 
     return lagTotal;
 }
@@ -242,7 +246,7 @@ void Instance_firstSolution(Instance * instance){
 	Instance * currentSolution;
 	Sequence * sequence;
     unsigned int * deliveryDatesCopy;
-	unsigned int infinity = 0;
+	unsigned int infinity = -1;
     unsigned int i,
 				j,
 				indexMin = 0,
@@ -254,7 +258,6 @@ void Instance_firstSolution(Instance * instance){
 
     currentSolution = Instance_duplicate(instance);
 
-    infinity--;
 
     MALLOC(sequence, Sequence, 1);
     Sequence_init(sequence);
@@ -307,6 +310,8 @@ void Instance_firstSolution(Instance * instance){
 
         Instance_setSolution(currentSolution, solution);
         Solution_finalize(solution);
+
+        BatchList_debug(currentSolution->solution->batchList);
 
         evalCurrentSolution = Instance_eval(currentSolution, 0);
 

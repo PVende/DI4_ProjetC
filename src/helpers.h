@@ -37,4 +37,6 @@ void on_sigabrt(int signum);
 
 unsigned int * duplicateArray(unsigned int * array, unsigned int size);
 
+int max(int a, int b);
+
 #endif //DI4_PROJETC_HELPERS_H
