@@ -12,14 +12,6 @@
 
 #define NB_CHARS_TO_READ 256
 
-
-/** \brief Parse a config file and set the values of the config variable in parameter
- *
- * \param cfg Config* the config variable to set
- * \param filepath char* the path of the config file
- * \return void
- *
- */
 void Config_parseFile(Config * cfg, char * filepath)
 {
 	FILE * file;
@@ -34,6 +26,7 @@ void Config_parseFile(Config * cfg, char * filepath)
 	cfg->EFSR_BOTH = 0;
 	cfg->EFSR_SEQ = 0;
 	cfg->EFSR_BATCH = 0;
+	cfg->diversification = 0;
 
 	file = fopen(filepath, "r");
 
@@ -53,14 +46,6 @@ void Config_parseFile(Config * cfg, char * filepath)
 	}
 }
 
-
-/** \brief parse a line and update the config variable if necessary
- *
- * \param cfg Config* the config variable to set
- * \param line char* the line to parse
- * \return void
- *
- */
 void Config_parseLine(Config * cfg, char * line)
 {
 
@@ -104,15 +89,9 @@ void Config_parseLine(Config * cfg, char * line)
 	else if(strcmp(line, "EFSR_SEQ") == 0) cfg->EFSR_SEQ = intValue;
 	else if(strcmp(line, "EFSR_BATCH") == 0) cfg->EFSR_BATCH = intValue;
 	else if(strcmp(line, "EFSR_BOTH") == 0) cfg->EFSR_BOTH = intValue;
+	else if(strcmp(line, "diversification") == 0) cfg->EFSR_BOTH = intValue;
 }
 
-
-/** \brief Print a config to the console
- *
- * \param cfg Config* the config to print to the console
- * \return void
- *
- */
 void Config_debug(Config * cfg)
 {
 	printf("\n"DEBUG_SEPARATOR"CONFIG\n"DEBUG_SEPARATOR);
@@ -125,5 +104,6 @@ void Config_debug(Config * cfg)
     printf("EFSR_BOTH: %d\n", cfg->EFSR_BOTH);
     printf("EFSR_SEQ: %d\n", cfg->EFSR_SEQ);
     printf("EFSR_BATCH: %d\n", cfg->EFSR_BATCH);
+    printf("diversification: %d\n", cfg->EFSR_BATCH);
     printf(DEBUG_SEPARATOR);
 }

@@ -16,6 +16,7 @@ typedef struct {
     int EFSR_BOTH;
     int EFSR_SEQ;
     int EFSR_BATCH;
+    int diversification;
 } Config;
 
 /** \brief Parse a config file and set the values of the config variable in parameter
