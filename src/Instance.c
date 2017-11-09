@@ -213,7 +213,7 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
             actualDelay[currentBatch->batch[j]] = arrivedTime;
 
             if(!diversification)
-				jobLag = max(actualDelay[currentBatch->batch[j]] - instance->deliveryDates[currentBatch->batch[j]], 0);
+				jobLag = MAX(actualDelay[currentBatch->batch[j]] - instance->deliveryDates[currentBatch->batch[j]], 0);
             else
                 jobLag = (int) actualDelay[currentBatch->batch[j]];
 
