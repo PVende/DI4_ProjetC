@@ -68,3 +68,14 @@ void Solution_setBatchList(Solution * solution, BatchList * batchList) {
             solution->batchList = BatchList_duplicate(batchList);
     }
 }
+
+void Solution_debug(Solution * solution) {
+    printf("\n"DEBUG_SEPARATOR"SOLUTION\n"DEBUG_SEPARATOR);
+    if(solution != NULL) {
+        Sequence_debug(solution->sequence);
+        BatchList_debug(solution->batchList);
+    } else
+        printf("null\n");
+
+    printf(DEBUG_SEPARATOR);
+}

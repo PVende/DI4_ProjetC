@@ -41,11 +41,13 @@ void Instance_finalize(Instance * instance) {
 }
 
 Instance * Instance_duplicate(Instance * instance) {
+    unsigned int i;
+    Instance * dup;
+
     if(instance == NULL)
         return NULL;
 
-    unsigned int i;
-    Instance * MALLOC(dup, Instance, 1);
+    MALLOC(dup, Instance, 1);
 
     dup->nbJobs = instance->nbJobs;
     dup->nbMachine = instance->nbMachine;
@@ -128,7 +130,7 @@ void Instance_parseInstance(Instance * instance, char * inputFileName) {
     MALLOC(instance->times, unsigned int *, instance->nbJobs);
 
     for(i = 0; i < instance->nbJobs; i++)
-        MALLOC(instance->times[i], unsigned int, instance->nbMachine);
+        MALLOC(instance->times[i], unsigned int, instance->nbMachine);  //error
 
     for(i = 0; i < instance->nbMachine; i++) {
         for(j = 0; j < instance->nbJobs; j++)
@@ -157,15 +159,30 @@ void Instance_parseInstance(Instance * instance, char * inputFileName) {
 }
 
 unsigned int Instance_eval(Instance * instance, int diversification) {
+    unsigned int i,
+                j,
+                obj = 0,
+                nbTurn,
+                turnNb = 0,
+                stop,
+                startLocation,
+                lagTotal = 0,
+                startTime,
+                endTime = 0,
+                arrivedTime = 0;
+    unsigned int * costMachine,
+                   * actualDelay;
+    unsigned int ** costJobMachine;
+    int * soonerStart;
+
     if(instance == NULL)
         return 0;
 
     if(instance->solution == NULL)
         return 0;
 
-    unsigned int i, j, obj = 0;
-    unsigned int * CALLOC(costMachine, unsigned int, instance->nbJobs);
-    unsigned int ** MALLOC(costJobMachine, unsigned int *, instance->nbJobs);
+    CALLOC(costMachine, unsigned int, instance->nbJobs);
+    MALLOC(costJobMachine, unsigned int *, instance->nbJobs);
 
     for(i = 0; i < instance->nbJobs; i++)
         CALLOC(costJobMachine[i], unsigned int, instance->nbMachine);
@@ -176,37 +193,31 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
         costJobMachine[obj][0] = costMachine[0];
 
         for(j = 1; j < instance->nbMachine; j++) {
-            costMachine[j] = (costMachine[j - 1] > costMachine[j]) ? costMachine[j - 1] : costMachine[j];
-            costMachine[j] += instance->times[obj][j];
+            costMachine[j] = max(costMachine[j - 1], costMachine[j]) + instance->times[obj][j];
             costJobMachine[obj][j] = costMachine[j];
         }
     }
 
-    unsigned int nbTurn = instance->solution->batchList->size;
-    int * MALLOC(soonerStart, int, nbTurn);
+    nbTurn = instance->solution->batchList->size;
+    MALLOC(soonerStart, int, nbTurn);
 
     for(i = 0; i < nbTurn; i++) {
         soonerStart[i] = -1;
 
         for(j = 0; j < instance->solution->batchList->batches[i]->size; j++)
-            soonerStart[i] = ((int)costJobMachine[instance->solution->batchList->batches[i]->batch[j]][instance->nbMachine - 1] > soonerStart[i]) ?
-            (int)costJobMachine[instance->solution->batchList->batches[i]->batch[j]][instance->nbMachine - 1] : soonerStart[i];
+            soonerStart[i] = max(costJobMachine[instance->solution->batchList->batches[i]->batch[j]][instance->nbMachine - 1], soonerStart[i]);
     }
 
-    unsigned int turnNb = 0, stop = instance->nbJobs, startLocation, lagTotal = 0, startTime = soonerStart[turnNb], endTime = 0, arrivedTime = 0;
-    unsigned int * CALLOC(actualDelay, unsigned int, instance->nbJobs);
-    // unsigned int * CALLOC(lag, unsigned int, instance->nbJobs);
+    stop = instance->nbJobs;
+    startTime = soonerStart[turnNb];
+    CALLOC(actualDelay, unsigned int, instance->nbJobs);
     Batch * currentBatch;
-
-    unsigned int t = instance->solution->batchList->size;
+    int jobLag;
 
     for(i = 0; i < instance->solution->batchList->size; i++) {
-		int jobLag;
         currentBatch = instance->solution->batchList->batches[i];
         startLocation = stop;
-        startTime = (endTime > (unsigned int)soonerStart[turnNb]) ? endTime : (unsigned int)soonerStart[turnNb];
-
-        printf("i = %d\n", i);
+        startTime = max(endTime, soonerStart[turnNb]);
 
         for(j = 0; j < currentBatch->size; j++) {
             arrivedTime = startTime + instance->distances[startLocation][currentBatch->batch[j]];
@@ -234,17 +245,16 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
     free(soonerStart);
 
     free(actualDelay);
-//    free(lag);
 
     return lagTotal;
 }
 
 void Instance_firstSolution(Instance * instance){
-	Batch * batch; // Pourquoi des pointeurs et des mallocs ?
-	BatchList * batchList;
-	Solution * solution;
+	Batch batch;
+	BatchList batchList;
+	Solution solution;
 	Instance * currentSolution;
-	Sequence * sequence;
+	Sequence sequence;
     unsigned int * deliveryDatesCopy;
 	unsigned int infinity = -1;
     unsigned int i,
@@ -258,10 +268,8 @@ void Instance_firstSolution(Instance * instance){
 
     currentSolution = Instance_duplicate(instance);
 
-
-    MALLOC(sequence, Sequence, 1);
-    Sequence_init(sequence);
-    Sequence_allocate(sequence, instance->nbJobs);
+    Sequence_init(&sequence);
+    Sequence_allocate(&sequence, instance->nbJobs);
 
     deliveryDatesCopy = duplicateArray(instance->deliveryDates, instance->nbJobs);
 
@@ -275,43 +283,37 @@ void Instance_firstSolution(Instance * instance){
             }
         }
 
-        Sequence_add(sequence, indexMin);
+        Sequence_add(&sequence, indexMin);
         deliveryDatesCopy[indexMin] = infinity;
     }
 
     free(deliveryDatesCopy);
 
-    MALLOC(solution, Solution, 1);
-    MALLOC(batch, Batch, 1);
-    MALLOC(batchList, BatchList, 1);
-
     while(nbJobBatch <= instance->nbJobs/2){
-        Solution_init(solution);
-        Solution_setSequence(solution, sequence);
+        Solution_init(&solution);
+        Solution_setSequence(&solution, &sequence);
 
         i = 0;
-        BatchList_init(batchList);
+        BatchList_init(&batchList);
         while(i < instance->nbJobs) {
             counter = 0;
-            Batch_init(batch);
+            Batch_init(&batch);
 
             while(counter < nbJobBatch && i < instance->nbJobs) {
-                Batch_addJob(batch, solution->sequence->sequence[i]);
+                Batch_addJob(&batch, solution.sequence->sequence[i]);
                 i++;
                 counter++;
             }
 
-            BatchList_addBatch(batchList, batch);
-            Batch_finalize(batch);
+            BatchList_addBatch(&batchList, &batch);
+            Batch_finalize(&batch);
         }
 
-        Solution_setBatchList(solution, batchList);
-        BatchList_finalize(batchList);
+        Solution_setBatchList(&solution, &batchList);
+        BatchList_finalize(&batchList);
 
-        Instance_setSolution(currentSolution, solution);
-        Solution_finalize(solution);
-
-        BatchList_debug(currentSolution->solution->batchList);
+        Instance_setSolution(currentSolution, &solution);
+        Solution_finalize(&solution);
 
         evalCurrentSolution = Instance_eval(currentSolution, 0);
 
@@ -323,12 +325,7 @@ void Instance_firstSolution(Instance * instance){
         nbJobBatch++;
     }
 
-    Sequence_finalize(sequence);
-    free(sequence);
-
-    free(batch);
-    free(batchList);
-    free(solution);
+    Sequence_finalize(&sequence);
 
     Instance_finalize(currentSolution);
     free(currentSolution);
