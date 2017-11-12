@@ -193,7 +193,7 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
         costJobMachine[obj][0] = costMachine[0];
 
         for(j = 1; j < instance->nbMachine; j++) {
-            costMachine[j] = max(costMachine[j - 1], costMachine[j]) + instance->times[obj][j];
+            costMachine[j] = MAX(costMachine[j - 1], costMachine[j]) + instance->times[obj][j];
             costJobMachine[obj][j] = costMachine[j];
         }
     }
@@ -205,7 +205,7 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
         soonerStart[i] = -1;
 
         for(j = 0; j < instance->solution->batchList->batches[i]->size; j++)
-            soonerStart[i] = max(costJobMachine[instance->solution->batchList->batches[i]->batch[j]][instance->nbMachine - 1], soonerStart[i]);
+            soonerStart[i] = MAX((int)costJobMachine[instance->solution->batchList->batches[i]->batch[j]][instance->nbMachine - 1], (int)soonerStart[i]);
     }
 
     stop = instance->nbJobs;
@@ -217,7 +217,7 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
     for(i = 0; i < instance->solution->batchList->size; i++) {
         currentBatch = instance->solution->batchList->batches[i];
         startLocation = stop;
-        startTime = max(endTime, soonerStart[turnNb]);
+        startTime = MAX((int)endTime, (int)soonerStart[turnNb]);
 
         for(j = 0; j < currentBatch->size; j++) {
             arrivedTime = startTime + instance->distances[startLocation][currentBatch->batch[j]];

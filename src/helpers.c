@@ -78,8 +78,3 @@ unsigned int * duplicateArray(unsigned int * array, unsigned int size)
 
 	return dup;
 }
-
-int max(int a, int b)
-{
-	return a > b ? a : b;
-}

@@ -34,4 +34,6 @@ void Solution_swap_both(Solution * solution, unsigned int j1, unsigned int j2);
 void Solution_ebsr_both(Solution * solution, unsigned int job);
 void Solution_efsr_both(Solution * solution, unsigned int job);
 
+void Solution_debug(Solution * solution);
+
 #endif
