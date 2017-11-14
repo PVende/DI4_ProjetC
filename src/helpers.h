@@ -14,19 +14,31 @@
  * \param varname the name of the variable
  * \param type the type of each element
  * \param size the number of element to allocate
+ * \param msg the message to display in case of error
  * \def #define MALLOC(varname, type, size)
  * \code
  * // Alocating a 2D array of 5 columns of integers:
  * int ** 2DArray;
- * MALLOC(2DArray, int*, 5);
- * // Or even shorter:
- * int ** MALLOC(2DArray, int*, 5);
+ * MALLOC(2DArray, int*, 5, "error");
  * \endcode
  */
 #define MALLOC_M(varname, type, size, msg) {varname = (type*) malloc((size) * sizeof(type)); \
                                     if(varname == NULL) \
                                         fatalError(msg != NULL ? msg : "The macro Malloc failed");}
 
+
+/** \brief allocate a pointer with malloc() and check the value
+ *
+ * \param varname the name of the variable
+ * \param type the type of each element
+ * \param size the number of element to allocate
+ * \def #define MALLOC(varname, type, size)
+ * \code
+ * // Alocating a 2D array of 5 columns of integers:
+ * int ** 2DArray;
+ * MALLOC(2DArray, int*, 5);
+ * \endcode
+ */
 #define MALLOC(varname, type, size) MALLOC_M(varname, type, size, NULL)
 
 
@@ -35,21 +47,50 @@
  * \param varname the name of the variable
  * \param type the type of each element
  * \param size the number of element to allocate
+ * \param msg the message to display in case of error
  * \def #define CALLOC(varname, type, size)
  * \code
  * // Alocating a 2D array of 5 columns of integers:
  * int ** 2DArray;
- * CALLOC(2DArray, int*, 5);
- * // Or even shorter:
- * int ** CALLOC(2DArray, int*, 5);
+ * CALLOC_M(2DArray, int*, 5, "error");
  * \endcode
  */
 #define CALLOC_M(varname, type, size, msg) {varname = (type*) calloc(size, sizeof(type)); \
                                     if(varname == NULL && size != 0) \
                                         fatalError(msg != NULL ? msg : "The macro Calloc failed");}
 
+
+/** \brief allocate a pointer with calloc() and check the value
+ *
+ * \param varname the name of the variable
+ * \param type the type of each element
+ * \param size the number of element to allocate
+ * \param msg the message to display in case of error
+ * \def #define CALLOC(varname, type, size)
+ * \code
+ * // Alocating a 2D array of 5 columns of integers:
+ * int ** 2DArray;
+ * CALLOC(2DArray, int*, 5);
+ * \endcode
+ */
 #define CALLOC(varname, type, size) CALLOC_M(varname, type, size, NULL)
 
+
+/** \brief reallocate a pointer with realloc() and check the value
+ *
+ * \param varname the name of the variable
+ * \param type the type of each element
+ * \param size the number of element to allocate
+ * \param msg the message to display in case of error
+ * \def #define REALLOC(varname, type, size)
+ * \code
+ * // Realocating a 2D array of 5 columns of integers:
+ * REALLOC_M(2DArray, int*, 10, NULL);
+ * \endcode
+ */
+#define REALLOC_M(varname, type, size, msg) {varname = (type*) realloc(varname, (size) * sizeof(type)); \
+                                     if(varname == NULL && size != 0) \
+                                         fatalError(msg != NULL ? msg : "The macro Realloc failed");}
 
 /** \brief reallocate a pointer with realloc() and check the value
  *
@@ -62,10 +103,6 @@
  * REALLOC(2DArray, int*, 10);
  * \endcode
  */
-#define REALLOC_M(varname, type, size, msg) {varname = (type*) realloc(varname, (size) * sizeof(type)); \
-                                     if(varname == NULL && size != 0) \
-                                         fatalError(msg != NULL ? msg : "The macro Realloc failed");}
-
 #define REALLOC(varname, type, size) REALLOC_M(varname, type, size, NULL)
 
 #define DEBUG_SEPARATOR "============================================================\n"

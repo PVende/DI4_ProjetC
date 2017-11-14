@@ -17,14 +17,6 @@ void Sequence_finalize(Sequence * sequence) {
     sequence->sequence = NULL;
 }
 
-/** \brief Compare two sequences.
- *
- * \param s1 Sequence* the first sequence
- * \param s2 Sequence* the second sequence
- * \return int 1 if the sequences are equal, 0 otherwise. Two sequences are equals if they have the same size and the same values in the same order.
- * \note this function starts by checking if the addresses are equal.
- * \note if both sequences are NULL, it returns 1.
- */
 int Sequence_equals(Sequence * s1, Sequence * s2){
     unsigned int i;
 
