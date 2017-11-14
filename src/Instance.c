@@ -159,8 +159,7 @@ void Instance_parseInstance(Instance * instance, char * inputFileName) {
 }
 
 unsigned int Instance_eval(Instance * instance, int diversification) {
-    unsigned int i,
-                j,
+    unsigned int i, j,
                 obj = 0,
                 nbTurn,
                 turnNb = 0,
@@ -174,6 +173,9 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
                    * actualDelay;
     unsigned int ** costJobMachine;
     int * soonerStart;
+
+    Batch * currentBatch;
+    int jobLag;
 
     if(instance == NULL)
         return 0;
@@ -211,8 +213,6 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
     stop = instance->nbJobs;
     startTime = soonerStart[turnNb];
     CALLOC(actualDelay, unsigned int, instance->nbJobs);
-    Batch * currentBatch;
-    int jobLag;
 
     for(i = 0; i < instance->solution->batchList->size; i++) {
         currentBatch = instance->solution->batchList->batches[i];
@@ -223,8 +223,9 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
             arrivedTime = startTime + instance->distances[startLocation][currentBatch->batch[j]];
             actualDelay[currentBatch->batch[j]] = arrivedTime;
 
-            if(!diversification)
-				jobLag = MAX(actualDelay[currentBatch->batch[j]] - instance->deliveryDates[currentBatch->batch[j]], 0);
+            if(!diversification){
+				jobLag = MAX( actualDelay[currentBatch->batch[j]] - instance->deliveryDates[currentBatch->batch[j]], 0);
+            }
             else
                 jobLag = (int) actualDelay[currentBatch->batch[j]];
 

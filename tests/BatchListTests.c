@@ -227,7 +227,7 @@ void BatchListTests_testEbsrAndEfsrOnEmptyBatches(void)
 {
 	BatchList list;
 	Batch b1, b2, b3;
-	Batch * pb1, * pb2, * pb3;
+	Batch * pb1/*, * pb2*/, * pb3;
 
 	// -------------------------------------
 	// EBSR
@@ -240,7 +240,7 @@ void BatchListTests_testEbsrAndEfsrOnEmptyBatches(void)
 	BatchList_addBatch(&list, &b3);
 
 	pb1 = list.batches[0];
-	pb2 = list.batches[1];
+	//pb2 = list.batches[1];
 	pb3 = list.batches[2];
 
 	// BATCHES :
@@ -278,7 +278,7 @@ void BatchListTests_testEbsrAndEfsrOnEmptyBatches(void)
 	BatchList_addBatch(&list, &b2);
 	BatchList_addBatch(&list, &b3);
 	pb1 = list.batches[0];
-	pb2 = list.batches[1];
+	//pb2 = list.batches[1];
 	pb3 = list.batches[2];
 
 	// BATCHES :

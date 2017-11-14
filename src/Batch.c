@@ -31,10 +31,12 @@ void Batch_finalize(Batch * batch) {
  */
 Batch * Batch_duplicate(Batch * batch)
 {
+	Batch * dup;
+
     if(batch == NULL)
         return NULL;
 
-    Batch * MALLOC(dup, Batch, 1);
+    MALLOC(dup, Batch, 1);
     dup->size = batch->size;
     dup->batch = duplicateArray(batch->batch, batch->size);
 

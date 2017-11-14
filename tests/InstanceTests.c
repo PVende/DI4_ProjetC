@@ -37,7 +37,7 @@ void InstanceTests_launchTests(void){
 
     Instance_firstSolution(&instance);
 
-    printf("%d\n", Instance_eval(&instance, 0));
+    printf("%d", Instance_eval(&instance, 0));
 
     Instance_finalize(&instance);
 }

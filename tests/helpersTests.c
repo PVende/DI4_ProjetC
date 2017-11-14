@@ -79,12 +79,18 @@ void helpersTests_trim(void){
 void helpersTests_duplicateArray(void){
 	unsigned int stackArrayOfZeros[10] = {0};
 	unsigned int array[9] = {3, 4, 5, 6, 7, 8, 9, 1, 0};
-	unsigned int * CALLOC(heapArrayOfZeros, unsigned int, 10);
+	unsigned int * heapArrayOfZeros,
+				 * resultStackArrayOfZeros,
+				 * resultHeapArrayOfZeros,
+				 * resultSmallerStackArrayOfZeros,
+				 * resultArray;
 
-	unsigned int * resultStackArrayOfZeros = duplicateArray(stackArrayOfZeros, 10);
-	unsigned int * resultHeapArrayOfZeros = duplicateArray(heapArrayOfZeros, 10);
-	unsigned int * resultSmallerStackArrayOfZeros = duplicateArray(stackArrayOfZeros, 5);
-	unsigned int * resultArray = duplicateArray(array, 9);
+	CALLOC(heapArrayOfZeros, unsigned int, 10);
+
+	resultStackArrayOfZeros = duplicateArray(stackArrayOfZeros, 10);
+	resultHeapArrayOfZeros = duplicateArray(heapArrayOfZeros, 10);
+	resultSmallerStackArrayOfZeros = duplicateArray(stackArrayOfZeros, 5);
+	resultArray = duplicateArray(array, 9);
 
 	custom_assert(duplicateArray(NULL, 0) == NULL);
 	custom_assert(areArraysEqual(stackArrayOfZeros, 10, resultStackArrayOfZeros, 10) == 1);

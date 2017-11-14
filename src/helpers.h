@@ -23,9 +23,11 @@
  * int ** MALLOC(2DArray, int*, 5);
  * \endcode
  */
-#define MALLOC(varname, type, size) varname = (type*) malloc((size) * sizeof(type)); \
+#define MALLOC_M(varname, type, size, msg) {varname = (type*) malloc((size) * sizeof(type)); \
                                     if(varname == NULL) \
-                                        fatalError("The macro Malloc failed");
+                                        fatalError(msg != NULL ? msg : "The macro Malloc failed");}
+
+#define MALLOC(varname, type, size) MALLOC_M(varname, type, size, NULL)
 
 
 /** \brief allocate a pointer with calloc() and check the value
@@ -42,9 +44,11 @@
  * int ** CALLOC(2DArray, int*, 5);
  * \endcode
  */
-#define CALLOC(varname, type, size) varname = (type*) calloc(size, sizeof(type)); \
+#define CALLOC_M(varname, type, size, msg) {varname = (type*) calloc(size, sizeof(type)); \
                                     if(varname == NULL && size != 0) \
-                                        fatalError("The macro Calloc failed");
+                                        fatalError(msg != NULL ? msg : "The macro Calloc failed");}
+
+#define CALLOC(varname, type, size) CALLOC_M(varname, type, size, NULL)
 
 
 /** \brief reallocate a pointer with realloc() and check the value
@@ -58,9 +62,11 @@
  * REALLOC(2DArray, int*, 10);
  * \endcode
  */
-#define REALLOC(varname, type, size) varname = (type*) realloc(varname, (size) * sizeof(type)); \
+#define REALLOC_M(varname, type, size, msg) {varname = (type*) realloc(varname, (size) * sizeof(type)); \
                                      if(varname == NULL && size != 0) \
-                                         fatalError("The macro Realloc failed");
+                                         fatalError(msg != NULL ? msg : "The macro Realloc failed");}
+
+#define REALLOC(varname, type, size) REALLOC_M(varname, type, size, NULL)
 
 #define DEBUG_SEPARATOR "============================================================\n"
 
@@ -74,7 +80,7 @@
  * \def #define MAX(a, b)
  *
  */
-#define MAX(a, b) (a > b ? a : b)
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
 
 
 /** \brief Stop the program and display an error message to the output
