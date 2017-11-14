@@ -91,7 +91,7 @@ int Instance_equals(Instance * i1, Instance * i2) {
 
 	if(i1->distances != i2->distances)
 		for(i = 0; i < i1->nbJobs + 1; i++)
-			for(j = 0; j < i1->nbJobs + 1; i++)
+			for(j = 0; j < i1->nbJobs + 1; j++)
 				if(i1->distances[i][j] != i2->distances[i][j])
 					return 0;
 
