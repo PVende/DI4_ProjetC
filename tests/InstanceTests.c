@@ -7,6 +7,11 @@
 #define TEST_FILENAME "tests/unit_test_parse_instance.txt"
 
 void InstanceTests_launchTests(void){
+    InstanceTests_parserTests();
+    InstanceTests_testDuplication();
+}
+
+void InstanceTests_parserTests(void) {
     Instance instance;
 
     Instance_init(&instance);
@@ -35,9 +40,34 @@ void InstanceTests_launchTests(void){
 
     custom_assert(Instance_eval(&instance, 0) == 0);
 
+    Instance_finalize(&instance);
+}
+
+void InstanceTests_testDuplication(void) {
+    Instance instance,
+            * dup;
+    Instance_init(&instance);
+    Instance_parseInstance(&instance, TEST_FILENAME);
     Instance_firstSolution(&instance);
 
-    printf("%d", Instance_eval(&instance, 0));
+    dup = Instance_duplicate(&instance);
+    custom_assert(Instance_equals(dup, &instance) == 1);
+
+    Instance_setSolution(&instance, NULL);
+    custom_assert(Instance_equals(dup, &instance) == 0);
+
+    Instance_finalize(&instance);
+    Instance_finalize(dup);
+    free(dup);
+}
+
+void InstanceTests_firstSolutionTests(void) {
+    Instance instance;
+    Instance_init(&instance);
+    Instance_parseInstance(&instance, TEST_FILENAME);
+    Instance_firstSolution(&instance);
+
+    custom_assert(Instance_eval(&instance, 0) == 125);
 
     Instance_finalize(&instance);
 }

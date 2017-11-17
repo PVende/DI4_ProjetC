@@ -75,7 +75,7 @@ unsigned int * Solution_getBatchInfo(Solution * solution, unsigned int jobNumber
     unsigned int i, totalJob = 0;
     unsigned int * infos = NULL;
 
-	if(solution != NULL && solution->batchList != NULL && solution->batchList->size > jobNumber) {
+	if(solution != NULL && solution->batchList != NULL && solution->sequence->size > jobNumber) {
 		for(i = 0; i < solution->sequence->size && totalJob + solution->batchList->batches[i]->size < jobNumber + 1; i++)
 			totalJob += solution->batchList->batches[i]->size;
 		MALLOC(infos, unsigned int, 2);
