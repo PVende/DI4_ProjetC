@@ -8,6 +8,7 @@
 
 void InstanceTests_launchTests(void){
     InstanceTests_parserTests();
+    InstanceTests_firstSolutionTests();
     InstanceTests_testDuplication();
 }
 

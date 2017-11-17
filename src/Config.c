@@ -26,7 +26,8 @@ void Config_parseFile(Config * cfg, char * filepath)
 	cfg->EFSR_BOTH = 0;
 	cfg->EFSR_SEQ = 0;
 	cfg->EFSR_BATCH = 0;
-	cfg->diversification = 0;
+	cfg->FLAF_2OPT = 0;
+	cfg->DIVERSIFICATION = 0;
 
 	file = fopen(filepath, "r");
 
@@ -89,7 +90,8 @@ void Config_parseLine(Config * cfg, char * line)
 	else if(strcmp(line, "EFSR_SEQ") == 0) cfg->EFSR_SEQ = intValue;
 	else if(strcmp(line, "EFSR_BATCH") == 0) cfg->EFSR_BATCH = intValue;
 	else if(strcmp(line, "EFSR_BOTH") == 0) cfg->EFSR_BOTH = intValue;
-	else if(strcmp(line, "diversification") == 0) cfg->EFSR_BOTH = intValue;
+	else if(strcmp(line, "FLAG_2OPT") == 0) cfg->FLAG_2OPT = intValue;
+	else if(strcmp(line, "DIVERSIFICATION") == 0) cfg->DIVERSIFICATION = intValue;
 }
 
 void Config_debug(Config * cfg)

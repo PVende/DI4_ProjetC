@@ -2,6 +2,7 @@
 #define INSTANCE_H_INCLUDED
 
 #include "Solution.h"
+#include "Config.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -16,6 +17,7 @@ typedef struct _Instance {
     unsigned int ** times;
     unsigned int ** distances;
     unsigned int * deliveryDates;
+    Config * config;
 
 } Instance;
 

@@ -9,6 +9,7 @@
 #include "helpers.h"
 #include "Config.h"
 #include "BatchList.h"
+#include "Instance.h"
 
 #ifndef NDEBUG
 	#include "../tests/TestsRunner.h"
@@ -23,13 +24,20 @@ int main(void)
 
 	#ifndef NDEBUG
 
-	TestRunner_runTests();
+//	TestRunner_runTests();
 
 	#endif
 	// Config cfg;
 
 	// Config_parseFile(&cfg, CONFIG_FILENAME);
 	// Config_debug(&cfg);
+
+    Instance instance;
+    Instance_init(&instance);
+    Instance_parseInstance(&instance, "test_files/input.txt");
+    Instance_firstSolution(&instance);
+
+    Solution_debug(instance.solution);
 
     return 0;
 }

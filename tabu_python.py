@@ -13,7 +13,7 @@ import copy
 # Lecture du fichier
 # ########################################################
 
-mesdonnees = open("input.txt", "r")
+mesdonnees = open("test_files/input.txt", "r")
 ligne1 = mesdonnees.readline()
 indice = 0
 j = 0
