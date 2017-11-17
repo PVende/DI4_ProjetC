@@ -38,6 +38,15 @@ void Config_parseFile(Config * cfg, char * filepath);
  */
 void Config_parseLine(Config * cfg, char * line);
 
+/** \brief Compares to configs
+ *
+ * \param c1 Config* the first config
+ * \param c2 Config* the second config
+ * \return int 1 if they are equal, 0 otherwise
+ *
+ */
+int Config_equals(Config * c1, Config * c2);
+
 /** \brief Print a config to the console
  *
  * \param cfg Config* the config to print to the console

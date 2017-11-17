@@ -5,6 +5,7 @@
 #include <assert.h>
 
 #define TEST_FILENAME "tests/unit_test_parse_instance.txt"
+#define TEST_FILENAME_CONFIG "tests/unit_test_config.txt"
 
 void InstanceTests_launchTests(void){
     InstanceTests_parserTests();
@@ -25,7 +26,7 @@ void InstanceTests_parserTests(void) {
     custom_assert(instance.distances == NULL);
     custom_assert(instance.solution == NULL);
 
-    Instance_parseInstance(&instance, TEST_FILENAME);
+    Instance_parseInstance(&instance, TEST_FILENAME, TEST_FILENAME_CONFIG);
 
     custom_assert(instance.nbJobs == 5);
     custom_assert(instance.nbMachine == 2);
@@ -39,7 +40,7 @@ void InstanceTests_parserTests(void) {
 
     custom_assert(instance.solution == NULL);
 
-    custom_assert(Instance_eval(&instance, 0) == 0);
+    custom_assert(Instance_eval(&instance) == 0);
 
     Instance_finalize(&instance);
 }
@@ -48,7 +49,7 @@ void InstanceTests_testDuplication(void) {
     Instance instance,
             * dup;
     Instance_init(&instance);
-    Instance_parseInstance(&instance, TEST_FILENAME);
+    Instance_parseInstance(&instance, TEST_FILENAME, TEST_FILENAME_CONFIG);
     Instance_firstSolution(&instance);
 
     dup = Instance_duplicate(&instance);
@@ -65,10 +66,10 @@ void InstanceTests_testDuplication(void) {
 void InstanceTests_firstSolutionTests(void) {
     Instance instance;
     Instance_init(&instance);
-    Instance_parseInstance(&instance, TEST_FILENAME);
+    Instance_parseInstance(&instance, TEST_FILENAME, TEST_FILENAME_CONFIG);
     Instance_firstSolution(&instance);
 
-    custom_assert(Instance_eval(&instance, 0) == 125);
+    custom_assert(Instance_eval(&instance) == 125);
 
     Instance_finalize(&instance);
 }

@@ -26,7 +26,7 @@ void Config_parseFile(Config * cfg, char * filepath)
 	cfg->EFSR_BOTH = 0;
 	cfg->EFSR_SEQ = 0;
 	cfg->EFSR_BATCH = 0;
-	cfg->FLAF_2OPT = 0;
+	cfg->FLAG_2OPT = 0;
 	cfg->DIVERSIFICATION = 0;
 
 	file = fopen(filepath, "r");
@@ -94,6 +94,33 @@ void Config_parseLine(Config * cfg, char * line)
 	else if(strcmp(line, "DIVERSIFICATION") == 0) cfg->DIVERSIFICATION = intValue;
 }
 
+int Config_equals(Config * c1, Config * c2) {
+    if(c1->SWAP_SEQ != c2->SWAP_SEQ)
+        return 0;
+    if(c1->SWAP_BATCH != c2->SWAP_BATCH)
+        return 0;
+    if(c1->SWAP_BOTH != c2->SWAP_BOTH)
+        return 0;
+    if(c1->EBSR_BOTH != c2->EBSR_BOTH)
+        return 0;
+    if(c1->EBSR_SEQ != c2->EBSR_SEQ)
+        return 0;
+    if(c1->EBSR_BATCH != c2->EBSR_BATCH)
+        return 0;
+    if(c1->EFSR_BOTH != c2->EFSR_BOTH)
+        return 0;
+    if(c1->EFSR_SEQ != c2->EFSR_SEQ)
+        return 0;
+    if(c1->EFSR_BATCH != c2->EFSR_BATCH)
+        return 0;
+    if(c1->FLAG_2OPT != c2->FLAG_2OPT)
+        return 0;
+    if(c1->DIVERSIFICATION != c2->DIVERSIFICATION)
+        return 0;
+
+    return 1;
+}
+
 void Config_debug(Config * cfg)
 {
 	printf("\n"DEBUG_SEPARATOR"CONFIG\n"DEBUG_SEPARATOR);
@@ -106,6 +133,7 @@ void Config_debug(Config * cfg)
     printf("EFSR_BOTH: %d\n", cfg->EFSR_BOTH);
     printf("EFSR_SEQ: %d\n", cfg->EFSR_SEQ);
     printf("EFSR_BATCH: %d\n", cfg->EFSR_BATCH);
-    printf("diversification: %d\n", cfg->EFSR_BATCH);
+    printf("FLAG_2OPT: %d\n", cfg->FLAG_2OPT);
+    printf("diversification: %d\n", cfg->DIVERSIFICATION);
     printf(DEBUG_SEPARATOR);
 }

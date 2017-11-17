@@ -54,7 +54,7 @@ Instance * Instance_duplicate(Instance * instance);
  */
 int Instance_equals(Instance * i1, Instance * i2);
 
-/** \brief Se the solution of an instance
+/** \brief Set the solution of an instance
  * \warning The user should always use this function to set the solution of an instance
  *
  * \param instance Instance* the target instance
@@ -71,7 +71,7 @@ void Instance_setSolution(Instance * instance, Solution * solution);
  * \return void
  *
  */
-void Instance_parseInstance(Instance * instance, char * inputFileName);
+void Instance_parseInstance(Instance * instance, char * inputFileName, char * cfgFile);
 
 /** \brief Objective function, used to evaluate a solution
  *
@@ -80,7 +80,7 @@ void Instance_parseInstance(Instance * instance, char * inputFileName);
  * \return unsigned int the value of the objective function for this solution
  *
  */
-unsigned int Instance_eval(Instance * instance, int diversification);
+unsigned int Instance_eval(Instance * instance);
 
 /** \brief Create the first solution of the program
  *

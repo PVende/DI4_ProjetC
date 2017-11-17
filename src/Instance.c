@@ -7,6 +7,7 @@ void Instance_init(Instance * instance) {
     instance->times = NULL;
     instance->distances = NULL;
     instance->deliveryDates = NULL;
+    instance->config = NULL;
 
 }
 
@@ -38,6 +39,8 @@ void Instance_finalize(Instance * instance) {
         instance->deliveryDates = NULL;
     }
 
+    free(instance->config);
+
 }
 
 Instance * Instance_duplicate(Instance * instance) {
@@ -63,6 +66,8 @@ Instance * Instance_duplicate(Instance * instance) {
         dup->times[i] = duplicateArray(instance->times[i], instance->nbMachine);
 
     dup->solution = Solution_duplicate(instance->solution);
+
+    *dup->config = *instance->config;
 
     return dup;
 }
@@ -98,6 +103,9 @@ int Instance_equals(Instance * i1, Instance * i2) {
     if(Solution_equals(i1->solution, i2->solution) == 0)
         return 0;
 
+    if(Config_equals(i1->config, i2->config))
+        return 0;
+
     return 1;
 }
 
@@ -114,7 +122,7 @@ void Instance_setSolution(Instance * instance, Solution * solution){
     }
 }
 
-void Instance_parseInstance(Instance * instance, char * inputFileName) {
+void Instance_parseInstance(Instance * instance, char * inputFileName, char * cfgFile) {
     unsigned int i, j;
     FILE * inputFile;
 
@@ -154,11 +162,14 @@ void Instance_parseInstance(Instance * instance, char * inputFileName) {
             fatalError("error read file");
     }
 
+    MALLOC(instance->config, Config, 1);
+    Config_parseFile(instance->config, cfgFile);
+
     if(fclose(inputFile) != 0)
        fatalError("error close input file");
 }
 
-unsigned int Instance_eval(Instance * instance, int diversification) {
+unsigned int Instance_eval(Instance * instance) {
     unsigned int i, j,
                 obj = 0,
                 nbTurn,
@@ -223,7 +234,7 @@ unsigned int Instance_eval(Instance * instance, int diversification) {
             arrivedTime = startTime + instance->distances[startLocation][currentBatch->batch[j]];
             actualDelay[currentBatch->batch[j]] = arrivedTime;
 
-            if(!diversification){
+            if(!instance->config->DIVERSIFICATION){
 				jobLag = MAX((int) (actualDelay[currentBatch->batch[j]] - instance->deliveryDates[currentBatch->batch[j]]), 0);
             }
             else
@@ -316,7 +327,7 @@ void Instance_firstSolution(Instance * instance){
         Instance_setSolution(currentSolution, &solution);
         Solution_finalize(&solution);
 
-        evalCurrentSolution = Instance_eval(currentSolution, 0);
+        evalCurrentSolution = Instance_eval(currentSolution);
 
         if(evalCurrentSolution < evalBestSolution) {
             evalBestSolution = evalCurrentSolution;
@@ -324,6 +335,25 @@ void Instance_firstSolution(Instance * instance){
         }
 
         nbJobBatch++;
+    }
+
+    if(instance->config->FLAG_2OPT) {
+        evalBestSolution = Instance_eval(instance);
+        Solution_init(&solution);
+
+        for(i = 0; i < instance->nbJobs - 1; i++) {
+            solution = *instance->solution;
+            Solution_swap_both(&solution, i, i+1);
+            Instance_setSolution(currentSolution, &solution);
+            evalCurrentSolution = Instance_eval(currentSolution);
+
+            if(evalCurrentSolution < evalBestSolution) {
+                evalBestSolution = evalCurrentSolution;
+                Instance_setSolution(instance, currentSolution->solution);
+            }
+        }
+
+        Solution_finalize(&solution);
     }
 
     Sequence_finalize(&sequence);

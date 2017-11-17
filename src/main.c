@@ -34,7 +34,7 @@ int main(void)
 
     Instance instance;
     Instance_init(&instance);
-    Instance_parseInstance(&instance, "test_files/input.txt");
+    Instance_parseInstance(&instance, "test_files/input.txt", "cofnig.txt");
     Instance_firstSolution(&instance);
 
     Solution_debug(instance.solution);
