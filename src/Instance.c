@@ -67,7 +67,7 @@ Instance * Instance_duplicate(Instance * instance) {
 
     dup->solution = Solution_duplicate(instance->solution);
 
-    *dup->config = *instance->config;
+    dup->config = Config_duplicate(instance->config);
 
     return dup;
 }
@@ -103,7 +103,7 @@ int Instance_equals(Instance * i1, Instance * i2) {
     if(Solution_equals(i1->solution, i2->solution) == 0)
         return 0;
 
-    if(Config_equals(i1->config, i2->config))
+    if(Config_equals(i1->config, i2->config) == 0)
         return 0;
 
     return 1;
@@ -342,7 +342,7 @@ void Instance_firstSolution(Instance * instance){
         Solution_init(&solution);
 
         for(i = 0; i < instance->nbJobs - 1; i++) {
-            solution = *instance->solution;
+            solution = *Solution_duplicate(instance->solution);
             Solution_swap_both(&solution, i, i+1);
             Instance_setSolution(currentSolution, &solution);
             evalCurrentSolution = Instance_eval(currentSolution);
@@ -351,9 +351,9 @@ void Instance_firstSolution(Instance * instance){
                 evalBestSolution = evalCurrentSolution;
                 Instance_setSolution(instance, currentSolution->solution);
             }
-        }
 
-        Solution_finalize(&solution);
+            Solution_finalize(&solution);
+        }
     }
 
     Sequence_finalize(&sequence);

@@ -94,6 +94,25 @@ void Config_parseLine(Config * cfg, char * line)
 	else if(strcmp(line, "DIVERSIFICATION") == 0) cfg->DIVERSIFICATION = intValue;
 }
 
+Config * Config_duplicate(Config * config) {
+    Config * dup;
+    MALLOC(dup, Config, 1);
+
+    dup->SWAP_SEQ = config->SWAP_SEQ;
+    dup->SWAP_BATCH = config->SWAP_BATCH;
+    dup->SWAP_BOTH = config->SWAP_BOTH;
+    dup->EBSR_BOTH = config->EBSR_BOTH;
+    dup->EBSR_SEQ = config->EBSR_SEQ;
+    dup->EBSR_BATCH = config->EBSR_BATCH;
+    dup->EFSR_BOTH = config->EFSR_BOTH;
+    dup->EFSR_SEQ = config->EFSR_SEQ;
+    dup->EFSR_BATCH = config->EFSR_BATCH;
+    dup->FLAG_2OPT = config->FLAG_2OPT;
+    dup->DIVERSIFICATION = config->DIVERSIFICATION;
+
+    return dup;
+}
+
 int Config_equals(Config * c1, Config * c2) {
     if(c1->SWAP_SEQ != c2->SWAP_SEQ)
         return 0;

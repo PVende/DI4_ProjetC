@@ -24,7 +24,7 @@ int main(void)
 
 	#ifndef NDEBUG
 
-//	TestRunner_runTests();
+	TestRunner_runTests();
 
 	#endif
 	// Config cfg;
@@ -32,12 +32,13 @@ int main(void)
 	// Config_parseFile(&cfg, CONFIG_FILENAME);
 	// Config_debug(&cfg);
 
-    Instance instance;
+    /*Instance instance;
     Instance_init(&instance);
-    Instance_parseInstance(&instance, "test_files/input.txt", "cofnig.txt");
+    Instance_parseInstance(&instance, "test_files/input.txt", "configs.txt");
     Instance_firstSolution(&instance);
 
     Solution_debug(instance.solution);
+    printf("%d", Instance_eval(&instance));*/
 
     return 0;
 }

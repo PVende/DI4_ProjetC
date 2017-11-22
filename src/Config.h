@@ -38,6 +38,14 @@ void Config_parseFile(Config * cfg, char * filepath);
  */
 void Config_parseLine(Config * cfg, char * line);
 
+/** \brief Duplicate a config
+ *
+ * \param config Config* the config to duplicate
+ * \return Config* the created config, which is a copy of the parameter
+ *
+ */
+Config * Config_duplicate(Config * config);
+
 /** \brief Compares to configs
  *
  * \param c1 Config* the first config
