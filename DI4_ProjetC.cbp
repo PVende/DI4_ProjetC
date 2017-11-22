@@ -59,6 +59,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/Solution.h" />
+		<Unit filename="src/TabuList.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/TabuList.h" />
 		<Unit filename="src/helpers.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -107,6 +111,10 @@
 		<Unit filename="tests/SolutionTests.h">
 			<Option target="Debug" />
 		</Unit>
+		<Unit filename="tests/TabuListTests.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tests/TabuListTests.h" />
 		<Unit filename="tests/TestsRunner.c">
 			<Option compilerVar="CC" />
 			<Option target="Debug" />
