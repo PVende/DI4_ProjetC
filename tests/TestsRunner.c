@@ -9,6 +9,7 @@
 #include "BatchTests.h"
 #include "InstanceTests.h"
 #include "helpersTests.h"
+#include "TabuListTests.h"
 
 void TestRunner_runTests(void)
 {
@@ -22,6 +23,10 @@ void TestRunner_runTests(void)
 
 	printf("Testing Config");
 	ConfigTests_launchTests();
+	printf(" OK\n");
+
+	printf("Testing TabuList");
+	TabuListTests_launchTests();
 	printf(" OK\n");
 
 	printf("Testing Batch");
