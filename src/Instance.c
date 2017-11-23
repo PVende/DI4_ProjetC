@@ -169,37 +169,11 @@ void Instance_parseInstance(Instance * instance, char * inputFileName, char * cf
        fatalError("error close input file");
 }
 
-void Instance_writeResults(Instance * instance, char * outputFileName, unsigned int executionTime) {
-    FILE * outputFile;
-
-    if((inputFile = fopen(inputFileName, "w")) == NULL)
-       fatalError("error open input file");
-
-    if(instance != NULL) {
-        if((fprintf(outputFile, "%d\t", Instance_eval(instance))) != 1)
-            fatalError("error write file");
-
-        if((fprintf(outputFile, "%d\t", executionTime)) != 1)
-            fatalError("error write file");
-
-        /*
-        solution_writeResults(FILE*, solution)
-        sequence_writeResults(FILE*, sequence)
-        fprintf(file, "(%d", sequence[0])
-        for(i = 1; i < sequence->size; i++)
-            fprintf(file, ", %d", sequence[i])
-        fprintf(file, ") ",)
-        batchlist_writeResults(FILE*, batchlist)
-        fprintf(file, "[",)
-        batch_writeResults(FILE*, batch)
-        fprintf(file, "(%d", batch[0])
-        for(i = 1; i < batch->size; i++)
-            fprintf(file, ", %d", batch[i])
-        fprintf(file, ") ")
-        fprintf(file, "]",)
-
-        */
-    }
+void Instance_writeInstance(Instance * instance, FILE * file) {
+    if(instance != NULL)
+        Solution_writeSolution(instance->solution, file);
+    else
+        fprintf(file, "null");
 }
 
 unsigned int Instance_eval(Instance * instance) {

@@ -36,6 +36,23 @@ int Sequence_equals(Sequence * s1, Sequence * s2){
     return 1;
 }
 
+void Sequence_writeSequence(Sequence * sequence, FILE * file) {
+    unsigned int i;
+
+    fprintf(file, "(");
+
+    if(sequence != NULL) {
+        fprintf(file, "%d", sequence->sequence[0]);
+
+        for(i = 1; i < sequence->size; i++)
+            fprintf(file, ", %d", sequence->sequence[i]);
+
+    } else
+        fprintf(file, "null");
+
+    fprintf(file, ")");
+}
+
 Sequence * Sequence_duplicate(Sequence * sequence){
     Sequence *dup;
     unsigned int i;

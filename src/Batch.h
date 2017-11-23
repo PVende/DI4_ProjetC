@@ -44,6 +44,8 @@ Batch * Batch_duplicate(Batch * batch);
  */
 int Batch_equals(Batch * b1, Batch * b2);
 
+void Batch_writeBatch(Batch * batch, FILE * file);
+
 /** \brief Add a job to a batch
  *
  * \param batch Batch* the target batch

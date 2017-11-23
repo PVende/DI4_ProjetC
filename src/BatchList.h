@@ -43,6 +43,8 @@ BatchList * BatchList_duplicate(BatchList * list);
  */
 int BatchList_equals(BatchList * l1, BatchList * l2);
 
+void BatchList_writeBatchList(BatchList * list, FILE * file);
+
 /** \brief add to a batchlist
  *
  * \param list BatchList* the target list

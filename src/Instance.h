@@ -73,7 +73,7 @@ void Instance_setSolution(Instance * instance, Solution * solution);
  */
 void Instance_parseInstance(Instance * instance, char * inputFileName, char * cfgFile);
 
-void Instance_writeResults(Instance * instance, char * outputFileName, unsigned int executionTime);
+void Instance_writeInstance(Instance * instance, FILE * file);
 
 /** \brief Objective function, used to evaluate a solution
  *

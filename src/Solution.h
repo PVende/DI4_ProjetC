@@ -17,6 +17,8 @@ Solution * Solution_duplicate(Solution * solution);
 
 int Solution_equals(Solution * s1, Solution * s2);
 
+void Solution_writeSolution(Solution * solution, FILE * file);
+
 void Solution_setSequence(Solution * solution, Sequence * sequence);
 void Solution_setBatchList(Solution * solution, BatchList * batchList);
 

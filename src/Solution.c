@@ -45,6 +45,19 @@ int Solution_equals(Solution * s1, Solution * s2) {
     return 1;
 }
 
+void Solution_writeSolution(Solution * solution, FILE * file) {
+    fprintf(file, "[ ");
+
+    if(solution != NULL) {
+        Sequence_writeSequence(solution->sequence, file);
+        fprintf(file, ", ");
+        BatchList_writeBatchList(solution->batchList, file);
+    } else
+        fprintf(file, "null");
+
+    fprintf(file, " ]");
+}
+
 void Solution_setSequence(Solution * solution, Sequence * sequence) {
     if(solution != NULL) {
         if(solution->sequence != NULL) {

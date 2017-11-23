@@ -18,6 +18,7 @@
 #endif
 
 #define INPUT_FILENAME "test_files/input.txt"
+#define OUTPUT_FILENAME "test_files/output.txt"
 #define CONFIG_FILENAME "configs.txt"
 
 
@@ -44,6 +45,7 @@ int main(void)
                 endTime;
 	TabuList tabu;
 	Instance instance;
+	FILE * outputFile;
 
 	TabuList_init(&tabu);
 	TabuList_setSize(&tabu, tabuListSize);
@@ -69,6 +71,8 @@ int main(void)
 	srand(time(NULL));
 	startTime = clock();
 
+	Instance_firstSolution(&instance);
+
 	while(cpuTime/CLOCKS_PER_SEC < timeLimit && nbIteration <= nbMaxIteration) {
 
 
@@ -76,6 +80,20 @@ int main(void)
         cpuTime = startTime - endTime;
         nbIteration++;
 	}
+
+    if((outputFile = fopen(OUTPUT_FILENAME, "w")) == NULL)
+        fatalError("error open output file");
+
+    if((fprintf(outputFile, "%d\t", Instance_eval(&instance))) == 0)
+        fatalError("error write file");
+
+    if((fprintf(outputFile, "%d\t", cpuTime/CLOCKS_PER_SEC)) == 0)
+        fatalError("error write file");
+
+    Instance_writeInstance(&instance, outputFile);
+
+    if(fclose(outputFile) != 0)
+       fatalError("error close output file");
 
     return 0;
 }
