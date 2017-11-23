@@ -18,6 +18,8 @@ typedef struct {
     int EFSR_BATCH;
     int FLAG_2OPT;
     int DIVERSIFICATION;
+    int FLAG_FIRST_IMPROVE;
+    int LOGICAL_TABU;
 } Config;
 
 /** \brief Parse a config file and set the values of the config variable in parameter

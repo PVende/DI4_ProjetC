@@ -28,6 +28,8 @@ void Config_parseFile(Config * cfg, char * filepath)
 	cfg->EFSR_BATCH = 0;
 	cfg->FLAG_2OPT = 0;
 	cfg->DIVERSIFICATION = 0;
+	cfg->FLAG_FIRST_IMPROVE = 0;
+	cfg->LOGICAL_TABU = 0;
 
 	file = fopen(filepath, "r");
 
@@ -92,6 +94,8 @@ void Config_parseLine(Config * cfg, char * line)
 	else if(strcmp(line, "EFSR_BOTH") == 0) cfg->EFSR_BOTH = intValue;
 	else if(strcmp(line, "FLAG_2OPT") == 0) cfg->FLAG_2OPT = intValue;
 	else if(strcmp(line, "DIVERSIFICATION") == 0) cfg->DIVERSIFICATION = intValue;
+	else if(strcmp(line, "FLAG_FIRST_IMPROVE") == 0) cfg->FLAG_FIRST_IMPROVE = intValue;
+	else if(strcmp(line, "LOGICAL_TABU") == 0) cfg->LOGICAL_TABU = intValue;
 }
 
 Config * Config_duplicate(Config * config) {
@@ -109,6 +113,8 @@ Config * Config_duplicate(Config * config) {
     dup->EFSR_BATCH = config->EFSR_BATCH;
     dup->FLAG_2OPT = config->FLAG_2OPT;
     dup->DIVERSIFICATION = config->DIVERSIFICATION;
+    dup->FLAG_FIRST_IMPROVE = config->FLAG_FIRST_IMPROVE;
+    dup->LOGICAL_TABU = config->LOGICAL_TABU;
 
     return dup;
 }
@@ -136,6 +142,10 @@ int Config_equals(Config * c1, Config * c2) {
         return 0;
     if(c1->DIVERSIFICATION != c2->DIVERSIFICATION)
         return 0;
+    if(c1->FLAG_FIRST_IMPROVE != c2->FLAG_FIRST_IMPROVE)
+        return 0;
+    if(c1->LOGICAL_TABU != c2->LOGICAL_TABU)
+        return 0;
 
     return 1;
 }
@@ -154,5 +164,7 @@ void Config_debug(Config * cfg)
     printf("EFSR_BATCH: %d\n", cfg->EFSR_BATCH);
     printf("FLAG_2OPT: %d\n", cfg->FLAG_2OPT);
     printf("diversification: %d\n", cfg->DIVERSIFICATION);
+    printf("FLAG_FIRST_IMPROVE: %d\n", cfg->FLAG_FIRST_IMPROVE);
+    printf("LOGICAL_TABU: %d\n", cfg->LOGICAL_TABU);
     printf(DEBUG_SEPARATOR);
 }

@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <signal.h>
 #include <assert.h>
+#include <time.h>
 
 #include "Batch.h"
 #include "Sequence.h"
@@ -10,11 +11,13 @@
 #include "Config.h"
 #include "BatchList.h"
 #include "Instance.h"
+#include "TabuList.h"
 
 #ifndef NDEBUG
 	#include "../tests/TestsRunner.h"
 #endif
 
+#define INPUT_FILENAME "test_files/input.txt"
 #define CONFIG_FILENAME "configs.txt"
 
 
@@ -27,18 +30,52 @@ int main(void)
 	TestRunner_runTests();
 
 	#endif
-	// Config cfg;
 
-	// Config_parseFile(&cfg, CONFIG_FILENAME);
-	// Config_debug(&cfg);
+	unsigned int tabuListSize = 7,
+                delta,
+                deltaEbfsrSolo = 3,
+                nbIteration = 0,
+                nbIterationWithoutImprovment = 0,
+                nbMaxIteration = 2000,
+                nbMaxIterationWithoutImprovment,
+                timeLimit,
+                cpuTime = 0,
+                startTime,
+                endTime;
+	TabuList tabu;
+	Instance instance;
 
-    /*Instance instance;
-    Instance_init(&instance);
-    Instance_parseInstance(&instance, "test_files/input.txt", "configs.txt");
-    Instance_firstSolution(&instance);
+	TabuList_init(&tabu);
+	TabuList_setSize(&tabu, tabuListSize);
 
-    Solution_debug(instance.solution);
-    printf("%d", Instance_eval(&instance));*/
+	Instance_init(&instance);
+	Instance_parseInstance(&instance, INPUT_FILENAME, CONFIG_FILENAME);
+
+	timeLimit = instance.nbJobs * instance.nbMachine / 4;
+
+	if(instance.nbJobs == 100) {
+        delta = 8;
+        nbMaxIterationWithoutImprovment = 5;
+	}
+    else if(instance.nbJobs == 50) {
+        delta = 10;
+        nbMaxIterationWithoutImprovment = 8;
+    }
+    else {
+        delta = instance.nbJobs / 4;
+        nbMaxIterationWithoutImprovment = 12;
+    }
+
+	srand(time(NULL));
+	startTime = clock();
+
+	while(cpuTime/CLOCKS_PER_SEC < timeLimit && nbIteration <= nbMaxIteration) {
+
+
+        endTime = clock();
+        cpuTime = startTime - endTime;
+        nbIteration++;
+	}
 
     return 0;
 }
