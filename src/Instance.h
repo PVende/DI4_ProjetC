@@ -82,7 +82,7 @@ void Instance_writeInstance(Instance * instance, FILE * file);
  * \return unsigned int the value of the objective function for this solution
  *
  */
-unsigned int Instance_eval(Instance * instance);
+unsigned int Instance_eval(Instance * instance, unsigned int diversification);
 
 /** \brief Create the first solution of the program
  *

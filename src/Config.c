@@ -26,9 +26,9 @@ void Config_parseFile(Config * cfg, char * filepath)
 	cfg->EFSR_BOTH = 0;
 	cfg->EFSR_SEQ = 0;
 	cfg->EFSR_BATCH = 0;
-	cfg->FLAG_2OPT = 0;
+	cfg->TWO_OPT = 0;
 	cfg->DIVERSIFICATION = 0;
-	cfg->FLAG_FIRST_IMPROVE = 0;
+	cfg->FIRST_IMPROVE = 0;
 	cfg->LOGICAL_TABU = 0;
 
 	file = fopen(filepath, "r");
@@ -92,9 +92,9 @@ void Config_parseLine(Config * cfg, char * line)
 	else if(strcmp(line, "EFSR_SEQ") == 0) cfg->EFSR_SEQ = intValue;
 	else if(strcmp(line, "EFSR_BATCH") == 0) cfg->EFSR_BATCH = intValue;
 	else if(strcmp(line, "EFSR_BOTH") == 0) cfg->EFSR_BOTH = intValue;
-	else if(strcmp(line, "FLAG_2OPT") == 0) cfg->FLAG_2OPT = intValue;
+	else if(strcmp(line, "OPT") == 0) cfg->TWO_OPT = intValue;
 	else if(strcmp(line, "DIVERSIFICATION") == 0) cfg->DIVERSIFICATION = intValue;
-	else if(strcmp(line, "FLAG_FIRST_IMPROVE") == 0) cfg->FLAG_FIRST_IMPROVE = intValue;
+	else if(strcmp(line, "FIRST_IMPROVE") == 0) cfg->FIRST_IMPROVE = intValue;
 	else if(strcmp(line, "LOGICAL_TABU") == 0) cfg->LOGICAL_TABU = intValue;
 }
 
@@ -111,9 +111,9 @@ Config * Config_duplicate(Config * config) {
     dup->EFSR_BOTH = config->EFSR_BOTH;
     dup->EFSR_SEQ = config->EFSR_SEQ;
     dup->EFSR_BATCH = config->EFSR_BATCH;
-    dup->FLAG_2OPT = config->FLAG_2OPT;
+    dup->TWO_OPT = config->TWO_OPT;
     dup->DIVERSIFICATION = config->DIVERSIFICATION;
-    dup->FLAG_FIRST_IMPROVE = config->FLAG_FIRST_IMPROVE;
+    dup->FIRST_IMPROVE = config->FIRST_IMPROVE;
     dup->LOGICAL_TABU = config->LOGICAL_TABU;
 
     return dup;
@@ -138,11 +138,11 @@ int Config_equals(Config * c1, Config * c2) {
         return 0;
     if(c1->EFSR_BATCH != c2->EFSR_BATCH)
         return 0;
-    if(c1->FLAG_2OPT != c2->FLAG_2OPT)
+    if(c1->TWO_OPT != c2->TWO_OPT)
         return 0;
     if(c1->DIVERSIFICATION != c2->DIVERSIFICATION)
         return 0;
-    if(c1->FLAG_FIRST_IMPROVE != c2->FLAG_FIRST_IMPROVE)
+    if(c1->FIRST_IMPROVE != c2->FIRST_IMPROVE)
         return 0;
     if(c1->LOGICAL_TABU != c2->LOGICAL_TABU)
         return 0;
@@ -162,9 +162,9 @@ void Config_debug(Config * cfg)
     printf("EFSR_BOTH: %d\n", cfg->EFSR_BOTH);
     printf("EFSR_SEQ: %d\n", cfg->EFSR_SEQ);
     printf("EFSR_BATCH: %d\n", cfg->EFSR_BATCH);
-    printf("FLAG_2OPT: %d\n", cfg->FLAG_2OPT);
+    printf("2OPT: %d\n", cfg->TWO_OPT);
     printf("diversification: %d\n", cfg->DIVERSIFICATION);
-    printf("FLAG_FIRST_IMPROVE: %d\n", cfg->FLAG_FIRST_IMPROVE);
+    printf("FIRST_IMPROVE: %d\n", cfg->FIRST_IMPROVE);
     printf("LOGICAL_TABU: %d\n", cfg->LOGICAL_TABU);
     printf(DEBUG_SEPARATOR);
 }

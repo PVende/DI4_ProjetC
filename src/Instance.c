@@ -176,7 +176,7 @@ void Instance_writeInstance(Instance * instance, FILE * file) {
         fprintf(file, "null");
 }
 
-unsigned int Instance_eval(Instance * instance) {
+unsigned int Instance_eval(Instance * instance, unsigned int diversification) {
     unsigned int i, j,
                 obj = 0,
                 nbTurn,
@@ -241,7 +241,7 @@ unsigned int Instance_eval(Instance * instance) {
             arrivedTime = startTime + instance->distances[startLocation][currentBatch->batch[j]];
             actualDelay[currentBatch->batch[j]] = arrivedTime;
 
-            if(!instance->config->DIVERSIFICATION){
+            if(!diversification){
 				jobLag = MAX((int) (actualDelay[currentBatch->batch[j]] - instance->deliveryDates[currentBatch->batch[j]]), 0);
             }
             else
@@ -334,7 +334,7 @@ void Instance_firstSolution(Instance * instance){
         Instance_setSolution(currentSolution, &solution);
         Solution_finalize(&solution);
 
-        evalCurrentSolution = Instance_eval(currentSolution);
+        evalCurrentSolution = Instance_eval(currentSolution, 0);
 
         if(evalCurrentSolution < evalBestSolution) {
             evalBestSolution = evalCurrentSolution;
@@ -344,15 +344,16 @@ void Instance_firstSolution(Instance * instance){
         nbJobBatch++;
     }
 
-    if(instance->config->FLAG_2OPT) {
-        evalBestSolution = Instance_eval(instance);
+    if(instance->config->TWO_OPT) {
+        evalBestSolution = Instance_eval(instance, 0);
         Solution_init(&solution);
 
         for(i = 0; i < instance->nbJobs - 1; i++) {
-            solution = *Solution_duplicate(instance->solution);
+            Solution_setSequence(&solution, instance->solution->sequence);
+            Solution_setBatchList(&solution, instance->solution->batchList);
             Solution_swap_both(&solution, i, i+1);
             Instance_setSolution(currentSolution, &solution);
-            evalCurrentSolution = Instance_eval(currentSolution);
+            evalCurrentSolution = Instance_eval(currentSolution, 0);
 
             if(evalCurrentSolution < evalBestSolution) {
                 evalBestSolution = evalCurrentSolution;

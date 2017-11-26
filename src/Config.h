@@ -16,9 +16,9 @@ typedef struct {
     int EFSR_BOTH;
     int EFSR_SEQ;
     int EFSR_BATCH;
-    int FLAG_2OPT;
+    int TWO_OPT;
     int DIVERSIFICATION;
-    int FLAG_FIRST_IMPROVE;
+    int FIRST_IMPROVE;
     int LOGICAL_TABU;
 } Config;
 

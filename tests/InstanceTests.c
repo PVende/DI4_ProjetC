@@ -40,7 +40,7 @@ void InstanceTests_parserTests(void) {
 
     custom_assert(instance.solution == NULL);
 
-    custom_assert(Instance_eval(&instance) == 0);
+    custom_assert(Instance_eval(&instance, 0) == 0);
 
     Instance_finalize(&instance);
 }
@@ -69,7 +69,7 @@ void InstanceTests_firstSolutionTests(void) {
     Instance_parseInstance(&instance, TEST_FILENAME, TEST_FILENAME_CONFIG);
     Instance_firstSolution(&instance);
 
-    custom_assert(Instance_eval(&instance) == 125);
+    custom_assert(Instance_eval(&instance, 0) == 125);
 
     Instance_finalize(&instance);
 }
