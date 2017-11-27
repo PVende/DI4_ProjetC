@@ -165,7 +165,7 @@ int main(void)
                     }
         }
 
-        /*if(bestInstance.config->EBSR_BOTH) {
+        if(bestInstance.config->EBSR_BOTH) {
             for(i = 0; i < bestInstance.nbJobs - 1 && !stop; i++)
                 for(j = i + 1; j < bestInstance.nbJobs && !stop; j++)
                     if(j - i <= delta) {
@@ -311,7 +311,7 @@ int main(void)
                                 Instance_setSolution(&bestInstance, bestNeighbour.solution);
                         }
                     }
-        }*/
+        }
 
         if(bestNeighbourEval != (unsigned int)-1)
             TabuList_insertTabu(&tabu, move, indexI, indexJ);

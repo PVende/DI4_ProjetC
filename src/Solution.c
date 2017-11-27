@@ -117,8 +117,8 @@ void Solution_efsr_sequence(Solution * solution, unsigned int j1, unsigned int j
 void Solution_swap_batchList(Solution * solution, unsigned int j1, unsigned int j2) {
     unsigned int * infosJ1, * infosJ2;
     if(solution != NULL && solution->batchList != NULL){
-		infosJ1 = Solution_getBatchInfo(solution, j1);
-		infosJ2 = Solution_getBatchInfo(solution, j2);
+		infosJ1 = Solution_getBatchInfo(solution, solution->sequence->sequence[j1]);
+		infosJ2 = Solution_getBatchInfo(solution, solution->sequence->sequence[j2]);
 		if(infosJ1 != NULL && infosJ2 != NULL)
 			BatchList_swap(solution->batchList, infosJ1[0], infosJ1[1], infosJ2[0], infosJ2[1]);
 		free(infosJ1);
@@ -127,22 +127,26 @@ void Solution_swap_batchList(Solution * solution, unsigned int j1, unsigned int 
 }
 
 void Solution_ebsr_batchList(Solution * solution, unsigned int j1, unsigned int j2) {
-    unsigned int * infosJob;
-	if(solution != NULL && solution->batchList != NULL) {
-		infosJob = Solution_getBatchInfo(solution, j1);
-		if(infosJob != NULL)
-			BatchList_ebsr(solution->batchList, infosJob[0], infosJob[1]);
-		free(infosJob);
+    unsigned int * infosJ1, * infosJ2;
+    if(solution != NULL && solution->batchList != NULL){
+		infosJ1 = Solution_getBatchInfo(solution, solution->sequence->sequence[j1]);
+		infosJ2 = Solution_getBatchInfo(solution, solution->sequence->sequence[j2]);
+		if(infosJ1 != NULL && infosJ2 != NULL)
+			BatchList_ebsr(solution->batchList, infosJ1[0], infosJ1[1], infosJ2[0], infosJ2[1]);
+		free(infosJ1);
+		free(infosJ2);
 	}
 }
 
 void Solution_efsr_batchList(Solution * solution, unsigned int j1, unsigned int j2) {
-    unsigned int * infosJob;
-	if(solution != NULL && solution->batchList != NULL) {
-		infosJob = Solution_getBatchInfo(solution, j1);
-		if(infosJob != NULL)
-			BatchList_efsr(solution->batchList, infosJob[0], infosJob[1]);
-		free(infosJob);
+    unsigned int * infosJ1, * infosJ2;
+    if(solution != NULL && solution->batchList != NULL){
+		infosJ1 = Solution_getBatchInfo(solution, solution->sequence->sequence[j1]);
+		infosJ2 = Solution_getBatchInfo(solution, solution->sequence->sequence[j2]);
+		if(infosJ1 != NULL && infosJ2 != NULL)
+			BatchList_efsr(solution->batchList, infosJ1[0], infosJ1[1], infosJ2[0], infosJ2[1]);
+		free(infosJ1);
+		free(infosJ2);
 	}
 }
 

@@ -155,17 +155,17 @@ void SolutionTests_testSwapEbsrEfsr(void) {
     custom_assert(sol.batchList->batches[1]->batch[0] == 0);
     Solution_swap_both(&sol, 0, 1);
 
-    /*Solution_efsr_batchList(&sol, 1);
+    Solution_efsr_batchList(&sol, 1, 0);
     custom_assert(sol.sequence->sequence[0] == 0);
     custom_assert(sol.batchList->batches[0]->batch[0] == 1);
     custom_assert(sol.batchList->batches[0]->size == 2);
     custom_assert(sol.batchList->batches[1]->size == 1);
 
-    Solution_ebsr_sequence(&sol, 0);
-    custom_assert(sol.sequence->sequence[0] == 1);
-    custom_assert(sol.sequence->sequence[1] == 2);
-    custom_assert(sol.sequence->sequence[2] == 0);
-    custom_assert(sol.sequence->size == 3);*/
+    Solution_ebsr_sequence(&sol, 0, 2);
+    custom_assert(sol.sequence->sequence[0] == 2);
+    custom_assert(sol.sequence->sequence[1] == 0);
+    custom_assert(sol.sequence->sequence[2] == 1);
+    custom_assert(sol.sequence->size == 3);
 
     Solution_finalize(&sol);
 }
