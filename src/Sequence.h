@@ -87,7 +87,7 @@ void Sequence_swap(Sequence * sequence, unsigned int i, unsigned int j);
  * \return void
  *
  */
-void Sequence_ebsr(Sequence * sequence, unsigned int pos);
+void Sequence_ebsr(Sequence * sequence, unsigned int pos1, unsigned int pos2);
 
 /** \brief perform an EFSR (Extraction and Forward Shifted Reinsertion) on the sequence.
  *
@@ -96,7 +96,7 @@ void Sequence_ebsr(Sequence * sequence, unsigned int pos);
  * \return void
  *
  */
-void Sequence_efsr(Sequence * sequence, unsigned int pos);
+void Sequence_efsr(Sequence * sequence, unsigned int pos1, unsigned int pos2);
 
 /** \brief print a sequence to the output
  *

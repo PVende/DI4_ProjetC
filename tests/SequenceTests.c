@@ -7,10 +7,6 @@
 #define SWAP_I 2
 #define SWAP_J 4
 
-#define EBSR 2
-
-#define EFSR 3
-
 void SequenceTests_launchTests(void){
 	SequenceTests_basics();
 	SequenceTests_comparison();
@@ -78,7 +74,7 @@ void SequenceTests_basics(void)
 
 	// Sequence = 1 5 3 2 4
 
-	Sequence_ebsr(&seq, seq.size - 1);
+	Sequence_ebsr(&seq, 1, 0);
 	// => 1 5 3 2 4
 
 	custom_assert(seq.allocatedSize == allocatedSizeAfterAdding);
@@ -89,65 +85,65 @@ void SequenceTests_basics(void)
 	}
 
 
-	Sequence_ebsr(&seq, 0);
-	// => 5 3 2 4 1
+	Sequence_ebsr(&seq, 1, 2);
+	// => 1 3 5 2 4
 
 	custom_assert(seq.allocatedSize == allocatedSizeAfterAdding);
 	custom_assert(seq.size == 5);
-	custom_assert(seq.sequence[0] == 5);
+	custom_assert(seq.sequence[0] == 1);
 	custom_assert(seq.sequence[1] == 3);
-	custom_assert(seq.sequence[2] == 2);
-	custom_assert(seq.sequence[3] == 4);
-	custom_assert(seq.sequence[4] == 1);
+	custom_assert(seq.sequence[2] == 5);
+	custom_assert(seq.sequence[3] == 2);
+	custom_assert(seq.sequence[4] == 4);
 
 
-	Sequence_ebsr(&seq, EBSR);
-	// => 5 3 4 1 2
+	Sequence_ebsr(&seq, 0, 4);
+	// => 4 1 3 5 2
 
-	custom_assert(seq.sequence[0] == 5);
-	custom_assert(seq.sequence[1] == 3);
-	custom_assert(seq.sequence[2] == 4);
-	custom_assert(seq.sequence[3] == 1);
+	custom_assert(seq.sequence[0] == 4);
+	custom_assert(seq.sequence[1] == 1);
+	custom_assert(seq.sequence[2] == 3);
+	custom_assert(seq.sequence[3] == 5);
 	custom_assert(seq.sequence[4] == 2);
 
 	// EFSR
 
 
-	// Sequence = 5 3 4 1 2
+	// Sequence = 4 1 3 5 2
 
-	Sequence_efsr(&seq, 0);
-	// => 5 3 4 1 2
+	Sequence_efsr(&seq, 0, 1);
+	// => 4 1 3 5 2
 
 	custom_assert(seq.allocatedSize == allocatedSizeAfterAdding);
 	custom_assert(seq.size == 5);
 
-	custom_assert(seq.sequence[0] == 5);
-	custom_assert(seq.sequence[1] == 3);
-	custom_assert(seq.sequence[2] == 4);
-	custom_assert(seq.sequence[3] == 1);
+	custom_assert(seq.sequence[0] == 4);
+	custom_assert(seq.sequence[1] == 1);
+	custom_assert(seq.sequence[2] == 3);
+	custom_assert(seq.sequence[3] == 5);
 	custom_assert(seq.sequence[4] == 2);
 
 
-	Sequence_efsr(&seq, seq.size - 1);
-	// => 2 5 3 4 1
+	Sequence_efsr(&seq, seq.size - 1, 0);
+	// => 2 4 1 3 5
 
 	custom_assert(seq.allocatedSize == allocatedSizeAfterAdding);
 	custom_assert(seq.size == 5);
 	custom_assert(seq.sequence[0] == 2);
-	custom_assert(seq.sequence[1] == 5);
-	custom_assert(seq.sequence[2] == 3);
-	custom_assert(seq.sequence[3] == 4);
-	custom_assert(seq.sequence[4] == 1);
-
-
-	Sequence_efsr(&seq, EFSR);
-	// => 4 2 5 3 1
-
-	custom_assert(seq.sequence[0] == 4);
-	custom_assert(seq.sequence[1] == 2);
-	custom_assert(seq.sequence[2] == 5);
+	custom_assert(seq.sequence[1] == 4);
+	custom_assert(seq.sequence[2] == 1);
 	custom_assert(seq.sequence[3] == 3);
-	custom_assert(seq.sequence[4] == 1);
+	custom_assert(seq.sequence[4] == 5);
+
+
+	Sequence_efsr(&seq, 2, 1);
+	// => 2 1 4 3 5
+
+	custom_assert(seq.sequence[0] == 2);
+	custom_assert(seq.sequence[1] == 1);
+	custom_assert(seq.sequence[2] == 4);
+	custom_assert(seq.sequence[3] == 3);
+	custom_assert(seq.sequence[4] == 5);
 
 
 	Sequence_finalize(&seq);

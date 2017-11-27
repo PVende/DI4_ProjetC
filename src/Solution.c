@@ -104,14 +104,14 @@ void Solution_swap_sequence(Solution * solution, unsigned int j1, unsigned int j
             Sequence_swap(solution->sequence, j1, j2);
 }
 
-void Solution_ebsr_sequence(Solution * solution, unsigned int job) {
+void Solution_ebsr_sequence(Solution * solution, unsigned int j1, unsigned int j2) {
      if(solution != NULL && solution->sequence != NULL)
-            Sequence_ebsr(solution->sequence, job);
+            Sequence_ebsr(solution->sequence, j1, j2);
 }
-void Solution_efsr_sequence(Solution * solution, unsigned int job) {
+void Solution_efsr_sequence(Solution * solution, unsigned int j1, unsigned int j2) {
     if(solution != NULL)
         if(solution->sequence != NULL)
-            Sequence_efsr(solution->sequence, job);
+            Sequence_efsr(solution->sequence, j1, j2);
 }
 
 void Solution_swap_batchList(Solution * solution, unsigned int j1, unsigned int j2) {
@@ -126,20 +126,20 @@ void Solution_swap_batchList(Solution * solution, unsigned int j1, unsigned int 
 	}
 }
 
-void Solution_ebsr_batchList(Solution * solution, unsigned int job) {
+void Solution_ebsr_batchList(Solution * solution, unsigned int j1, unsigned int j2) {
     unsigned int * infosJob;
 	if(solution != NULL && solution->batchList != NULL) {
-		infosJob = Solution_getBatchInfo(solution, job);
+		infosJob = Solution_getBatchInfo(solution, j1);
 		if(infosJob != NULL)
 			BatchList_ebsr(solution->batchList, infosJob[0], infosJob[1]);
 		free(infosJob);
 	}
 }
 
-void Solution_efsr_batchList(Solution * solution, unsigned int job) {
+void Solution_efsr_batchList(Solution * solution, unsigned int j1, unsigned int j2) {
     unsigned int * infosJob;
 	if(solution != NULL && solution->batchList != NULL) {
-		infosJob = Solution_getBatchInfo(solution, job);
+		infosJob = Solution_getBatchInfo(solution, j1);
 		if(infosJob != NULL)
 			BatchList_efsr(solution->batchList, infosJob[0], infosJob[1]);
 		free(infosJob);
@@ -151,14 +151,14 @@ void Solution_swap_both(Solution * solution, unsigned int j1, unsigned int j2) {
     Solution_swap_batchList(solution, j1, j2);
 }
 
-void Solution_ebsr_both(Solution * solution, unsigned int job) {
-    Solution_ebsr_sequence(solution, job);
-    Solution_ebsr_batchList(solution, job);
+void Solution_ebsr_both(Solution * solution, unsigned int j1, unsigned int j2) {
+    Solution_ebsr_sequence(solution, j1, j2);
+    Solution_ebsr_batchList(solution, j1, j2);
 }
 
-void Solution_efsr_both(Solution * solution, unsigned int job) {
-    Solution_efsr_sequence(solution, job);
-    Solution_efsr_batchList(solution, job);
+void Solution_efsr_both(Solution * solution, unsigned int j1, unsigned int j2) {
+    Solution_efsr_sequence(solution, j1, j2);
+    Solution_efsr_batchList(solution, j1, j2);
 }
 
 void Solution_debug(Solution * solution) {

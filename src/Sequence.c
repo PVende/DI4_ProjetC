@@ -103,29 +103,38 @@ void Sequence_swap(Sequence * sequence, unsigned int pos1, unsigned int pos2) {
 
 }
 
-void Sequence_ebsr(Sequence * sequence, unsigned int pos) {
-    if(pos >= sequence->size)
+void Sequence_ebsr(Sequence * sequence, unsigned int pos1, unsigned int pos2) {
+    if(pos1 >= sequence->size || pos2 >= sequence->size)
         fatalError("Error argument");
 
-    unsigned int i, value = sequence->sequence[pos];
+    unsigned int i, value = sequence->sequence[pos2];
 
-    for(i = pos + 1; i < sequence->size; i++)
-        sequence->sequence[i - 1] = sequence->sequence[i];
+    if(pos1 < pos2) {
+        for(i = pos2 - 1; i >= pos1 && i < pos2; i--)
+            sequence->sequence[i + 1] = sequence->sequence[i];
 
-    sequence->sequence[sequence->size - 1] = value;
+        sequence->sequence[pos1] = value;
+    }
+
+    if(pos1 > pos2 + 1) {
+        for(i = pos2 + 1; i < pos1; i++)
+            sequence->sequence[i - 1] = sequence->sequence[i];
+
+        sequence->sequence[pos1 - 1] = value;
+    }
 
 }
 
-void Sequence_efsr(Sequence * sequence, unsigned int pos) {
-    if(pos >= sequence->size)
+void Sequence_efsr(Sequence * sequence, unsigned int pos1, unsigned int pos2) {
+    if(pos1 >= sequence->size || pos2 >= sequence->size)
         fatalError("Error argument");
 
-    unsigned int i, value = sequence->sequence[pos];
+    unsigned int i, value = sequence->sequence[pos1];
 
-    for(i = pos; i > 0; i--)
-        sequence->sequence[i] = sequence->sequence[i - 1];
+    for(i = pos1; i < pos2; i++)
+        sequence->sequence[i] = sequence->sequence[i + 1];
 
-    sequence->sequence[0] = value;
+    sequence->sequence[pos2] = value;
 
 }
 
