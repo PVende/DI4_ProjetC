@@ -126,15 +126,7 @@ void Sequence_ebsr(Sequence * sequence, unsigned int pos1, unsigned int pos2) {
 }
 
 void Sequence_efsr(Sequence * sequence, unsigned int pos1, unsigned int pos2) {
-    if(pos1 >= sequence->size || pos2 >= sequence->size)
-        fatalError("Error argument");
-
-    unsigned int i, value = sequence->sequence[pos1];
-
-    for(i = pos1; i < pos2; i++)
-        sequence->sequence[i] = sequence->sequence[i + 1];
-
-    sequence->sequence[pos2] = value;
+    Sequence_ebsr(sequence, pos2, pos1);
 
 }
 
