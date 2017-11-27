@@ -91,7 +91,7 @@ void BatchList_swap(BatchList * list, unsigned int batch1Pos, unsigned int job1P
  * \return void
  *
  */
-void BatchList_ebsr(BatchList * list, unsigned int batchPos, unsigned int jobPos);
+void BatchList_ebsr(BatchList * list, unsigned int batchPos1, unsigned int jobPos1, unsigned int batchPos2, unsigned int jobPos2);
 
 /** \brief perform an EFSR (Extraction and Forward Shifted Reinsertion) on the batchlist
  *
@@ -101,7 +101,7 @@ void BatchList_ebsr(BatchList * list, unsigned int batchPos, unsigned int jobPos
  * \return void
  *
  */
-void BatchList_efsr(BatchList * list, unsigned int batchPos, unsigned int jobPos);
+void BatchList_efsr(BatchList * list, unsigned int batchPos1, unsigned int jobPos1, unsigned int batchPos2, unsigned int jobPos2);
 
 
 /** \brief Print a batchlist in the console

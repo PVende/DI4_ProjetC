@@ -141,40 +141,29 @@ void BatchList_swap(BatchList * list, unsigned int batch1Pos, unsigned int job1P
 }
 
 
-void BatchList_ebsr(BatchList * list, unsigned int batchPos, unsigned int jobPos){
-	unsigned int extracted;
-	Batch * batch, * lastBatch;
+void BatchList_ebsr(BatchList * list, unsigned int batchPos1, unsigned int jobPos1, unsigned int batchPos2, unsigned int jobPos2){
+	unsigned int extractedJob;
+	Batch * batchInsertion, * batchExtraction;
 
-	batch = BatchList_getBatch(list, batchPos);
-	extracted = Batch_extractJobAt(batch, jobPos);
+	batchInsertion = BatchList_getBatch(list, batchPos1);
+	batchExtraction = BatchList_getBatch(list, batchPos2);
+	extractedJob = Batch_extractJobAt(batchExtraction, jobPos2);
 
-	if(batch->size == 0)
+	if(batchExtraction->size == 0)
 	{
 		// Removing the batch from the batch list
-		BatchList_removeBatch(list, batch);
+		BatchList_removeBatch(list, batchExtraction);
 	}
 
-	lastBatch = list->batches[list->size - 1];
-	Batch_addJob(lastBatch, extracted);
+	if(batchPos1 == batchPos2 && jobPos2 < jobPos1)
+        Batch_addJobAt(batchInsertion, extractedJob, jobPos1 - 1);
+    else
+        Batch_addJobAt(batchInsertion, extractedJob, jobPos1);
 }
 
 
-void BatchList_efsr(BatchList * list, unsigned int batchPos, unsigned int jobPos){
-	unsigned int extracted;
-	Batch * batch, * firstBatch;
-
-	batch = BatchList_getBatch(list, batchPos);
-	extracted = Batch_extractJobAt(batch, jobPos);
-
-	if(batch->size == 0)
-	{
-		// Removing the batch from the batch list
-		BatchList_removeBatch(list, batch);
-	}
-
-
-	firstBatch = list->batches[0];
-	Batch_addJobAt(firstBatch, extracted, 0);
+void BatchList_efsr(BatchList * list, unsigned int batchPos1, unsigned int jobPos1, unsigned int batchPos2, unsigned int jobPos2){
+	BatchList_ebsr(list, batchPos2, jobPos2, batchPos1, jobPos1);
 }
 
 
