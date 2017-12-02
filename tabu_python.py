@@ -730,7 +730,6 @@ while (cpu < TIME_LIMIT) and (nb_ite <= NB_ITE_MAX):
     # on choisit le meilleur voisin
     if (val_best_vois != INFINI):
         sol_cour = copy.copy(Best_vois)
-        print(sol_cour)
         print(val_best_vois)
         InsereTabou(typeBest_vois, typeIndex_i, typeIndex_j)
 

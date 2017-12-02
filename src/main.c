@@ -97,7 +97,7 @@ int main(void)
 
 	printf("\t%d\n", bestInstanceEval);
 
-	while(cpuTime/CLOCKS_PER_SEC < timeLimit && nbIteration <= nbMaxIteration) {
+	while(cpuTime < timeLimit && nbIteration <= nbMaxIteration) {
         improvment = 0;
         bestNeighbourEval = -1;
         stop = 0;
@@ -359,18 +359,20 @@ int main(void)
         }
 
         endTime = clock();
-        cpuTime += endTime - startTime;
+        cpuTime += (double)(endTime - startTime)/CLOCKS_PER_SEC;
         startTime = endTime;
         nbIteration++;
 	}
 
+	printf("%u\t%f s\t%u iterations", bestInstanceEval, cpuTime, nbIteration - 1);
+
     if((outputFile = fopen(OUTPUT_FILENAME, "w")) == NULL)
         fatalError("error open output file");
 
-    if(fprintf(outputFile, "%d\t", Instance_eval(&bestInstance, diversification)) == 0)
+    if(fprintf(outputFile, "%u\t", Instance_eval(&bestInstance, diversification)) == 0)
         fatalError("error write file");
 
-    if(fprintf(outputFile, "%lf\t", cpuTime/CLOCKS_PER_SEC) == 0)
+    if(fprintf(outputFile, "%f\t", cpuTime) == 0)
         fatalError("error write file");
 
     Instance_writeInstance(&bestInstance, outputFile);
