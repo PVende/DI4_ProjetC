@@ -39,7 +39,7 @@ int Sequence_equals(Sequence * s1, Sequence * s2){
 void Sequence_writeSequence(Sequence * sequence, FILE * file) {
     unsigned int i;
 
-    fprintf(file, "(");
+    fprintf(file, "[");
 
     if(sequence != NULL) {
         fprintf(file, "%d", sequence->sequence[0]);
@@ -50,7 +50,7 @@ void Sequence_writeSequence(Sequence * sequence, FILE * file) {
     } else
         fprintf(file, "null");
 
-    fprintf(file, ")");
+    fprintf(file, "]");
 }
 
 Sequence * Sequence_duplicate(Sequence * sequence){

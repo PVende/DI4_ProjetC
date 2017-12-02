@@ -497,6 +497,7 @@ def SequenceInit():
             # print('tester ',best_sol[0][k],' et ',best_sol[0][k+1])
             sol_cour = copy.deepcopy(best_sol)
             val_voisin = swap_both(k, k + 1, sol_cour, False)
+
             if (val_voisin < val_best_sol):
                 best_sol = copy.deepcopy(sol_cour)
                 val_best_sol = val_voisin
@@ -729,6 +730,7 @@ while (cpu < TIME_LIMIT) and (nb_ite <= NB_ITE_MAX):
     # on choisit le meilleur voisin
     if (val_best_vois != INFINI):
         sol_cour = copy.copy(Best_vois)
+        print(sol_cour)
         print(val_best_vois)
         InsereTabou(typeBest_vois, typeIndex_i, typeIndex_j)
 
@@ -767,7 +769,7 @@ print('**************************')
 # ===================================================
 # Ecriture des resultats
 # ===================================================
-mesresultats = open("output.txt", "w")
+mesresultats = open("test_files/output_py.txt", "w")
 
 # ecriture de la valeur
 ch_Best_val = str(Best_val)

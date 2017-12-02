@@ -67,7 +67,7 @@ int BatchList_equals(BatchList * l1, BatchList * l2)
 void BatchList_writeBatchList(BatchList * list, FILE * file) {
     unsigned int i;
 
-    fprintf(file, "(");
+    fprintf(file, "[");
 
     if(list != NULL) {
         Batch_writeBatch(list->batches[0], file);
@@ -80,7 +80,7 @@ void BatchList_writeBatchList(BatchList * list, FILE * file) {
     } else
         fprintf(file, "null");
 
-    fprintf(file, ")");
+    fprintf(file, "]");
 }
 
 void BatchList_addBatch(BatchList * list, Batch * batch){

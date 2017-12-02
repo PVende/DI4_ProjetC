@@ -41,21 +41,22 @@ int main(void)
                 nbMaxIterationWithoutImprovment,
                 diversification = 0,
                 timeLimit,
-                cpuTime = 0,
                 startTime,
                 endTime,
                 improvment,
                 bestInstanceEval,
                 bestNeighbourEval,
-                currentSolutionEval,
+                currentInstanceEval,
                 stop,
                 i, j,
                 indexI, indexJ;
+    double cpuTime = 0;
     char move;
 	TabuList tabu;
 	Instance bestInstance,
             bestNeighbour,
-            currentSolution;
+            currentInstance,
+            currentInstanceSave;
 	FILE * outputFile;
 
 	TabuList_init(&tabu);
@@ -86,10 +87,15 @@ int main(void)
 	bestInstanceEval = Instance_eval(&bestInstance, diversification);
 
 	bestNeighbour = bestInstance;
-	currentSolution = bestInstance;
+	currentInstance = bestInstance;
+	currentInstanceSave = bestInstance;
 
 	bestNeighbour.solution = NULL;
-	currentSolution.solution = NULL;
+	currentInstance.solution = NULL;
+	Instance_setSolution(&currentInstance, bestInstance.solution);
+	currentInstanceSave.solution = NULL;
+
+	printf("\t%d\n", bestInstanceEval);
 
 	while(cpuTime/CLOCKS_PER_SEC < timeLimit && nbIteration <= nbMaxIteration) {
         improvment = 0;
@@ -100,22 +106,23 @@ int main(void)
             for(i = 0; i < bestInstance.nbJobs - 1; i++)
                 for(j = i + 1; j < bestInstance.nbJobs; j++)
                     if(j - i <= delta) {
-                        Instance_setSolution(&currentSolution, bestInstance.solution);
-                        Solution_swap_both(currentSolution.solution, i, j);
-                        currentSolutionEval = Instance_eval(&currentSolution, diversification);
-                        if(currentSolutionEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 's', currentSolution.solution->sequence->sequence[i],
-                                                    currentSolution.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
-                            bestNeighbourEval = currentSolutionEval;
-                            Instance_setSolution(&bestNeighbour, currentSolution.solution);
+                        Instance_setSolution(&currentInstanceSave, currentInstance.solution);
+                        Solution_swap_both(currentInstance.solution, i, j);
+                        currentInstanceEval = Instance_eval(&currentInstance, diversification);
+                        if(currentInstanceEval < bestNeighbourEval &&
+                           !TabuList_isTabu(&tabu, 's', currentInstance.solution->sequence->sequence[i],
+                                                    currentInstance.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
+                            bestNeighbourEval = currentInstanceEval;
+                            Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
                             move = 's';
-                            indexI = currentSolution.solution->sequence->sequence[i];
-                            indexJ = currentSolution.solution->sequence->sequence[j];
+                            indexI = currentInstance.solution->sequence->sequence[i];
+                            indexJ = currentInstance.solution->sequence->sequence[j];
 
                             if(bestInstance.config->FIRST_IMPROVE)
-                                Instance_setSolution(&bestInstance, bestNeighbour.solution);
+                                Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
                         }
+                        Instance_setSolution(&currentInstance, currentInstanceSave.solution);
                     }
         }
 
@@ -123,22 +130,23 @@ int main(void)
             for(i = 0; i < bestInstance.nbJobs - 1; i++)
                 for(j = i + 1; j < bestInstance.nbJobs; j++)
                     if(j - i <= delta) {
-                        Instance_setSolution(&currentSolution, bestInstance.solution);
-                        Solution_swap_both(currentSolution.solution, i, j);
-                        currentSolutionEval = Instance_eval(&currentSolution, diversification);
-                        if(currentSolutionEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 's', currentSolution.solution->sequence->sequence[i],
-                                                    currentSolution.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
-                            bestNeighbourEval = currentSolutionEval;
-                            Instance_setSolution(&bestNeighbour, currentSolution.solution);
+                        Instance_setSolution(&currentInstanceSave, currentInstance.solution);
+                        Solution_swap_both(currentInstance.solution, i, j);
+                        currentInstanceEval = Instance_eval(&currentInstance, diversification);
+                        if(currentInstanceEval < bestNeighbourEval &&
+                           !TabuList_isTabu(&tabu, 's', currentInstance.solution->sequence->sequence[i],
+                                                    currentInstance.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
+                            bestNeighbourEval = currentInstanceEval;
+                            Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
                             move = 's';
-                            indexI = currentSolution.solution->sequence->sequence[i];
-                            indexJ = currentSolution.solution->sequence->sequence[j];
+                            indexI = currentInstance.solution->sequence->sequence[i];
+                            indexJ = currentInstance.solution->sequence->sequence[j];
 
                             if(bestInstance.config->FIRST_IMPROVE)
-                                Instance_setSolution(&bestInstance, bestNeighbour.solution);
+                                Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
                         }
+                        Instance_setSolution(&currentInstance, currentInstanceSave.solution);
                     }
         }
 
@@ -146,22 +154,23 @@ int main(void)
             for(i = 0; i < bestInstance.nbJobs - 1; i++)
                 for(j = i + 1; j < bestInstance.nbJobs; j++)
                     if(j - i <= delta) {
-                        Instance_setSolution(&currentSolution, bestInstance.solution);
-                        Solution_swap_both(currentSolution.solution, i, j);
-                        currentSolutionEval = Instance_eval(&currentSolution, diversification);
-                        if(currentSolutionEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 's', currentSolution.solution->sequence->sequence[i],
-                                                    currentSolution.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
-                            bestNeighbourEval = currentSolutionEval;
-                            Instance_setSolution(&bestNeighbour, currentSolution.solution);
+                        Instance_setSolution(&currentInstanceSave, currentInstance.solution);
+                        Solution_swap_both(currentInstance.solution, i, j);
+                        currentInstanceEval = Instance_eval(&currentInstance, diversification);
+                        if(currentInstanceEval < bestNeighbourEval &&
+                           !TabuList_isTabu(&tabu, 's', currentInstance.solution->sequence->sequence[i],
+                                                    currentInstance.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
+                            bestNeighbourEval = currentInstanceEval;
+                            Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
                             move = 't';
-                            indexI = currentSolution.solution->sequence->sequence[i];
-                            indexJ = currentSolution.solution->sequence->sequence[j];
+                            indexI = currentInstance.solution->sequence->sequence[i];
+                            indexJ = currentInstance.solution->sequence->sequence[j];
 
                             if(bestInstance.config->FIRST_IMPROVE)
-                                Instance_setSolution(&bestInstance, bestNeighbour.solution);
+                                Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
                         }
+                        Instance_setSolution(&currentInstance, currentInstanceSave.solution);
                     }
         }
 
@@ -169,24 +178,25 @@ int main(void)
             for(i = 0; i < bestInstance.nbJobs - 1 && !stop; i++)
                 for(j = i + 1; j < bestInstance.nbJobs && !stop; j++)
                     if(j - i <= delta) {
-                        Instance_setSolution(&currentSolution, bestInstance.solution);
-                        Solution_ebsr_both(currentSolution.solution, i, j);
-                        currentSolutionEval = Instance_eval(&currentSolution, diversification);
-                        if(currentSolutionEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 'b', currentSolution.solution->sequence->sequence[i],
-                                                    currentSolution.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
-                            bestNeighbourEval = currentSolutionEval;
-                            Instance_setSolution(&bestNeighbour, currentSolution.solution);
+                        Instance_setSolution(&currentInstanceSave, currentInstance.solution);
+                        Solution_ebsr_both(currentInstance.solution, i, j);
+                        currentInstanceEval = Instance_eval(&currentInstance, diversification);
+                        if(currentInstanceEval < bestNeighbourEval &&
+                           !TabuList_isTabu(&tabu, 'b', currentInstance.solution->sequence->sequence[i],
+                                                    currentInstance.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
+                            bestNeighbourEval = currentInstanceEval;
+                            Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
                             move = 'b';
-                            indexI = currentSolution.solution->sequence->sequence[i];
-                            indexJ = currentSolution.solution->sequence->sequence[j];
+                            indexI = currentInstance.solution->sequence->sequence[i];
+                            indexJ = currentInstance.solution->sequence->sequence[j];
 
                             if(bestInstance.config->FIRST_IMPROVE) {
                                 stop = 1;
-                                Instance_setSolution(&bestInstance, bestNeighbour.solution);
+                                Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
                             }
                         }
+                        Instance_setSolution(&currentInstance, currentInstanceSave.solution);
                     }
         }
 
@@ -196,24 +206,25 @@ int main(void)
             for(i = 0; i < bestInstance.nbJobs - 1 && !stop; i++)
                 for(j = i + 1; j < bestInstance.nbJobs && !stop; j++)
                     if(j - i <= deltaEbfsrSolo) {
-                        Instance_setSolution(&currentSolution, bestInstance.solution);
-                        Solution_ebsr_sequence(currentSolution.solution, i, j);
-                        currentSolutionEval = Instance_eval(&currentSolution, diversification);
-                        if(currentSolutionEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 'b', currentSolution.solution->sequence->sequence[i],
-                                                    currentSolution.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
-                            bestNeighbourEval = currentSolutionEval;
-                            Instance_setSolution(&bestNeighbour, currentSolution.solution);
+                        Instance_setSolution(&currentInstanceSave, currentInstance.solution);
+                        Solution_ebsr_sequence(currentInstance.solution, i, j);
+                        currentInstanceEval = Instance_eval(&currentInstance, diversification);
+                        if(currentInstanceEval < bestNeighbourEval &&
+                           !TabuList_isTabu(&tabu, 'b', currentInstance.solution->sequence->sequence[i],
+                                                    currentInstance.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
+                            bestNeighbourEval = currentInstanceEval;
+                            Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
                             move = 'b';
-                            indexI = currentSolution.solution->sequence->sequence[i];
-                            indexJ = currentSolution.solution->sequence->sequence[j];
+                            indexI = currentInstance.solution->sequence->sequence[i];
+                            indexJ = currentInstance.solution->sequence->sequence[j];
 
                             if(bestInstance.config->FIRST_IMPROVE) {
                                 stop = 1;
-                                Instance_setSolution(&bestInstance, bestNeighbour.solution);
+                                Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
                             }
                         }
+                        Instance_setSolution(&currentInstance, currentInstanceSave.solution);
                     }
         }
 
@@ -223,24 +234,25 @@ int main(void)
             for(i = 0; i < bestInstance.nbJobs - 1 && !stop; i++)
                 for(j = i + 1; j < bestInstance.nbJobs && !stop; j++)
                     if(j - i <= deltaEbfsrSolo) {
-                        Instance_setSolution(&currentSolution, bestInstance.solution);
-                        Solution_ebsr_sequence(currentSolution.solution, i, j);
-                        currentSolutionEval = Instance_eval(&currentSolution, diversification);
-                        if(currentSolutionEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 'b', currentSolution.solution->sequence->sequence[i],
-                                                    currentSolution.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
-                            bestNeighbourEval = currentSolutionEval;
-                            Instance_setSolution(&bestNeighbour, currentSolution.solution);
+                        Instance_setSolution(&currentInstanceSave, currentInstance.solution);
+                        Solution_ebsr_sequence(currentInstance.solution, i, j);
+                        currentInstanceEval = Instance_eval(&currentInstance, diversification);
+                        if(currentInstanceEval < bestNeighbourEval &&
+                           !TabuList_isTabu(&tabu, 'b', currentInstance.solution->sequence->sequence[i],
+                                                    currentInstance.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
+                            bestNeighbourEval = currentInstanceEval;
+                            Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
                             move = 'c';
-                            indexI = currentSolution.solution->sequence->sequence[i];
-                            indexJ = currentSolution.solution->sequence->sequence[j];
+                            indexI = currentInstance.solution->sequence->sequence[i];
+                            indexJ = currentInstance.solution->sequence->sequence[j];
 
                             if(bestInstance.config->FIRST_IMPROVE) {
                                 stop = 1;
-                                Instance_setSolution(&bestInstance, bestNeighbour.solution);
+                                Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
                             }
                         }
+                        Instance_setSolution(&currentInstance, currentInstanceSave.solution);
                     }
         }
 
@@ -248,22 +260,23 @@ int main(void)
             for(i = 0; i < bestInstance.nbJobs - 1; i++)
                 for(j = i + 1; j < bestInstance.nbJobs; j++)
                     if(j - i <= delta) {
-                        Instance_setSolution(&currentSolution, bestInstance.solution);
-                        Solution_efsr_both(currentSolution.solution, i, j);
-                        currentSolutionEval = Instance_eval(&currentSolution, diversification);
-                        if(currentSolutionEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 'f', currentSolution.solution->sequence->sequence[i],
-                                                    currentSolution.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
-                            bestNeighbourEval = currentSolutionEval;
-                            Instance_setSolution(&bestNeighbour, currentSolution.solution);
+                        Instance_setSolution(&currentInstanceSave, currentInstance.solution);
+                        Solution_efsr_both(currentInstance.solution, i, j);
+                        currentInstanceEval = Instance_eval(&currentInstance, diversification);
+                        if(currentInstanceEval < bestNeighbourEval &&
+                           !TabuList_isTabu(&tabu, 'f', currentInstance.solution->sequence->sequence[i],
+                                                    currentInstance.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
+                            bestNeighbourEval = currentInstanceEval;
+                            Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
                             move = 'f';
-                            indexI = currentSolution.solution->sequence->sequence[i];
-                            indexJ = currentSolution.solution->sequence->sequence[j];
+                            indexI = currentInstance.solution->sequence->sequence[i];
+                            indexJ = currentInstance.solution->sequence->sequence[j];
 
                             if(bestInstance.config->FIRST_IMPROVE)
-                                Instance_setSolution(&bestInstance, bestNeighbour.solution);
+                                Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
                         }
+                        Instance_setSolution(&currentInstance, currentInstanceSave.solution);
                     }
         }
 
@@ -271,22 +284,23 @@ int main(void)
             for(i = 0; i < bestInstance.nbJobs - 1; i++)
                 for(j = i + 1; j < bestInstance.nbJobs; j++)
                     if(j - i <= deltaEbfsrSolo) {
-                        Instance_setSolution(&currentSolution, bestInstance.solution);
-                        Solution_efsr_both(currentSolution.solution, i, j);
-                        currentSolutionEval = Instance_eval(&currentSolution, diversification);
-                        if(currentSolutionEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 'f', currentSolution.solution->sequence->sequence[i],
-                                                    currentSolution.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
-                            bestNeighbourEval = currentSolutionEval;
-                            Instance_setSolution(&bestNeighbour, currentSolution.solution);
+                        Instance_setSolution(&currentInstanceSave, currentInstance.solution);
+                        Solution_efsr_both(currentInstance.solution, i, j);
+                        currentInstanceEval = Instance_eval(&currentInstance, diversification);
+                        if(currentInstanceEval < bestNeighbourEval &&
+                           !TabuList_isTabu(&tabu, 'f', currentInstance.solution->sequence->sequence[i],
+                                                    currentInstance.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
+                            bestNeighbourEval = currentInstanceEval;
+                            Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
                             move = 'f';
-                            indexI = currentSolution.solution->sequence->sequence[i];
-                            indexJ = currentSolution.solution->sequence->sequence[j];
+                            indexI = currentInstance.solution->sequence->sequence[i];
+                            indexJ = currentInstance.solution->sequence->sequence[j];
 
                             if(bestInstance.config->FIRST_IMPROVE)
-                                Instance_setSolution(&bestInstance, bestNeighbour.solution);
+                                Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
                         }
+                        Instance_setSolution(&currentInstance, currentInstanceSave.solution);
                     }
         }
 
@@ -294,31 +308,36 @@ int main(void)
             for(i = 0; i < bestInstance.nbJobs - 1; i++)
                 for(j = i + 1; j < bestInstance.nbJobs; j++)
                     if(j - i <= deltaEbfsrSolo) {
-                        Instance_setSolution(&currentSolution, bestInstance.solution);
-                        Solution_efsr_both(currentSolution.solution, i, j);
-                        currentSolutionEval = Instance_eval(&currentSolution, diversification);
-                        if(currentSolutionEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 'f', currentSolution.solution->sequence->sequence[i],
-                                                    currentSolution.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
-                            bestNeighbourEval = currentSolutionEval;
-                            Instance_setSolution(&bestNeighbour, currentSolution.solution);
+                        Instance_setSolution(&currentInstanceSave, currentInstance.solution);
+                        Solution_efsr_both(currentInstance.solution, i, j);
+                        currentInstanceEval = Instance_eval(&currentInstance, diversification);
+                        if(currentInstanceEval < bestNeighbourEval &&
+                           !TabuList_isTabu(&tabu, 'f', currentInstance.solution->sequence->sequence[i],
+                                                    currentInstance.solution->sequence->sequence[j], bestInstance.config->LOGICAL_TABU)) {
+                            bestNeighbourEval = currentInstanceEval;
+                            Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
                             move = 'f';
-                            indexI = currentSolution.solution->sequence->sequence[i];
-                            indexJ = currentSolution.solution->sequence->sequence[j];
+                            indexI = currentInstance.solution->sequence->sequence[i];
+                            indexJ = currentInstance.solution->sequence->sequence[j];
 
                             if(bestInstance.config->FIRST_IMPROVE)
-                                Instance_setSolution(&bestInstance, bestNeighbour.solution);
+                                Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
                         }
+                        Instance_setSolution(&currentInstance, currentInstanceSave.solution);
                     }
         }
 
-        if(bestNeighbourEval != (unsigned int)-1)
+        if(bestNeighbourEval != (unsigned int)-1) {
+            Instance_setSolution(&currentInstance, bestNeighbour.solution);
             TabuList_insertTabu(&tabu, move, indexI, indexJ);
+            printf("%d\n", bestNeighbourEval);
+        }
 
-        if(bestNeighbourEval < bestInstanceEval && !bestInstance.config->DIVERSIFICATION ) {
+        if(bestNeighbourEval < bestInstanceEval && !diversification) {
             bestInstanceEval = bestNeighbourEval;
-            Instance_setSolution(&bestInstance, bestNeighbour.solution);
+            Instance_setSolution(&bestInstance, currentInstance.solution);
+            printf("\t%d\n", bestInstanceEval);
             improvment = 1;
             nbIterationWithoutImprovment = 0;
         }
@@ -336,26 +355,38 @@ int main(void)
                 diversification = 1;
                 TabuList_finalize(&tabu);
                 TabuList_setSize(&tabu, tabuListSize);
+                printf("Diversification\n");
         }
 
         endTime = clock();
-        cpuTime += startTime - endTime;
+        cpuTime += endTime - startTime;
+        startTime = endTime;
         nbIteration++;
 	}
 
     if((outputFile = fopen(OUTPUT_FILENAME, "w")) == NULL)
         fatalError("error open output file");
 
-    if((fprintf(outputFile, "%d\t", Instance_eval(&bestInstance, diversification))) == 0)
+    if(fprintf(outputFile, "%d\t", Instance_eval(&bestInstance, diversification)) == 0)
         fatalError("error write file");
 
-    if((fprintf(outputFile, "%d\t", cpuTime/CLOCKS_PER_SEC)) == 0)
+    if(fprintf(outputFile, "%lf\t", cpuTime/CLOCKS_PER_SEC) == 0)
         fatalError("error write file");
 
     Instance_writeInstance(&bestInstance, outputFile);
 
     if(fclose(outputFile) != 0)
        fatalError("error close output file");
+
+    TabuList_finalize(&tabu);
+
+    Solution_finalize(currentInstance.solution);
+    free(currentInstance.solution);
+    Solution_finalize(bestNeighbour.solution);
+    free(bestNeighbour.solution);
+    Solution_finalize(currentInstanceSave.solution);
+    free(currentInstanceSave.solution);
+    Instance_finalize(&bestInstance);
 
     return 0;
 }

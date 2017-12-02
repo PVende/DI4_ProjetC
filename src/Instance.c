@@ -272,7 +272,7 @@ void Instance_firstSolution(Instance * instance){
 	Batch batch;
 	BatchList batchList;
 	Solution solution;
-	Instance * currentSolution;
+	Instance currentSolution;
 	Sequence sequence;
     unsigned int * deliveryDatesCopy;
 	unsigned int infinity = -1;
@@ -285,7 +285,9 @@ void Instance_firstSolution(Instance * instance){
 				evalBestSolution = infinity,
 				counter;
 
-    currentSolution = Instance_duplicate(instance);
+    Instance_init(&currentSolution);
+    currentSolution = *instance;
+    currentSolution.solution = NULL;
 
     Sequence_init(&sequence);
     Sequence_allocate(&sequence, instance->nbJobs);
@@ -331,14 +333,14 @@ void Instance_firstSolution(Instance * instance){
         Solution_setBatchList(&solution, &batchList);
         BatchList_finalize(&batchList);
 
-        Instance_setSolution(currentSolution, &solution);
+        Instance_setSolution(&currentSolution, &solution);
         Solution_finalize(&solution);
 
-        evalCurrentSolution = Instance_eval(currentSolution, 0);
+        evalCurrentSolution = Instance_eval(&currentSolution, 0);
 
         if(evalCurrentSolution < evalBestSolution) {
             evalBestSolution = evalCurrentSolution;
-            Instance_setSolution(instance, currentSolution->solution);
+            Instance_setSolution(instance, currentSolution.solution);
         }
 
         nbJobBatch++;
@@ -352,12 +354,12 @@ void Instance_firstSolution(Instance * instance){
             Solution_setSequence(&solution, instance->solution->sequence);
             Solution_setBatchList(&solution, instance->solution->batchList);
             Solution_swap_both(&solution, i, i+1);
-            Instance_setSolution(currentSolution, &solution);
-            evalCurrentSolution = Instance_eval(currentSolution, 0);
+            Instance_setSolution(&currentSolution, &solution);
+            evalCurrentSolution = Instance_eval(&currentSolution, 0);
 
             if(evalCurrentSolution < evalBestSolution) {
                 evalBestSolution = evalCurrentSolution;
-                Instance_setSolution(instance, currentSolution->solution);
+                Instance_setSolution(instance, currentSolution.solution);
             }
 
             Solution_finalize(&solution);
@@ -366,6 +368,6 @@ void Instance_firstSolution(Instance * instance){
 
     Sequence_finalize(&sequence);
 
-    Instance_finalize(currentSolution);
-    free(currentSolution);
+    Solution_finalize(currentSolution.solution);
+    free(currentSolution.solution);
 }

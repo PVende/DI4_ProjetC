@@ -85,15 +85,19 @@ void Solution_setBatchList(Solution * solution, BatchList * batchList) {
 }
 
 unsigned int * Solution_getBatchInfo(Solution * solution, unsigned int jobNumber) {
-    unsigned int i, totalJob = 0;
+    unsigned int i, j;
     unsigned int * infos = NULL;
 
 	if(solution != NULL && solution->batchList != NULL && solution->sequence->size > jobNumber) {
-		for(i = 0; i < solution->sequence->size && totalJob + solution->batchList->batches[i]->size < jobNumber + 1; i++)
-			totalJob += solution->batchList->batches[i]->size;
-		MALLOC(infos, unsigned int, 2);
-		infos[0] = i;
-		infos[1] = jobNumber - totalJob;
+		for(i = 0; i < solution->batchList->size; i++)
+            for(j = 0; j < solution->batchList->batches[i]->size; j++)
+                if(solution->batchList->batches[i]->batch[j] == jobNumber) {
+                    MALLOC(infos, unsigned int, 2);
+                    infos[0] = i;
+                    infos[1] = j;
+
+                    return infos;
+                }
 	}
 
     return infos;

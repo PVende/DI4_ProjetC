@@ -52,7 +52,7 @@ int Batch_equals(Batch * b1, Batch * b2)
 void Batch_writeBatch(Batch * batch, FILE * file) {
     unsigned int i;
 
-    fprintf(file, "(");
+    fprintf(file, "[");
 
     if(batch != NULL) {
         fprintf(file, "%d", batch->batch[0]);
@@ -64,7 +64,7 @@ void Batch_writeBatch(Batch * batch, FILE * file) {
     } else
         fprintf(file, "null");
 
-    fprintf(file, ")");
+    fprintf(file, "]");
 }
 
 void Batch_addJob(Batch * batch, unsigned int job)

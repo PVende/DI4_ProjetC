@@ -92,7 +92,7 @@ void Config_parseLine(Config * cfg, char * line)
 	else if(strcmp(line, "EFSR_SEQ") == 0) cfg->EFSR_SEQ = intValue;
 	else if(strcmp(line, "EFSR_BATCH") == 0) cfg->EFSR_BATCH = intValue;
 	else if(strcmp(line, "EFSR_BOTH") == 0) cfg->EFSR_BOTH = intValue;
-	else if(strcmp(line, "OPT") == 0) cfg->TWO_OPT = intValue;
+	else if(strcmp(line, "TWO_OPT") == 0) cfg->TWO_OPT = intValue;
 	else if(strcmp(line, "DIVERSIFICATION") == 0) cfg->DIVERSIFICATION = intValue;
 	else if(strcmp(line, "FIRST_IMPROVE") == 0) cfg->FIRST_IMPROVE = intValue;
 	else if(strcmp(line, "LOGICAL_TABU") == 0) cfg->LOGICAL_TABU = intValue;
