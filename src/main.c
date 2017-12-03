@@ -364,7 +364,10 @@ int main(void)
         nbIteration++;
 	}
 
-	printf("%u\t%f s\t%u iterations", bestInstanceEval, cpuTime, nbIteration - 1);
+	if(nbIteration == nbMaxIteration + 1)
+        nbIteration--;
+
+	printf("%u\t%f s\t%u iterations\n", bestInstanceEval, cpuTime, nbIteration);
 
     if((outputFile = fopen(OUTPUT_FILENAME, "w")) == NULL)
         fatalError("error open output file");

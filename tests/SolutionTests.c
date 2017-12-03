@@ -52,6 +52,8 @@ void SolutionTests_testDuplication(void) {
 
     custom_assert(Solution_equals(&sol, dup) == 0);
 
+    Solution_finalize(&sol);
+
     Solution_finalize(dup);
     free(dup);
 }

@@ -63,6 +63,10 @@ void BatchListTests_basicOperations(void){
 	// Finalization
 
 	BatchList_finalize(&list);
+
+	Batch_finalize(&b1);
+	Batch_finalize(&b2);
+	Batch_finalize(&b3);
 }
 
 void BatchListTests_swapEbsrEfsr(void){
@@ -166,6 +170,10 @@ void BatchListTests_swapEbsrEfsr(void){
 	// EFSR
 	// -------------------------------------
 
+    Batch_finalize(&b1);
+	Batch_finalize(&b2);
+	Batch_finalize(&b3);
+
 	BatchList_finalize(&list);
 	BatchList_init(&list);
 	prepareJobs(&b1, &b2, &b3);
@@ -212,6 +220,10 @@ void BatchListTests_swapEbsrEfsr(void){
 	custom_assert(areArraysEqual(pb1->batch, pb1->size, tab4, 6) == 1);
 
 	BatchList_finalize(&list);
+
+    Batch_finalize(&b1);
+	Batch_finalize(&b2);
+	Batch_finalize(&b3);
 }
 
 void BatchListTests_testEbsrAndEfsrOnEmptyBatches(void)
@@ -262,6 +274,10 @@ void BatchListTests_testEbsrAndEfsrOnEmptyBatches(void)
 	// EFSR
 	// -------------------------------------
 
+	Batch_finalize(&b1);
+	Batch_finalize(&b2);
+	Batch_finalize(&b3);
+
 	BatchList_finalize(&list);
 	BatchList_init(&list);
 	prepareJobs(&b1, &b2, &b3);
@@ -297,6 +313,10 @@ void BatchListTests_testEbsrAndEfsrOnEmptyBatches(void)
 	custom_assert(areArraysEqual(pb1->batch, pb1->size, tab2, sizeof(tab2) / sizeof(unsigned int)));
 
 	BatchList_finalize(&list);
+
+    Batch_finalize(&b1);
+	Batch_finalize(&b2);
+	Batch_finalize(&b3);
 }
 
 void BatchListTests_testComparison(void)
@@ -369,6 +389,18 @@ void BatchListTests_testComparison(void)
 	BatchList_finalize(&equal);
 	BatchList_finalize(&notEqual);
 
+    Batch_finalize(&b1);
+	Batch_finalize(&b2);
+	Batch_finalize(&b3);
+	Batch_finalize(&b4);
+
+	Batch_finalize(dupB1);
+	Batch_finalize(dupB2);
+	Batch_finalize(dupB3);
+
+	Batch_finalize(dupB1_2);
+	Batch_finalize(dupB2_2);
+
 	free(dupB1);
 	free(dupB2);
 	free(dupB3);
@@ -406,6 +438,10 @@ void BatchListTests_testDuplication(void)
 
 	dup = BatchList_duplicate(&list);
 	custom_assert(BatchList_equals(&list, dup));
+
+	Batch_finalize(&b1);
+	Batch_finalize(&b2);
+	Batch_finalize(&b3);
 
 	BatchList_finalize(&list);
 	BatchList_finalize(dup);

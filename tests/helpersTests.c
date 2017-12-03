@@ -98,6 +98,8 @@ void helpersTests_duplicateArray(void){
 	custom_assert(areArraysEqual(stackArrayOfZeros, 5, resultHeapArrayOfZeros, 5) == 1);
 	custom_assert(areArraysEqual(array, 9, resultArray, 9));
 
+	free(heapArrayOfZeros);
+
 	free(resultStackArrayOfZeros);
 	free(resultSmallerStackArrayOfZeros);
 	free(resultHeapArrayOfZeros);
