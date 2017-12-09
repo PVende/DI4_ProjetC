@@ -17,12 +17,12 @@
 	#include "../tests/TestsRunner.h"
 #endif
 
-#define INPUT_FILENAME "test_files/input.txt"
-#define OUTPUT_FILENAME "test_files/output.txt"
+#define INPUT_FILENAME "input.txt"
+#define OUTPUT_FILENAME "output.txt"
 #define CONFIG_FILENAME "configs.txt"
 
 
-int main(void)
+int main(int argc, char * argv[])
 {
 	signal(SIGABRT, &on_sigabrt);
 
@@ -63,7 +63,11 @@ int main(void)
 	TabuList_setSize(&tabu, tabuListSize);
 
 	Instance_init(&bestInstance);
-	Instance_parseInstance(&bestInstance, INPUT_FILENAME, CONFIG_FILENAME);
+
+	if(argc == 1)
+        Instance_parseInstance(&bestInstance, INPUT_FILENAME, CONFIG_FILENAME);
+    else if(argc == 2)
+        Instance_parseInstance(&bestInstance, argv[1], CONFIG_FILENAME);
 
 	timeLimit = bestInstance.nbJobs * bestInstance.nbMachine / 4;
 

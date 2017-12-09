@@ -768,7 +768,7 @@ print('**************************')
 # ===================================================
 # Ecriture des resultats
 # ===================================================
-mesresultats = open("test_files/output_py.txt", "w")
+mesresultats = open("output_py.txt", "w")
 
 # ecriture de la valeur
 ch_Best_val = str(Best_val)
