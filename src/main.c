@@ -376,7 +376,7 @@ int main(int argc, char * argv[])
     if((outputFile = fopen(OUTPUT_FILENAME, "w")) == NULL)
         fatalError("error open output file");
 
-    if(fprintf(outputFile, "%u\t", Instance_eval(&bestInstance, diversification)) == 0)
+    if(fprintf(outputFile, "%u\t", Instance_eval(&bestInstance, 0)) == 0)
         fatalError("error write file");
 
     if(fprintf(outputFile, "%f\t", cpuTime) == 0)
