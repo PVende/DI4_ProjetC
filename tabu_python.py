@@ -13,7 +13,11 @@ import copy
 # Lecture du fichier
 # ########################################################
 
-mesdonnees = open("test_files/input.txt", "r")
+if len(sys.argv) > 1:
+	mesdonnees = open(sys.argv[1])
+else:
+	mesdonnees = open("test_files/input.txt", "r")
+
 ligne1 = mesdonnees.readline()
 indice = 0
 j = 0
@@ -768,13 +772,8 @@ print('**************************')
 # ===================================================
 # Ecriture des resultats
 # ===================================================
-mesresultats = open("output_py.txt", "w")
 
-# ecriture de la valeur
-ch_Best_val = str(Best_val)
-for i in range(0, len(ch_Best_val)):
-    mesresultats.write(ch_Best_val[i])
-mesresultats.write('\t')
+mesresultats = open("output_py.txt", "w")
 
 # ecriture du cpu
 NB_CAR_CPU = 8
@@ -784,6 +783,18 @@ if cpu > 0:
         mesresultats.write(ch_cpu[i])
 else:
     mesresultats.write('0')
+mesresultats.write('\t')
+
+# ecriture du nombre d'iteration
+ch_nb_ite = str(nb_ite)
+for i in range(0, len(ch_nb_ite)):
+    mesresultats.write(ch_nb_ite[i])
+mesresultats.write('\t')
+
+# ecriture de la valeur
+ch_Best_val = str(Best_val)
+for i in range(0, len(ch_Best_val)):
+    mesresultats.write(ch_Best_val[i])
 mesresultats.write('\t')
 
 # ecriture de la solution

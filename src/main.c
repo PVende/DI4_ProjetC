@@ -40,7 +40,6 @@ int main(int argc, char * argv[])
                 nbMaxIteration = 2000,
                 nbMaxIterationWithoutImprovment,
                 diversification = 0,
-                timeLimit,
                 startTime,
                 endTime,
                 improvment,
@@ -50,7 +49,8 @@ int main(int argc, char * argv[])
                 stop,
                 i, j,
                 indexI, indexJ;
-    double cpuTime = 0;
+    double cpuTime = 0,
+            timeLimit;
     char move;
 	TabuList tabu;
 	Instance bestInstance,
@@ -69,7 +69,7 @@ int main(int argc, char * argv[])
     else if(argc == 2)
         Instance_parseInstance(&bestInstance, argv[1], CONFIG_FILENAME);
 
-	timeLimit = bestInstance.nbJobs * bestInstance.nbMachine / 4;
+	timeLimit = bestInstance.nbJobs * bestInstance.nbMachine / 4.0;
 
 	if(bestInstance.nbJobs == 100) {
         delta = 8;
@@ -376,10 +376,15 @@ int main(int argc, char * argv[])
     if((outputFile = fopen(OUTPUT_FILENAME, "w")) == NULL)
         fatalError("error open output file");
 
-    if(fprintf(outputFile, "%u\t", Instance_eval(&bestInstance, 0)) == 0)
-        fatalError("error write file");
+    //ordre a remettre comme avant FO->cpu->sol
 
     if(fprintf(outputFile, "%f\t", cpuTime) == 0)
+        fatalError("error write file");
+
+    if(fprintf(outputFile, "%u\t", nbIteration) == 0)
+        fatalError("error write file");
+
+    if(fprintf(outputFile, "%u\t", bestInstanceEval) == 0)
         fatalError("error write file");
 
     Instance_writeInstance(&bestInstance, outputFile);
