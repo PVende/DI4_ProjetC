@@ -1,8 +1,11 @@
 #include "BatchList.h"
 #include "Batch.h"
 
+unsigned int batchListAllocationStep = 1;
+
 void BatchList_init(BatchList * list){
 	list->size = 0;
+	list->allocatedSize = 0;
 	list->batches = NULL;
 }
 
@@ -17,6 +20,7 @@ void BatchList_finalize(BatchList * list){
 	free(list->batches);
 
 	list->size = 0;
+	list->allocatedSize = 0;
 	list->batches = NULL;
 }
 
@@ -31,6 +35,9 @@ BatchList * BatchList_duplicate(BatchList * list)
 
 	MALLOC(dup, BatchList, 1);
 	BatchList_init(dup);
+
+	REALLOC(dup->batches, Batch*, list->allocatedSize);
+	dup->allocatedSize = list->allocatedSize;
 
 	if(list->size > 0)
 	{
@@ -84,9 +91,14 @@ void BatchList_writeBatchList(BatchList * list, FILE * file) {
 }
 
 void BatchList_addBatch(BatchList * list, Batch * batch){
+
+	if(list->size == list->allocatedSize){
+		REALLOC(list->batches, Batch*, list->size + batchListAllocationStep);
+		list->allocatedSize += batchListAllocationStep;
+	}
+
+	list->batches[list->size] = Batch_duplicate(batch);
 	list->size++;
-	REALLOC(list->batches, Batch*, list->size);
-	list->batches[list->size - 1] = Batch_duplicate(batch);
 }
 
 

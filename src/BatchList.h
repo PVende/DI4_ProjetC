@@ -6,9 +6,12 @@
 /** \struct The structure that represents a list of batches */
 typedef struct {
     unsigned int size;
+    unsigned int allocatedSize;
     Batch ** batches;
 
 } BatchList;
+
+extern unsigned int batchListAllocationStep;
 
 
 /** \brief initialize a batchlist

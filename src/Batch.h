@@ -9,8 +9,10 @@
 typedef struct _Batch {
     unsigned int size;
     unsigned int * batch;
-
+	unsigned int allocatedSize;
 } Batch;
+
+extern unsigned int batchAllocationStep;
 
 /**
  * \brief Initialize a batch

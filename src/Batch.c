@@ -1,8 +1,11 @@
 #include "Batch.h"
 #include "helpers.h"
 
+unsigned int batchAllocationStep = 1;
+
 void Batch_init(Batch * batch) {
     batch->size = 0;
+    batch->allocatedSize = 0;
     batch->batch = NULL;
 }
 
@@ -10,6 +13,7 @@ void Batch_init(Batch * batch) {
 void Batch_finalize(Batch * batch) {
     free(batch->batch);
     batch->size = 0;
+    batch->allocatedSize = 0;
     batch->batch = NULL;
 }
 
@@ -23,6 +27,7 @@ Batch * Batch_duplicate(Batch * batch)
 
     MALLOC(dup, Batch, 1);
     dup->size = batch->size;
+    dup->allocatedSize = batch->allocatedSize;
     dup->batch = duplicateArray(batch->batch, batch->size);
 
     return dup;
@@ -79,8 +84,10 @@ void Batch_addJobAt(Batch * batch, unsigned int job, unsigned int position) {
     if(position > batch->size)
         fatalError("Error argument");
 
-    REALLOC(batch->batch, unsigned int, batch->size + 1)
-	//batch->batch = realloc(batch->batch, sizeof(unsigned int) * (batch->size + 1))
+	if(batch->size == batch->allocatedSize){
+		REALLOC(batch->batch, unsigned int, batch->size + batchAllocationStep)
+		batch->allocatedSize += batchAllocationStep;
+	}
 
     for(i = batch->size; i > position; i--)
         batch->batch[i] = batch->batch[i - 1];
@@ -88,7 +95,6 @@ void Batch_addJobAt(Batch * batch, unsigned int job, unsigned int position) {
     batch->batch[position] = job;
 
     batch->size++;
-
 }
 
 
@@ -100,8 +106,6 @@ void Batch_removeJobAt(Batch * batch, unsigned int position) {
 
     for(i = position + 1; i < batch->size; i++)
         batch->batch[i - 1] =  batch->batch[i];
-
-    REALLOC(batch->batch, unsigned int, batch->size - 1);
 
     batch->size--;
 }

@@ -32,6 +32,10 @@ int main(int argc, char * argv[])
 
 	#endif
 
+	// A calculer ?
+	batchAllocationStep = 2;
+	batchListAllocationStep = 15;
+
 	unsigned int tabuListSize = 7,
                 delta,
                 deltaEbfsrSolo = 3,
