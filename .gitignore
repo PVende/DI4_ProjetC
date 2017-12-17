@@ -39,4 +39,5 @@ cmake-build-debug/
 *.project/
 *.settings/
 
-test_files/output*
+test_files/output.txt
+output.txt
