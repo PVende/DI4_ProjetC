@@ -12,10 +12,9 @@
 #include "BatchList.h"
 #include "Instance.h"
 #include "TabuList.h"
+#include "flags.h"
 
-#ifndef NDEBUG
-	#include "../tests/TestsRunner.h"
-#endif
+#include "../tests/TestsRunner.h"
 
 #define INPUT_FILENAME "input.txt"
 #define OUTPUT_FILENAME "output.txt"
@@ -38,9 +37,12 @@ int main(int argc, char * argv[])
 	// A calculer ?
 	batchAllocationStep = 2;
 	batchListAllocationStep = 10;
+
 #if USE_PREPROC_FLAGS == 1
+	printf("USING PREPROC FLAGS");
 	run_configPreproc(argc, argv);
 #else
+	printf("USING configs.txt FLAGS");
 	run_configTxt(argc, argv);
 #endif // USE_PREPROC_FLAGS
 
@@ -495,7 +497,7 @@ void run_configPreproc(int argc, char * argv[])
         bestNeighbourEval = -1;
         stop = 0;
 
-#if SWAP_BOTH == 1
+#if PREPROC_SWAP_BOTH == 1
 		for(i = 0; i < bestInstance.nbJobs - 1; i++)
 			for(j = i + 1; j < bestInstance.nbJobs; j++)
 				if(j - i <= delta) {
@@ -504,7 +506,7 @@ void run_configPreproc(int argc, char * argv[])
 					currentInstanceEval = Instance_eval(&currentInstance, diversification);
 					if(currentInstanceEval < bestNeighbourEval &&
 					   !TabuList_isTabu(&tabu, 's', currentInstance.solution->sequence->sequence[i],
-												currentInstance.solution->sequence->sequence[j], LOGICAL_TABU)) {
+												currentInstance.solution->sequence->sequence[j], PREPROC_LOGICAL_TABU)) {
 						bestNeighbourEval = currentInstanceEval;
 						Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
@@ -512,16 +514,16 @@ void run_configPreproc(int argc, char * argv[])
 						indexI = currentInstance.solution->sequence->sequence[i];
 						indexJ = currentInstance.solution->sequence->sequence[j];
 
-						#if FIRST_IMPROVE == 1
+						#if PREPROC_FIRST_IMPROVE == 1
 							Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
-						#endif // FIRST_IMPROVE
+						#endif //PREPROC_FIRST_IMPROVE
 					}
 					Instance_setSolution(&currentInstance, currentInstanceSave.solution);
 				}
-#endif // SWAP_BOTH
+#endif // PREPROC_SWAP_BOTH
 
 
-#if SWAP_SEQ == 1
+#if PREPROC_SWAP_SEQ == 1
 		for(i = 0; i < bestInstance.nbJobs - 1; i++)
 			for(j = i + 1; j < bestInstance.nbJobs; j++)
 				if(j - i <= delta) {
@@ -530,7 +532,7 @@ void run_configPreproc(int argc, char * argv[])
 					currentInstanceEval = Instance_eval(&currentInstance, diversification);
 					if(currentInstanceEval < bestNeighbourEval &&
 					   !TabuList_isTabu(&tabu, 's', currentInstance.solution->sequence->sequence[i],
-												currentInstance.solution->sequence->sequence[j], LOGICAL_TABU)) {
+												currentInstance.solution->sequence->sequence[j], PREPROC_LOGICAL_TABU)) {
 						bestNeighbourEval = currentInstanceEval;
 						Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
@@ -538,15 +540,15 @@ void run_configPreproc(int argc, char * argv[])
 						indexI = currentInstance.solution->sequence->sequence[i];
 						indexJ = currentInstance.solution->sequence->sequence[j];
 
-						#if FIRST_IMPROVE == 1
+						#if PREPROC_FIRST_IMPROVE == 1
 							Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
-						#endif // FIRST_IMPROVE
+						#endif // PREPROC_FIRST_IMPROVE
 					}
 					Instance_setSolution(&currentInstance, currentInstanceSave.solution);
 				}
-#endif // SWAP_SEQ
+#endif // PREPROC_SWAP_SEQ
 
-#if SWAP_BATCH == 1
+#if PREPROC_SWAP_BATCH == 1
 		for(i = 0; i < bestInstance.nbJobs - 1; i++)
 			for(j = i + 1; j < bestInstance.nbJobs; j++)
 				if(j - i <= delta) {
@@ -555,7 +557,7 @@ void run_configPreproc(int argc, char * argv[])
 					currentInstanceEval = Instance_eval(&currentInstance, diversification);
 					if(currentInstanceEval < bestNeighbourEval &&
 					   !TabuList_isTabu(&tabu, 's', currentInstance.solution->sequence->sequence[i],
-												currentInstance.solution->sequence->sequence[j], LOGICAL_TABU)) {
+												currentInstance.solution->sequence->sequence[j], PREPROC_LOGICAL_TABU)) {
 						bestNeighbourEval = currentInstanceEval;
 						Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
@@ -563,15 +565,15 @@ void run_configPreproc(int argc, char * argv[])
 						indexI = currentInstance.solution->sequence->sequence[i];
 						indexJ = currentInstance.solution->sequence->sequence[j];
 
-						#if FIRST_IMPROVE == 1
+						#if PREPROC_FIRST_IMPROVE == 1
 							Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
-						#endif // FIRST_IMPROVE
+						#endif // PREPROC_FIRST_IMPROVE
 					}
 					Instance_setSolution(&currentInstance, currentInstanceSave.solution);
 				}
-#endif // SWAP_BATCH
+#endif // PREPROC_SWAP_BATCH
 
-#if EBSR_BOTH == 1
+#if PREPROC_EBSR_BOTH == 1
 		for(i = 0; i < bestInstance.nbJobs - 1 && !stop; i++)
 			for(j = i + 1; j < bestInstance.nbJobs && !stop; j++)
 				if(j - i <= delta) {
@@ -580,7 +582,7 @@ void run_configPreproc(int argc, char * argv[])
 					currentInstanceEval = Instance_eval(&currentInstance, diversification);
 					if(currentInstanceEval < bestNeighbourEval &&
 					   !TabuList_isTabu(&tabu, 'b', currentInstance.solution->sequence->sequence[i],
-												currentInstance.solution->sequence->sequence[j], LOGICAL_TABU)) {
+												currentInstance.solution->sequence->sequence[j], PREPROC_LOGICAL_TABU)) {
 						bestNeighbourEval = currentInstanceEval;
 						Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
@@ -588,18 +590,18 @@ void run_configPreproc(int argc, char * argv[])
 						indexI = currentInstance.solution->sequence->sequence[i];
 						indexJ = currentInstance.solution->sequence->sequence[j];
 
-						#if FIRST_IMPROVE == 1
+						#if PREPROC_FIRST_IMPROVE == 1
 							stop = 1;
 							Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
-						#endif // FIRST_IMPROVE
+						#endif // PREPROC_FIRST_IMPROVE
 					}
 					Instance_setSolution(&currentInstance, currentInstanceSave.solution);
 				}
-#endif // EBSR_BOTH
+#endif // PREPROC_EBSR_BOTH
 
 	stop = 0;
 
-#if EBSR_SEQ == 1
+#if PREPROC_EBSR_SEQ == 1
 		for(i = 0; i < bestInstance.nbJobs - 1 && !stop; i++)
 			for(j = i + 1; j < bestInstance.nbJobs && !stop; j++)
 				if(j - i <= deltaEbfsrSolo) {
@@ -608,7 +610,7 @@ void run_configPreproc(int argc, char * argv[])
 					currentInstanceEval = Instance_eval(&currentInstance, diversification);
 					if(currentInstanceEval < bestNeighbourEval &&
 					   !TabuList_isTabu(&tabu, 'b', currentInstance.solution->sequence->sequence[i],
-												currentInstance.solution->sequence->sequence[j], LOGICAL_TABU)) {
+												currentInstance.solution->sequence->sequence[j], PREPROC_LOGICAL_TABU)) {
 						bestNeighbourEval = currentInstanceEval;
 						Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
@@ -616,18 +618,18 @@ void run_configPreproc(int argc, char * argv[])
 						indexI = currentInstance.solution->sequence->sequence[i];
 						indexJ = currentInstance.solution->sequence->sequence[j];
 
-					#if FIRST_IMPROVE == 1
-						stop = 1
+					#if PREPROC_FIRST_IMPROVE == 1
+						stop = 1;
 						Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
-					#endif // FIRST_IMPROVE
+					#endif // PREPROC_FIRST_IMPROVE
 					}
 					Instance_setSolution(&currentInstance, currentInstanceSave.solution);
 				}
-#endif // EBSR_SEQ
+#endif // PREPROC_EBSR_SEQ
 
 	stop = 0;
 
-#if EBSR_BATCH == 1
+#if PREPROC_EBSR_BATCH == 1
 		for(i = 0; i < bestInstance.nbJobs - 1 && !stop; i++)
 			for(j = i + 1; j < bestInstance.nbJobs && !stop; j++)
 				if(j - i <= deltaEbfsrSolo) {
@@ -636,7 +638,7 @@ void run_configPreproc(int argc, char * argv[])
 					currentInstanceEval = Instance_eval(&currentInstance, diversification);
 					if(currentInstanceEval < bestNeighbourEval &&
 					   !TabuList_isTabu(&tabu, 'b', currentInstance.solution->sequence->sequence[i],
-												currentInstance.solution->sequence->sequence[j], LOGICAL_TABU)) {
+												currentInstance.solution->sequence->sequence[j], PREPROC_LOGICAL_TABU)) {
 						bestNeighbourEval = currentInstanceEval;
 						Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
@@ -644,16 +646,16 @@ void run_configPreproc(int argc, char * argv[])
 						indexI = currentInstance.solution->sequence->sequence[i];
 						indexJ = currentInstance.solution->sequence->sequence[j];
 
-					#if FIRST_IMPROVE == 1
-						stop = 1
+					#if PREPROC_FIRST_IMPROVE == 1
+						stop = 1;
 						Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
-					#endif // FIRST_IMPROVE
+					#endif // PREPROC_FIRST_IMPROVE
 					}
 					Instance_setSolution(&currentInstance, currentInstanceSave.solution);
 				}
-#endif // EBSR_BATCH
+#endif // PREPROC_EBSR_BATCH
 
-#if EFSR_BOTH == 1
+#if PREPROC_EFSR_BOTH == 1
 		for(i = 0; i < bestInstance.nbJobs - 1; i++)
 			for(j = i + 1; j < bestInstance.nbJobs; j++)
 				if(j - i <= delta) {
@@ -662,7 +664,7 @@ void run_configPreproc(int argc, char * argv[])
 					currentInstanceEval = Instance_eval(&currentInstance, diversification);
 					if(currentInstanceEval < bestNeighbourEval &&
 					   !TabuList_isTabu(&tabu, 'f', currentInstance.solution->sequence->sequence[i],
-												currentInstance.solution->sequence->sequence[j], LOGICAL_TABU)) {
+												currentInstance.solution->sequence->sequence[j], PREPROC_LOGICAL_TABU)) {
 						bestNeighbourEval = currentInstanceEval;
 						Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
@@ -670,15 +672,15 @@ void run_configPreproc(int argc, char * argv[])
 						indexI = currentInstance.solution->sequence->sequence[i];
 						indexJ = currentInstance.solution->sequence->sequence[j];
 
-					#if FIRST_IMPROVE == 1
+					#if PREPROC_FIRST_IMPROVE == 1
 						Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
-					#endif // FIRST_IMPROVE
+					#endif // PREPROC_FIRST_IMPROVE
 					}
 					Instance_setSolution(&currentInstance, currentInstanceSave.solution);
 				}
-#endif // EFSR_BOTH
+#endif // PREPROC_EFSR_BOTH
 
-#if EFSR_SEQ == 1
+#if PREPROC_EFSR_SEQ == 1
 		for(i = 0; i < bestInstance.nbJobs - 1; i++)
 			for(j = i + 1; j < bestInstance.nbJobs; j++)
 				if(j - i <= deltaEbfsrSolo) {
@@ -687,7 +689,7 @@ void run_configPreproc(int argc, char * argv[])
 					currentInstanceEval = Instance_eval(&currentInstance, diversification);
 					if(currentInstanceEval < bestNeighbourEval &&
 					   !TabuList_isTabu(&tabu, 'f', currentInstance.solution->sequence->sequence[i],
-												currentInstance.solution->sequence->sequence[j], LOGICAL_TABU)) {
+												currentInstance.solution->sequence->sequence[j], PREPROC_LOGICAL_TABU)) {
 						bestNeighbourEval = currentInstanceEval;
 						Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
@@ -695,15 +697,15 @@ void run_configPreproc(int argc, char * argv[])
 						indexI = currentInstance.solution->sequence->sequence[i];
 						indexJ = currentInstance.solution->sequence->sequence[j];
 
-					#if FIRST_IMPROVE == 1
+					#if PREPROC_FIRST_IMPROVE == 1
 						Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
-					#endif // FIRST_IMPROVE
+					#endif // PREPROC_FIRST_IMPROVE
 					}
 					Instance_setSolution(&currentInstance, currentInstanceSave.solution);
 				}
-#endif // EFSR_SEQ
+#endif // PREPROC_EFSR_SEQ
 
-#if EFSR_BATCH == 1
+#if PREPROC_EFSR_BATCH == 1
 		for(i = 0; i < bestInstance.nbJobs - 1; i++)
 			for(j = i + 1; j < bestInstance.nbJobs; j++)
 				if(j - i <= deltaEbfsrSolo) {
@@ -712,7 +714,7 @@ void run_configPreproc(int argc, char * argv[])
 					currentInstanceEval = Instance_eval(&currentInstance, diversification);
 					if(currentInstanceEval < bestNeighbourEval &&
 					   !TabuList_isTabu(&tabu, 'f', currentInstance.solution->sequence->sequence[i],
-												currentInstance.solution->sequence->sequence[j], LOGICAL_TABU)) {
+												currentInstance.solution->sequence->sequence[j], PREPROC_LOGICAL_TABU)) {
 						bestNeighbourEval = currentInstanceEval;
 						Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
@@ -720,13 +722,13 @@ void run_configPreproc(int argc, char * argv[])
 						indexI = currentInstance.solution->sequence->sequence[i];
 						indexJ = currentInstance.solution->sequence->sequence[j];
 
-					#if FIRST_IMPROVE == 1
+					#if PREPROC_FIRST_IMPROVE == 1
 						Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
-					#endif // FIRST_IMPROVE
+					#endif // PREPROC_FIRST_IMPROVE
 					}
 					Instance_setSolution(&currentInstance, currentInstanceSave.solution);
 				}
-#endif // EFSR_BATCH
+#endif // PREPROC_EFSR_BATCH
 
         if(bestNeighbourEval != (unsigned int)-1) {
             Instance_setSolution(&currentInstance, bestNeighbour.solution);
@@ -751,7 +753,7 @@ void run_configPreproc(int argc, char * argv[])
         if(nbIterationWithoutImprovment >= nbMaxIterationWithoutImprovment) {
             nbIterationWithoutImprovment = 0;
 
-		#if DIVERSIFICATION == 1
+		#if PREPROC_DIVERSIFICATION == 1
 			diversification = 1;
 			TabuList_finalize(&tabu);
 			TabuList_setSize(&tabu, tabuListSize);

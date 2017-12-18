@@ -26,13 +26,13 @@ void helpersTests_stringIsEmpty(void)
 	char * notEmpty = "abc";
 	char * notEmptyRoundedBySpaces = "   abc  ";
 
-	custom_assert(stringIsEmpty(empty) == 1);
-	custom_assert(stringIsEmpty(linebreak) == 1);
-	custom_assert(stringIsEmpty(lineBreak2) == 1);
-	custom_assert(stringIsEmpty(spaces) == 0);
-	custom_assert(stringIsEmpty(multiSpaceTypes) == 0);
-	custom_assert(stringIsEmpty(notEmpty) == 0);
-	custom_assert(stringIsEmpty(notEmptyRoundedBySpaces) == 0);
+	custom_assert(stringIsEmpty("") == 1);
+	custom_assert(stringIsEmpty("\n") == 1);
+	custom_assert(stringIsEmpty("\r\n") == 1);
+	custom_assert(stringIsEmpty("  ") == 0);
+	custom_assert(stringIsEmpty(" \t \n ") == 0);
+	custom_assert(stringIsEmpty("abc") == 0);
+	custom_assert(stringIsEmpty("   abc  ") == 0);
 }
 
 void helpersTests_areArraysEqual(void)

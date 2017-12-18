@@ -46,7 +46,7 @@ int Solution_equals(Solution * s1, Solution * s2) {
 }
 
 void Solution_writeSolution(Solution * solution, FILE * file) {
-    fprintf(file, "[ ");
+    fprintf(file, "[");
 
     if(solution != NULL) {
         Sequence_writeSequence(solution->sequence, file);
@@ -55,7 +55,7 @@ void Solution_writeSolution(Solution * solution, FILE * file) {
     } else
         fprintf(file, "null");
 
-    fprintf(file, " ]");
+    fprintf(file, "]");
 }
 
 void Solution_setSequence(Solution * solution, Sequence * sequence) {
