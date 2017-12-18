@@ -63,6 +63,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/TabuList.h" />
+		<Unit filename="src/flags.h" />
 		<Unit filename="src/helpers.c">
 			<Option compilerVar="CC" />
 		</Unit>
