@@ -2,7 +2,7 @@
 ## openFrameworks
 #################
 
-[Bb]in/*/*.exe
+[Bb]in/**/*.exe
 ![Bb]in/data/
 [Bb]uild/
 [Oo]bj/
