@@ -39,11 +39,11 @@ int main(int argc, char * argv[])
 	batchListAllocationStep = 10;
 
 #if USE_PREPROC_FLAGS == 1
-	printf("USING PREPROC FLAGS");
 	run_configPreproc(argc, argv);
+	printf("USING PREPROC FLAGS");
 #else
-	printf("USING configs.txt FLAGS");
 	run_configTxt(argc, argv);
+	printf("USING configs.txt FLAGS");
 #endif // USE_PREPROC_FLAGS
 
     return 0;
@@ -373,11 +373,12 @@ void run_configTxt(int argc, char * argv[]){
         if(nbIterationWithoutImprovment >= nbMaxIterationWithoutImprovment) {
             nbIterationWithoutImprovment = 0;
 
-            if(bestInstance.config->DIVERSIFICATION)
+            if(bestInstance.config->DIVERSIFICATION){
                 diversification = 1;
                 TabuList_finalize(&tabu);
                 TabuList_setSize(&tabu, tabuListSize);
                 printf("Diversification\n");
+            }
         }
 
         endTime = clock();
