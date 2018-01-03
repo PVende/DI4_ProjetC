@@ -7,8 +7,8 @@
 [Bb]uild/
 [Oo]bj/
 *.o
-[Dd]ebug*/
-[Rr]elease*/
+[Dd]ebug*/*.exe
+[Rr]elease*/*.exe
 *.mode*
 *.app/
 *.pyc
@@ -33,7 +33,7 @@ Desktop.ini
 
 cmake-build-debug/
 
-.idea
+.idea/
 
 *.cproject/
 *.project/
