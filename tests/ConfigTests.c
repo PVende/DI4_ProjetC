@@ -7,7 +7,7 @@
 #include <assert.h>
 #include <errno.h>
 
-#define TEST_FILENAME "tests/unit_test_config.txt"
+#define TEST_FILENAME "unit_test_config.txt"
 
 void ConfigTests_launchTests(void){
 	Config cfg;
