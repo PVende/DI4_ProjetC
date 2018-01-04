@@ -3,20 +3,67 @@
 # ########################################################
 
 from tkinter import *
-import os
-import math
 import time  # pour avoir le temsp de calcul cpu
 # from numpy import *
 import copy
+from pathlib import Path
+
+
+def parse_args():
+    print(sys.argv)
+    local_args = {"config": False, "input": False, "print": True}
+    i = 1
+    while i < len(sys.argv):
+        opt = sys.argv[i]
+
+        if opt == "-c" or opt == "--config":
+            local_args["config"] = sys.argv[i + 1]
+        elif opt == "-i" or opt == "--input":
+            local_args["input"] = sys.argv[i + 1]
+        elif opt == "-p" or opt == "--print":
+            local_args["print"] = True
+            i -= 1
+        elif opt == "-dp" or opt == "--disable-print":
+            local_args["print"] = False
+            i -= 1
+
+        i += 2
+
+    return local_args
+
+
+def check_args(args):
+    default_input = "input.txt"
+
+    if not args["input"]:
+        args["input"] = default_input
+    else:
+        input_file = Path(args["input"])
+        if not input_file.exists():
+            args["input"] = default_input
+
+    if not args["config"] or not Path(args["config"]).exists():
+        args["config"] = False
+
+    return args
+
+
+args = check_args(parse_args())
+
+
+def debug(*values):
+    if args["print"]:
+        to_print = ""
+        for v in values:
+            to_print += str(v)
+        print(to_print)
+
 
 # ########################################################
 # Lecture du fichier
 # ########################################################
 
-if len(sys.argv) > 1:
-	mesdonnees = open(sys.argv[1])
-else:
-	mesdonnees = open("test_files/input.txt", "r")
+mesdonnees = open(args["input"], "r")
 
 ligne1 = mesdonnees.readline()
 indice = 0
@@ -29,45 +76,45 @@ while j <= len(ligne1) and ligne1[j] != '\n':
     while (ligne1[j] != ' ') and j <= len(ligne1) and ligne1[j] != '\n':
         val = val + ligne1[j]
         j = j + 1
-    # print('val=',val)
+    # debug('val=',val)
     if indice == 1:
         m = int(val)
     elif indice == 2:
         nbjobs = int(val)
-# print('nbjobs=',nbjobs,' m=',m)
+# debug('nbjobs=',nbjobs,' m=',m)
 
 pp = [[] for i in range(nbjobs)]
 for i in range(0, m):
     ligne = mesdonnees.readline()
     laligne = ligne.split('\t')
-    # print(laligne)
+    # debug(laligne)
     if laligne != '\n':
         for j in range(0, nbjobs):
             val = int(laligne[j])
-            # print('val=',val)
+            # debug('val=',val)
             pp[j].insert(i, val)
-# print('pp=',pp)
+# debug('pp=',pp)
 
 dd = []
 ligne = mesdonnees.readline()
 laligne = ligne.split('\t')
 for j in range(0, nbjobs):
     val = int(laligne[j])
-    # print('val=',val)
+    # debug('val=',val)
     dd.append(val)
-# print('dd=',dd)
+# debug('dd=',dd)
 
 tt = [[] for i in range(nbjobs + 1)]
 for i in range(0, nbjobs + 1):
     ligne = mesdonnees.readline()
     laligne = ligne.split('\t')
-    # print(laligne)
+    # debug(laligne)
     if laligne != '\n':
         for j in range(0, nbjobs + 1):
             val = int(laligne[j])
-            # print('val=',val)
+            # debug('val=',val)
             tt[j].insert(i, val)
-# print('tt=',tt)
+# debug('tt=',tt)
 
 mesdonnees.close()
 
@@ -97,8 +144,8 @@ elif nbjobs == 50:
     NB_ITE_SANS_AMEL_MAX = 8
 else:
     NB_ITE_SANS_AMEL_MAX = 12
-AVEC_DIVERSIFICATION = 1
 
+AVEC_DIVERSIFICATION = 1
 FLAG_SWAP_SEQ = 1
 FLAG_SWAP_BATCH = 1
 FLAG_SWAP_BOTH = 1
@@ -109,9 +156,91 @@ FLAG_EFSR_BOTH = 1
 FLAG_EFSR_SEQ = 1
 FLAG_EFSR_BATCH = 1
 FLAG_2OPT = 1
-
 FLAG_FIRST_IMPROVE = 1
-TABOU_LOGIQUE = 0  # je swappe(i,j) donc (j,i) est tabou
+TABOU_LOGIQUE = 0
+
+
+def set_flag(tag, value):
+    global AVEC_DIVERSIFICATION
+    global FLAG_SWAP_SEQ
+    global FLAG_SWAP_BATCH
+    global FLAG_SWAP_BOTH
+    global FLAG_EBSR_BOTH
+    global FLAG_EBSR_SEQ
+    global FLAG_EBSR_BATCH
+    global FLAG_EFSR_BOTH
+    global FLAG_EFSR_SEQ
+    global FLAG_EFSR_BATCH
+    global FLAG_2OPT
+    global FLAG_FIRST_IMPROVE
+    global TABOU_LOGIQUE
+
+    if tag == "SWAP_SEQ":
+        FLAG_SWAP_SEQ = int(value)
+    elif tag == "SWAP_BATCH":
+        FLAG_SWAP_BATCH = int(value)
+    elif tag == "SWAP_BOTH":
+        FLAG_SWAP_BOTH = int(value)
+    elif tag == "EBSR_BOTH":
+        FLAG_EBSR_BOTH = int(value)
+    elif tag == "EBSR_SEQ":
+        FLAG_EBSR_SEQ = int(value)
+    elif tag == "EBSR_BATCH":
+        FLAG_EBSR_BATCH = int(value)
+    elif tag == "EFSR_BOTH":
+        FLAG_EFSR_BOTH = int(value)
+    elif tag == "EFSR_SEQ":
+        FLAG_EFSR_SEQ = int(value)
+    elif tag == "EFSR_BATCH":
+        FLAG_SWAP_SEQ = int(value)
+    elif tag == "TWO_OPT":
+        FLAG_EFSR_BATCH = int(value)
+    elif tag == "DIVERSIFICATION":
+        AVEC_DIVERSIFICATION = int(value)
+    elif tag == "FIRST_IMPROVE":
+        FLAG_FIRST_IMPROVE = int(value)
+    elif tag == "LOGICAL_TABU":
+        TABOU_LOGIQUE = int(value)
+
+
+def prepare_flags():
+    if not args["config"]:
+        return
+
+    config_file = open(args["config"], "r")
+    lines = config_file.readlines()
+    for line in lines:
+        line = line.strip()
+
+        if not line or line[0] == '#':
+            continue
+
+        parts = line.split("=")
+        tag = parts[0].strip()
+        value = parts[1].strip()
+
+        set_flag(tag, value)
+
+
+def debug_config():
+    print("--------------- CONFIG ---------------")
+    print("AVEC_DIVERSIFICATION : ", AVEC_DIVERSIFICATION)
+    print("FLAG_SWAP_SEQ : ", FLAG_SWAP_SEQ)
+    print("FLAG_SWAP_BATCH : ", FLAG_SWAP_BATCH)
+    print("FLAG_SWAP_BOTH : ", FLAG_SWAP_BOTH)
+    print("FLAG_EBSR_BOTH : ", FLAG_EBSR_BOTH)
+    print("FLAG_EBSR_SEQ : ", FLAG_EBSR_SEQ)
+    print("FLAG_EBSR_BATCH : ", FLAG_EBSR_BATCH)
+    print("FLAG_EFSR_BOTH : ", FLAG_EFSR_BOTH)
+    print("FLAG_EFSR_SEQ : ", FLAG_EFSR_SEQ)
+    print("FLAG_EFSR_BATCH : ", FLAG_EFSR_BATCH)
+    print("FLAG_2OPT : ", FLAG_2OPT)
+    print("FLAG_FIRST_IMPROVE : ", FLAG_FIRST_IMPROVE)
+    print("TABOU_LOGIQUE : ", TABOU_LOGIQUE)
+    print("--------------------------------------")
+
+
+prepare_flags()
 
 
 def InsereTabou(voisinage, indi, indj):
@@ -119,14 +248,14 @@ def InsereTabou(voisinage, indi, indj):
     if len(ListeTabou) == TailleTabou:
         del (ListeTabou[0])
     ListeTabou.append(ElemTabou)
-    # print('ListeTabou :',ListeTabou)
+    # debug('ListeTabou :',ListeTabou)
 
 
 def PasTabou(voisinage, indi, indj):
     ElemTabou = [voisinage, indi, indj]
     pasTabou = True
     if (ElemTabou in ListeTabou):
-        # print('Element ',ElemTabou,' dans la liste Tabou')
+        # debug('Element ',ElemTabou,' dans la liste Tabou')
         pasTabou = False
     return (pasTabou)
 
@@ -140,7 +269,7 @@ def swap_both(i, j, sol, div):
     # ==================================================================
     # le swap est effectue dans la sequence et dans le batch
     # ==================================================================
-    # print('avant swap_seq:',i,j,sol)
+    # debug('avant swap_seq:',i,j,sol)
     job_i = sol[0][i]
     job_1 = [job_i]
     job_j = sol[0][j]
@@ -152,15 +281,15 @@ def swap_both(i, j, sol, div):
         if job_i in sol[1][u]:
             index_i = sol[1][u].index(job_i)
             u_i = u
-            # print('i=',i,' indice ',index_i,'tournee ',u)
+            # debug('i=',i,' indice ',index_i,'tournee ',u)
         if job_j in sol[1][u]:
             index_j = sol[1][u].index(job_j)
             u_j = u
-            # print('j=',j,' indice ',index_j,'tournee ',u)
+            # debug('j=',j,' indice ',index_j,'tournee ',u)
         u = u + 1
     sol[1][u_i][index_i] = job_j
     sol[1][u_j][index_j] = job_i
-    # print('apres swap_both:',i,j,sol)
+    # debug('apres swap_both:',i,j,sol)
     valeur = evalue(sol, div)
     ##    if not div:
     ##        valeur = evalue(sol)
@@ -174,13 +303,13 @@ def swap_seq(i, j, sol, div):
     # ==================================================================
     # le swap est effectue dans la sequence
     # ==================================================================
-    # print('avant swap_seq:',i,j,sol)
+    # debug('avant swap_seq:',i,j,sol)
     job_i = sol[0][i]
     job_1 = [job_i]
     job_j = sol[0][j]
     job_2 = [job_j]
     sol[0] = sol[0][0:i] + job_2 + sol[0][i + 1:j] + job_1 + sol[0][j + 1:nbjobs]
-    # print('apres swap_seq:',i,j,sol)
+    # debug('apres swap_seq:',i,j,sol)
     valeur = evalue(sol, div)
     ##    if not div:
     ##        valeur = evalue(sol)
@@ -194,7 +323,7 @@ def swap_batch(i, j, sol, div):
     # ==================================================================
     # le swap est effectue dans le batch
     # ==================================================================
-    # print('avant swap_batch:',i,j,sol)
+    # debug('avant swap_batch:',i,j,sol)
     job_i = sol[0][i]
     job_1 = [job_i]
     job_j = sol[0][j]
@@ -205,15 +334,15 @@ def swap_batch(i, j, sol, div):
         if job_i in sol[1][u]:
             index_i = sol[1][u].index(job_i)
             u_i = u
-            # print('i=',i,' indice ',index_i,'tournee ',u)
+            # debug('i=',i,' indice ',index_i,'tournee ',u)
         if job_j in sol[1][u]:
             index_j = sol[1][u].index(job_j)
             u_j = u
-            # print('j=',j,' indice ',index_j,'tournee ',u)
+            # debug('j=',j,' indice ',index_j,'tournee ',u)
         u = u + 1
     sol[1][u_i][index_i] = job_j
     sol[1][u_j][index_j] = job_i
-    # print('apres swap_batch:',i,j,sol)
+    # debug('apres swap_batch:',i,j,sol)
     valeur = evalue(sol, div)
     ##    if not div:
     ##        valeur = evalue(sol)
@@ -227,7 +356,7 @@ def ebsr_both(i, j, sol, div):
     # ==================================================================
     # l'ebsr est effectue dans la sequence
     # ==================================================================
-    # print('avant ebsr_seq:',sol,i,j)
+    # debug('avant ebsr_seq:',sol,i,j)
     job_i = sol[0][i]
     job_1 = [job_i]
     job_j = sol[0][j]
@@ -248,7 +377,7 @@ def ebsr_both(i, j, sol, div):
     ##        valeur = evalue(sol)
     ##    else:
     ##        valeur = evalue_div(sol)
-    # print('apres ebsr_seq:',sol,i,j)
+    # debug('apres ebsr_seq:',sol,i,j)
     return (valeur)
 
 
@@ -257,7 +386,7 @@ def ebsr_seq(i, j, sol, div):
     # ==================================================================
     # l'ebsr est effectue dans la sequence
     # ==================================================================
-    # print('avant ebsr_seq:',sol,i,j)
+    # debug('avant ebsr_seq:',sol,i,j)
     job_i = sol[0][i]
     job_1 = [job_i]
     job_j = sol[0][j]
@@ -268,7 +397,7 @@ def ebsr_seq(i, j, sol, div):
     ##        valeur = evalue(sol)
     ##    else:
     ##        valeur = evalue_div(sol)
-    # print('apres ebsr_seq:',sol,i,j)
+    # debug('apres ebsr_seq:',sol,i,j)
     return (valeur)
 
 
@@ -277,7 +406,7 @@ def ebsr_batch(i, j, sol, div):
     # ==================================================================
     # l'ebsr est effectue dans le batch
     # ==================================================================
-    # print('avant ebsr:',sol,i,j)
+    # debug('avant ebsr:',sol,i,j)
     job_i = sol[0][i]
     job_1 = [job_i]
     job_j = sol[0][j]
@@ -292,17 +421,17 @@ def ebsr_batch(i, j, sol, div):
             index_j = sol[1][u].index(job_j)
             u_j = u
         u = u + 1
-    # print('u_i=',u_i,' u_j=',u_j,' index_i=',index_i,' index_j=',index_j)
+    # debug('u_i=',u_i,' u_j=',u_j,' index_i=',index_i,' index_j=',index_j)
     del sol[1][u_j][index_j]
     sol[1][u_i].insert(index_i - 1, job_j)
     if (sol[1][u_j] == []): del sol[1][u_j]
-    # print(sol)
+    # debug(sol)
     valeur = evalue(sol, div)
     ##    if not div:
     ##        valeur = evalue(sol)
     ##    else:
     ##        valeur = evalue_div(sol)
-    # print('apres ebsr:',sol,i,j)
+    # debug('apres ebsr:',sol,i,j)
     return (valeur)
 
 
@@ -311,7 +440,7 @@ def efsr_both(i, j, sol, div):
     # ==================================================================
     # l'efsr est effectue dans la sequence et dans le batch
     # ==================================================================
-    # print('avant efsr_seq:',sol,i,j)
+    # debug('avant efsr_seq:',sol,i,j)
     job_i = sol[0][i]
     job_1 = [job_i]
     job_j = sol[0][j]
@@ -332,7 +461,7 @@ def efsr_both(i, j, sol, div):
     ##        valeur = evalue(sol)
     ##    else:
     ##        valeur = evalue_div(sol)
-    # print('apres efsr_seq:',sol,i,j)
+    # debug('apres efsr_seq:',sol,i,j)
     return (valeur)
 
 
@@ -341,7 +470,7 @@ def efsr_seq(i, j, sol, div):
     # ==================================================================
     # l'efsr est effectue dans la sequence
     # ==================================================================
-    # print('avant efsr_seq:',sol,i,j)
+    # debug('avant efsr_seq:',sol,i,j)
     job_i = sol[0][i]
     job_1 = [job_i]
     job_j = sol[0][j]
@@ -352,7 +481,7 @@ def efsr_seq(i, j, sol, div):
     ##        valeur = evalue(sol)
     ##    else:
     ##        valeur = evalue_div(sol)
-    # print('apres efsr_seq:',sol,i,j)
+    # debug('apres efsr_seq:',sol,i,j)
     return (valeur)
 
 
@@ -361,7 +490,7 @@ def efsr_batch(i, j, sol, div):
     # ==================================================================
     # l'efsr est effectue dans le batch
     # ==================================================================
-    # print('avant efsr_batch:',sol,i,j)
+    # debug('avant efsr_batch:',sol,i,j)
     job_i = sol[0][i]
     job_1 = [job_i]
     job_j = sol[0][j]
@@ -376,17 +505,17 @@ def efsr_batch(i, j, sol, div):
             index_j = sol[1][u].index(job_j)
             u_j = u
         u = u + 1
-    # print('u_i=',u_i,' u_j=',u_j,' index_i=',index_i,' index_j=',index_j)
+    # debug('u_i=',u_i,' u_j=',u_j,' index_i=',index_i,' index_j=',index_j)
     del sol[1][u_i][index_i]
     sol[1][u_j].insert(index_j - 1, job_i)
     if (sol[1][u_i] == []): del sol[1][u_i]
-    # print(sol)
+    # debug(sol)
     valeur = evalue(sol, div)
     ##    if not div:
     ##        valeur = evalue(sol)
     ##    else:
     ##        valeur = evalue_div(sol)
-    # print('apres efsr_batch:',sol,i,j)
+    # debug('apres efsr_batch:',sol,i,j)
     return (valeur)
 
 
@@ -399,31 +528,31 @@ def evalue(sol, div):
     fake_dd = copy.deepcopy(dd)
     for j in range(0, nbjobs):
         jobj = sol[0][j]
-        # print(jobj)
+        # debug(jobj)
         Cm[0] = Cm[0] + pp[jobj][0]
         Cjm[jobj][0] = Cm[0]
-        # print('Cm[0]=',Cm[0])
+        # debug('Cm[0]=',Cm[0])
         for i in range(1, m):
             Cm[i] = max(Cm[i - 1], Cm[i]) + pp[jobj][i]
             Cjm[jobj][i] = Cm[i]
-            # print('Cm[',i,']=',Cm[i])
-            # print('fin de Jj=',Cm[m-1])
-    # print(Cjm)
+            # debug('Cm[',i,']=',Cm[i])
+            # debug('fin de Jj=',Cm[m-1])
+    # debug(Cjm)
     Cmax = Cm[m - 1]
     for j in range(0, nbjobs): fake_dd[j] = Cmax - dd[j]
     # =======================================================
     # Calcul des dates de depart au plus tot des tournees
     # =======================================================
     nb_tournees = len(sol[1])
-    # print('nb_tournees=',nb_tournees)
+    # debug('nb_tournees=',nb_tournees)
     depart_plus_tot = [0] * nb_tournees
     for u in range(0, nb_tournees):
         depart_plus_tot[u] = -1
-        # print('tournee ',u,':')
+        # debug('tournee ',u,':')
         for job in sol[1][u]:
-            # print('\t visite job ,',job)
+            # debug('\t visite job ,',job)
             depart_plus_tot[u] = max(Cjm[job][m - 1], depart_plus_tot[u])
-            # print('depart au plus tot de ',u,'=',depart_plus_tot[u])
+            # debug('depart au plus tot de ',u,'=',depart_plus_tot[u])
     # =======================================================
     # Calcul des dates de livraison et du retard total
     # =======================================================
@@ -436,10 +565,10 @@ def evalue(sol, div):
     depot = nbjobs
     for tournee in sol[1]:
         ville_depart = depot
-        # print('tournee ',tournee,' de ',len(tournee),' depots')
+        # debug('tournee ',tournee,' de ',len(tournee),' depots')
         date_depart = max(date_retour, depart_plus_tot[num_tournee])
         for dest in tournee:
-            # print('destination ',dest)
+            # debug('destination ',dest)
             date_arrivee = date_depart + tt[ville_depart][dest]
             Dj[dest] = date_arrivee
             if not div:
@@ -448,13 +577,13 @@ def evalue(sol, div):
                 # Tj[dest]=max(0,Dj[dest]-fake_dd[dest])
                 Tj[dest] = Dj[dest]
             TotalTj = TotalTj + Tj[dest]
-            # print('date arrivee =',date_arrivee, 'retard=',Tj[dest])
+            # debug('date arrivee =',date_arrivee, 'retard=',Tj[dest])
             date_depart = date_arrivee
             ville_depart = dest
         date_retour = date_arrivee + tt[dest][depot]
         num_tournee = num_tournee + 1
         # print ('date_retour =',date_retour)
-    # print('\t TotalTj=',TotalTj)
+    # debug('\t TotalTj=',TotalTj)
     return (TotalTj)
 
 
@@ -467,10 +596,10 @@ def SequenceInit():
     fake_dd = copy.deepcopy(dd)
     for j in range(0, nbjobs):
         index_the_job = fake_dd.index(min(fake_dd))
-        # print(index_the_job)
+        # debug(index_the_job)
         sol_init[0].append(index_the_job)
         fake_dd[index_the_job] = INFINI
-    # print(sol_init[0])
+    # debug(sol_init[0])
     nbjobs_par_batch = 1
     val_best_sol = INFINI
     while (nbjobs_par_batch <= nbjobs / 2):
@@ -486,19 +615,19 @@ def SequenceInit():
                 cpt = cpt + 1
             sol_batch[1].append(le_batch)
         valeur_sol_batch = evalue(sol_batch, False)
-        # print(sol_batch,':',valeur_sol_batch)
+        # debug(sol_batch,':',valeur_sol_batch)
         if (valeur_sol_batch < val_best_sol):
             val_best_sol = valeur_sol_batch
             best_sol = copy.deepcopy(sol_batch)
         nbjobs_par_batch = nbjobs_par_batch + 1
-    print('val_best_sol=', val_best_sol, ':', best_sol)
+    debug('val_best_sol=', val_best_sol, ':', best_sol)
     # =======================================================
     # petit 2-OPT
     # =======================================================
     if (FLAG_2OPT):
         k = 0
         while k <= nbjobs - 2:
-            # print('tester ',best_sol[0][k],' et ',best_sol[0][k+1])
+            # debug('tester ',best_sol[0][k],' et ',best_sol[0][k+1])
             sol_cour = copy.deepcopy(best_sol)
             val_voisin = swap_both(k, k + 1, sol_cour, False)
 
@@ -506,7 +635,7 @@ def SequenceInit():
                 best_sol = copy.deepcopy(sol_cour)
                 val_best_sol = val_voisin
             k = k + 1
-        print('val_best_sol 2 =', val_best_sol, ':', best_sol)
+        debug('val_best_sol 2 =', val_best_sol, ':', best_sol)
 
 
 time_start = time.clock()
@@ -521,7 +650,7 @@ best_sol = [[], []]
 SequenceInit()
 sol_init = copy.deepcopy(best_sol)
 Best_val = evalue(sol_init, False)
-# print('sol_init=',sol_init,Best_val)
+# debug('sol_init=',sol_init,Best_val)
 
 ##TIME_LIMIT = 0
 
@@ -553,14 +682,14 @@ while (cpu < TIME_LIMIT) and (nb_ite <= NB_ITE_MAX):
         for i in range(0, nbjobs - 1):
             for j in range(i + 1, nbjobs):
                 if j - i <= DELTA:
-                    # print('solution courante:',sol_cour)
+                    # debug('solution courante:',sol_cour)
                     save_sol_cour = copy.deepcopy(sol_cour)
                     val_voisin = swap_both(i, j, sol_cour, diversification)
                     # si on est le meilleur voisin
                     if (val_voisin < val_best_vois) and PasTabou('s', sol_cour[0][i], sol_cour[0][j]):
                         val_best_vois = val_voisin
                         Best_vois = copy.deepcopy(sol_cour)
-                        # print('Best_vois=',Best_vois)
+                        # debug('Best_vois=',Best_vois)
                         typeBest_vois = 's'
                         typeIndex_i, typeIndex_j = sol_cour[0][i], sol_cour[0][j]
                         if (FLAG_FIRST_IMPROVE): save_sol_cour = copy.deepcopy(Best_vois)
@@ -571,14 +700,14 @@ while (cpu < TIME_LIMIT) and (nb_ite <= NB_ITE_MAX):
         for i in range(0, nbjobs - 1):
             for j in range(i + 1, nbjobs):
                 if j - i <= DELTA:
-                    # print('solution courante:',sol_cour)
+                    # debug('solution courante:',sol_cour)
                     save_sol_cour = copy.deepcopy(sol_cour)
                     val_voisin = swap_seq(i, j, sol_cour, diversification)
                     # si on est le meilleur voisin
                     if (val_voisin < val_best_vois) and PasTabou('s', sol_cour[0][i], sol_cour[0][j]):
                         val_best_vois = val_voisin
                         Best_vois = copy.deepcopy(sol_cour)
-                        # print('Best_vois=',Best_vois)
+                        # debug('Best_vois=',Best_vois)
                         typeBest_vois = 's'
                         typeIndex_i, typeIndex_j = sol_cour[0][i], sol_cour[0][j]
                         if (FLAG_FIRST_IMPROVE): save_sol_cour = copy.deepcopy(Best_vois)
@@ -589,14 +718,14 @@ while (cpu < TIME_LIMIT) and (nb_ite <= NB_ITE_MAX):
         for i in range(0, nbjobs - 1):
             for j in range(i + 1, nbjobs):
                 if j - i <= DELTA:
-                    # print('solution courante:',sol_cour)
+                    # debug('solution courante:',sol_cour)
                     save_sol_cour = copy.deepcopy(sol_cour)
                     val_voisin = swap_batch(i, j, sol_cour, diversification)
                     # si on est le meilleur voisin
                     if (val_voisin < val_best_vois) and PasTabou('s', sol_cour[0][i], sol_cour[0][j]):
                         val_best_vois = val_voisin
                         Best_vois = copy.deepcopy(sol_cour)
-                        # print('Best_vois=',Best_vois)
+                        # debug('Best_vois=',Best_vois)
                         typeBest_vois = 't'
                         typeIndex_i, typeIndex_j = sol_cour[0][i], sol_cour[0][j]
                         if (FLAG_FIRST_IMPROVE): save_sol_cour = copy.deepcopy(Best_vois)
@@ -610,14 +739,14 @@ while (cpu < TIME_LIMIT) and (nb_ite <= NB_ITE_MAX):
             while j <= nbjobs - 1 and not stop_ebsr_both:
                 # for j in range(i+1,nbjobs):
                 if j - i <= DELTA:
-                    # print('solution courante:',sol_cour)
+                    # debug('solution courante:',sol_cour)
                     save_sol_cour = copy.deepcopy(sol_cour)
                     val_voisin = ebsr_both(i, j, sol_cour, diversification)
                     # si on est le meilleur voisin
                     if (val_voisin < val_best_vois) and PasTabou('b', sol_cour[0][i], sol_cour[0][j]):
                         val_best_vois = val_voisin
                         Best_vois = copy.deepcopy(sol_cour)
-                        # print('Best_vois=',Best_vois)
+                        # debug('Best_vois=',Best_vois)
                         typeBest_vois = 'b'
                         typeIndex_i, typeIndex_j = sol_cour[0][i], sol_cour[0][j]
                         if (FLAG_FIRST_IMPROVE):
@@ -635,14 +764,14 @@ while (cpu < TIME_LIMIT) and (nb_ite <= NB_ITE_MAX):
             while j <= nbjobs - 1 and not stop_ebsr_seq:
                 # for j in range(i+1,nbjobs):
                 if j - i <= DELTA_EBFSR_SOLO:
-                    # print('solution courante:',sol_cour)
+                    # debug('solution courante:',sol_cour)
                     save_sol_cour = copy.deepcopy(sol_cour)
                     val_voisin = ebsr_seq(i, j, sol_cour, diversification)
                     # si on est le meilleur voisin
                     if (val_voisin < val_best_vois) and PasTabou('b', sol_cour[0][i], sol_cour[0][j]):
                         val_best_vois = val_voisin
                         Best_vois = copy.deepcopy(sol_cour)
-                        # print('Best_vois=',Best_vois)
+                        # debug('Best_vois=',Best_vois)
                         typeBest_vois = 'b'
                         typeIndex_i, typeIndex_j = sol_cour[0][i], sol_cour[0][j]
                         if (FLAG_FIRST_IMPROVE):
@@ -660,14 +789,14 @@ while (cpu < TIME_LIMIT) and (nb_ite <= NB_ITE_MAX):
             while j <= nbjobs - 1 and not stop_ebsr_batch:
                 # for j in range(i+1,nbjobs):
                 if j - i <= DELTA_EBFSR_SOLO:
-                    # print('solution courante:',sol_cour)
+                    # debug('solution courante:',sol_cour)
                     save_sol_cour = copy.deepcopy(sol_cour)
                     val_voisin = ebsr_batch(i, j, sol_cour, diversification)
                     # si on est le meilleur voisin
                     if (val_voisin < val_best_vois) and PasTabou('b', sol_cour[0][i], sol_cour[0][j]):
                         val_best_vois = val_voisin
                         Best_vois = copy.deepcopy(sol_cour)
-                        # print('Best_vois=',Best_vois)
+                        # debug('Best_vois=',Best_vois)
                         typeBest_vois = 'c'
                         typeIndex_i, typeIndex_j = sol_cour[0][i], sol_cour[0][j]
                         if (FLAG_FIRST_IMPROVE):
@@ -681,14 +810,14 @@ while (cpu < TIME_LIMIT) and (nb_ite <= NB_ITE_MAX):
         for i in range(0, nbjobs - 1):
             for j in range(i + 1, nbjobs):
                 if j - i <= DELTA:
-                    # print('solution courante:',sol_cour)
+                    # debug('solution courante:',sol_cour)
                     save_sol_cour = copy.deepcopy(sol_cour)
                     val_voisin = efsr_both(i, j, sol_cour, diversification)
                     # si on est le meilleur voisin
                     if (val_voisin < val_best_vois) and PasTabou('f', sol_cour[0][i], sol_cour[0][j]):
                         val_best_vois = val_voisin
                         Best_vois = copy.deepcopy(sol_cour)
-                        # print('Best_vois=',Best_vois)
+                        # debug('Best_vois=',Best_vois)
                         typeBest_vois = 'f'
                         typeIndex_i = sol_cour[0][i]
                         typeIndex_j = sol_cour[0][j]
@@ -699,14 +828,14 @@ while (cpu < TIME_LIMIT) and (nb_ite <= NB_ITE_MAX):
         for i in range(0, nbjobs - 1):
             for j in range(i + 1, nbjobs):
                 if j - i <= DELTA_EBFSR_SOLO:
-                    # print('solution courante:',sol_cour)
+                    # debug('solution courante:',sol_cour)
                     save_sol_cour = copy.deepcopy(sol_cour)
                     val_voisin = efsr_seq(i, j, sol_cour, diversification)
                     # si on est le meilleur voisin
                     if (val_voisin < val_best_vois) and PasTabou('f', sol_cour[0][i], sol_cour[0][j]):
                         val_best_vois = val_voisin
                         Best_vois = copy.deepcopy(sol_cour)
-                        # print('Best_vois=',Best_vois)
+                        # debug('Best_vois=',Best_vois)
                         typeBest_vois = 'f'
                         typeIndex_i = sol_cour[0][i]
                         typeIndex_j = sol_cour[0][j]
@@ -717,14 +846,14 @@ while (cpu < TIME_LIMIT) and (nb_ite <= NB_ITE_MAX):
         for i in range(0, nbjobs - 1):
             for j in range(i + 1, nbjobs):
                 if j - i <= DELTA_EBFSR_SOLO:
-                    # print('solution courante:',sol_cour)
+                    # debug('solution courante:',sol_cour)
                     save_sol_cour = copy.deepcopy(sol_cour)
                     val_voisin = efsr_batch(i, j, sol_cour, diversification)
                     # si on est le meilleur voisin
                     if (val_voisin < val_best_vois) and PasTabou('f', sol_cour[0][i], sol_cour[0][j]):
                         val_best_vois = val_voisin
                         Best_vois = copy.deepcopy(sol_cour)
-                        # print('Best_vois=',Best_vois)
+                        # debug('Best_vois=',Best_vois)
                         typeBest_vois = 'f'
                         typeIndex_i = sol_cour[0][i]
                         typeIndex_j = sol_cour[0][j]
@@ -734,20 +863,20 @@ while (cpu < TIME_LIMIT) and (nb_ite <= NB_ITE_MAX):
     # on choisit le meilleur voisin
     if (val_best_vois != INFINI):
         sol_cour = copy.copy(Best_vois)
-        print(val_best_vois)
+        debug(val_best_vois)
         InsereTabou(typeBest_vois, typeIndex_i, typeIndex_j)
 
     # si on est la meilleure solution
     if (val_best_vois < Best_val) and not diversification:
         Best_val = val_best_vois
         Best_sol = copy.deepcopy(sol_cour)
-        print ('\t', Best_val)
+        debug('\t', Best_val)
         amelioration = True
         nb_ite_sans_amel = 0
 
     if (diversification):
         diversification = False
-        ##print('*** fin diversification ***')
+        ##debug('*** fin diversification ***')
 
     if not amelioration:
         nb_ite_sans_amel = nb_ite_sans_amel + 1
@@ -757,7 +886,7 @@ while (cpu < TIME_LIMIT) and (nb_ite <= NB_ITE_MAX):
         if (AVEC_DIVERSIFICATION):
             diversification = True
             ListeTabou = []
-            print('*** on diversifie ***')
+            debug('*** on diversifie ***')
 
     time_end = time.clock()
     cpu = time_end - time_start
@@ -768,6 +897,8 @@ print('temps de calcul =', cpu, '(', nb_ite, ') ite')
 print('**************************')
 print(Best_sol, Best_val)
 print('**************************')
+
+print(str(Best_val) + "\t" + str(cpu) + " s\t" + str(nb_ite) + " iterations")
 
 # ===================================================
 # Ecriture des resultats
