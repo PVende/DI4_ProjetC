@@ -13,6 +13,7 @@
 #include "Instance.h"
 #include "TabuList.h"
 #include "flags.h"
+#include "ArgsParser.h"
 
 #include "../tests/TestsRunner.h"
 
@@ -20,40 +21,20 @@
 #define OUTPUT_FILENAME "output.txt"
 #define CONFIG_FILENAME "configs.txt"
 
-void run_configPreproc(int argc, char * argv[]);
-void run_configTxt(int argc, char * argv[]);
+void run_configPreproc(Args * args);
+void run_configTxt(Args * args);
 
-char inputFilePath[1024] = {0};
-char configFilePath[1024] = {0};
-char outputFilePath[1024] = {0};
 
 int main(int argc, char * argv[])
 {
-    char dir[1024];
-    strcpy(dir, argv[0]);
-    char * endDir = strchr(dir, '\0');
-    while(*endDir != '\\' && *endDir != '/' && endDir != dir)
-        endDir--;
-    *(endDir+1) = '\0';
-
-    int index = endDir + 1 - dir;
-
-    printf("%s\n", dir);
-
-    strcpy(inputFilePath, dir);
-    strcpy(inputFilePath + index, "input.txt");
-
-    strcpy(outputFilePath, dir);
-    strcpy(outputFilePath + index, "output.txt");
-
-    strcpy(configFilePath, dir);
-    strcpy(configFilePath + index, "configs.txt");
-
 	signal(SIGABRT, &on_sigabrt);
 
-	#ifndef NDEBUG
+    Args * args = Args_build(argc, argv);
+    Args_debug(args);
 
-	TestRunner_runTests();
+    #ifndef NDEBUG
+
+	//TestRunner_runTests();
 
 	#endif
 
@@ -61,18 +42,56 @@ int main(int argc, char * argv[])
 	batchAllocationStep = 2;
 	batchListAllocationStep = 10;
 
-#if USE_PREPROC_FLAGS == 1
-	run_configPreproc(argc, argv);
-	printf("USING PREPROC FLAGS");
-#else
-	run_configTxt(argc, argv);
-	printf("USING configs.txt FLAGS");
-#endif // USE_PREPROC_FLAGS
+	int withCfg = 0;
 
+	// with configs
+	if(*args->configFile != 0)
+    {
+        FILE * cfgFile = fopen(args->configFile, "r");
+        if(cfgFile){
+            withCfg = 1;
+            fclose(cfgFile);
+        }
+        else
+            strcpy(args->configFile, "configs.txt");
+    }
+    else
+    {
+        strcpy(args->configFile, "configs.txt");
+    }
+
+    if(*args->inputFile != 0)
+    {
+        FILE * inputFile = fopen(args->inputFile, "r");
+        if(!inputFile)
+            strcpy(args->inputFile, "input.txt");
+        else
+            fclose(inputFile);
+    }
+    else
+    {
+        strcpy(args->inputFile, "input.txt");
+    }
+
+//    Args_debug(args);
+
+    if(!withCfg)
+    {
+        run_configPreproc(args);
+        printf("USING PREPROC FLAGS\n");
+    }
+    else
+    {
+        run_configTxt(args);
+        printf("USING CONFIG FILE\n");
+    }
+
+
+    Args_destroy(&args);
     return 0;
 }
 
-void run_configTxt(int argc, char * argv[]){
+void run_configTxt(Args * args){
 	unsigned int tabuListSize = 7,
                 delta,
                 deltaEbfsrSolo = 3,
@@ -100,15 +119,13 @@ void run_configTxt(int argc, char * argv[]){
             currentInstanceSave;
 	FILE * outputFile;
 
+
 	TabuList_init(&tabu);
 	TabuList_setSize(&tabu, tabuListSize);
 
 	Instance_init(&bestInstance);
 
-	if(argc == 1)
-        Instance_parseInstance(&bestInstance, inputFilePath, configFilePath);
-    else if(argc == 2)
-        Instance_parseInstance(&bestInstance, argv[1], configFilePath);
+    Instance_parseInstance(&bestInstance, args->inputFile, args->configFile);
 
 	timeLimit = bestInstance.nbJobs * bestInstance.nbMachine / 4.0;
 
@@ -415,7 +432,7 @@ void run_configTxt(int argc, char * argv[]){
 
 	printf("%u\t%f s\t%u iterations\n", bestInstanceEval, cpuTime, nbIteration);
 
-    if((outputFile = fopen(outputFilePath, "w")) == NULL)
+    if((outputFile = fopen(OUTPUT_FILENAME, "w")) == NULL)
         fatalError("error open output file");
 
     //ordre a remettre comme avant FO->cpu->sol
@@ -445,7 +462,7 @@ void run_configTxt(int argc, char * argv[]){
     Instance_finalize(&bestInstance);
 }
 
-void run_configPreproc(int argc, char * argv[])
+void run_configPreproc(Args * args)
 {
 	unsigned int tabuListSize = 7,
                 delta,
@@ -479,10 +496,7 @@ void run_configPreproc(int argc, char * argv[])
 
 	Instance_init(&bestInstance);
 
-	if(argc == 1)
-        Instance_parseInstance(&bestInstance, inputFilePath, configFilePath);
-    else if(argc == 2)
-        Instance_parseInstance(&bestInstance, argv[1], configFilePath);
+    Instance_parseInstance(&bestInstance, args->inputFile, args->configFile);
 
 	timeLimit = bestInstance.nbJobs * bestInstance.nbMachine / 4.0;
 
@@ -796,7 +810,7 @@ void run_configPreproc(int argc, char * argv[])
 
 	printf("%u\t%f s\t%u iterations\n", bestInstanceEval, cpuTime, nbIteration);
 
-    if((outputFile = fopen(outputFilePath, "w")) == NULL)
+    if((outputFile = fopen(OUTPUT_FILENAME, "w")) == NULL)
         fatalError("error open output file");
 
     //ordre a remettre comme avant FO->cpu->sol

@@ -9,7 +9,7 @@
 void fatalError(const char * error)
 {
     printf("\n*** FATAL ERROR ***\n\t-> %s\n", error);
-    exit(-1);
+    exit(1);
 }
 
 int stringIsEmpty(char * str)
