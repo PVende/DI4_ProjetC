@@ -37,6 +37,10 @@
 			<Add option="-std=c99" />
 			<Add option="-Wstrict-prototypes" />
 		</Compiler>
+		<Unit filename="src/ArgsParser.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/ArgsParser.h" />
 		<Unit filename="src/Batch.c">
 			<Option compilerVar="CC" />
 		</Unit>
