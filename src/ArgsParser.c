@@ -7,6 +7,7 @@ Args * Args_create()
 {
     Args * args;
     MALLOC(args, Args, 1);
+
     strcpy(args->configFile, "");
     strcpy(args->inputFile, "");
     args->print = 1;
