@@ -4,8 +4,8 @@
 
 #include <assert.h>
 
-#define TEST_FILENAME "tests/unit_test_parse_instance.txt"
-#define TEST_FILENAME_CONFIG "tests/unit_test_config.txt"
+#define TEST_FILENAME "unit_test_parse_instance.txt"
+#define TEST_FILENAME_CONFIG "unit_test_config.txt"
 
 void InstanceTests_launchTests(void){
     InstanceTests_parserTests();

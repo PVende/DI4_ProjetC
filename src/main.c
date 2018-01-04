@@ -23,9 +23,32 @@
 void run_configPreproc(int argc, char * argv[]);
 void run_configTxt(int argc, char * argv[]);
 
+char inputFilePath[1024] = {0};
+char configFilePath[1024] = {0};
+char outputFilePath[1024] = {0};
 
 int main(int argc, char * argv[])
 {
+    char dir[1024];
+    strcpy(dir, argv[0]);
+    char * endDir = strchr(dir, '\0');
+    while(*endDir != '\\' && *endDir != '/' && endDir != dir)
+        endDir--;
+    *(endDir+1) = '\0';
+
+    int index = endDir + 1 - dir;
+
+    printf("%s\n", dir);
+
+    strcpy(inputFilePath, dir);
+    strcpy(inputFilePath + index, "input.txt");
+
+    strcpy(outputFilePath, dir);
+    strcpy(outputFilePath + index, "output.txt");
+
+    strcpy(configFilePath, dir);
+    strcpy(configFilePath + index, "configs.txt");
+
 	signal(SIGABRT, &on_sigabrt);
 
 	#ifndef NDEBUG
@@ -83,9 +106,9 @@ void run_configTxt(int argc, char * argv[]){
 	Instance_init(&bestInstance);
 
 	if(argc == 1)
-        Instance_parseInstance(&bestInstance, INPUT_FILENAME, CONFIG_FILENAME);
+        Instance_parseInstance(&bestInstance, inputFilePath, configFilePath);
     else if(argc == 2)
-        Instance_parseInstance(&bestInstance, argv[1], CONFIG_FILENAME);
+        Instance_parseInstance(&bestInstance, argv[1], configFilePath);
 
 	timeLimit = bestInstance.nbJobs * bestInstance.nbMachine / 4.0;
 
@@ -392,7 +415,7 @@ void run_configTxt(int argc, char * argv[]){
 
 	printf("%u\t%f s\t%u iterations\n", bestInstanceEval, cpuTime, nbIteration);
 
-    if((outputFile = fopen(OUTPUT_FILENAME, "w")) == NULL)
+    if((outputFile = fopen(outputFilePath, "w")) == NULL)
         fatalError("error open output file");
 
     //ordre a remettre comme avant FO->cpu->sol
@@ -457,9 +480,9 @@ void run_configPreproc(int argc, char * argv[])
 	Instance_init(&bestInstance);
 
 	if(argc == 1)
-        Instance_parseInstance(&bestInstance, INPUT_FILENAME, CONFIG_FILENAME);
+        Instance_parseInstance(&bestInstance, inputFilePath, configFilePath);
     else if(argc == 2)
-        Instance_parseInstance(&bestInstance, argv[1], CONFIG_FILENAME);
+        Instance_parseInstance(&bestInstance, argv[1], configFilePath);
 
 	timeLimit = bestInstance.nbJobs * bestInstance.nbMachine / 4.0;
 
@@ -773,7 +796,7 @@ void run_configPreproc(int argc, char * argv[])
 
 	printf("%u\t%f s\t%u iterations\n", bestInstanceEval, cpuTime, nbIteration);
 
-    if((outputFile = fopen(OUTPUT_FILENAME, "w")) == NULL)
+    if((outputFile = fopen(outputFilePath, "w")) == NULL)
         fatalError("error open output file");
 
     //ordre a remettre comme avant FO->cpu->sol

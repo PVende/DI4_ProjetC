@@ -2,13 +2,13 @@
 ## openFrameworks
 #################
 
-[Bb]in/*
+[Bb]in/**/*.exe
 ![Bb]in/data/
 [Bb]uild/
 [Oo]bj/
 *.o
-[Dd]ebug*/
-[Rr]elease*/
+[Dd]ebug*/*.exe
+[Rr]elease*/*.exe
 *.mode*
 *.app/
 *.pyc
@@ -33,7 +33,7 @@ Desktop.ini
 
 cmake-build-debug/
 
-.idea
+.idea/
 
 *.cproject/
 *.project/
@@ -41,3 +41,5 @@ cmake-build-debug/
 
 test_files/output.txt
 output.txt
+
+stats/
