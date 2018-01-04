@@ -9,15 +9,13 @@ Args * Args_create()
     MALLOC(args, Args, 1);
     strcpy(args->configFile, "");
     strcpy(args->inputFile, "");
+    args->print = 1;
 
     return args;
 }
 
 Args * Args_build(int argc, char * argv[])
 {
-    if(argc % 2 != 1)
-        fatalError("Bad command line arguments");
-
     int i;
     Args * args = Args_create();
 
@@ -31,6 +29,16 @@ Args * Args_build(int argc, char * argv[])
         else if (strcmp(arg, "-i") == 0 || strcmp(arg, "--input") == 0)
         {
             strcpy(args->inputFile, argv[i + 1]);
+        }
+        else if(strcmp(arg, "-dp") == 0 || strcmp(arg, "--disable-print") == 0)
+        {
+            args->print = 0;
+            i--;
+        }
+        else if(strcmp(arg, "-p") == 0 || strcmp(arg, "--print") == 0)
+        {
+            args->print = 1;
+            i--;
         }
     }
 
@@ -58,6 +66,8 @@ void Args_debug(Args * args)
         printf("%s\n", args->inputFile);
     else
         printf("default\n");
+
+    printf("Print: %s\n", (args->print ? "yes" : "no"));
 
     printf("========================================\n");
 }

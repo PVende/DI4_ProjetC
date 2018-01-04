@@ -4,6 +4,7 @@
 typedef struct _Args{
     char configFile[1024];
     char inputFile[1024];
+    int print;
 } Args;
 
 Args * Args_create(void);

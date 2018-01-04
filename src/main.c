@@ -30,7 +30,6 @@ int main(int argc, char * argv[])
 	signal(SIGABRT, &on_sigabrt);
 
     Args * args = Args_build(argc, argv);
-    Args_debug(args);
 
     #ifndef NDEBUG
 
@@ -73,17 +72,17 @@ int main(int argc, char * argv[])
         strcpy(args->inputFile, "input.txt");
     }
 
-//    Args_debug(args);
+    // Args_debug(args);
 
     if(!withCfg)
     {
-        run_configPreproc(args);
         printf("USING PREPROC FLAGS\n");
+        run_configPreproc(args);
     }
     else
     {
-        run_configTxt(args);
         printf("USING CONFIG FILE\n");
+        run_configTxt(args);
     }
 
 
@@ -393,13 +392,15 @@ void run_configTxt(Args * args){
         if(bestNeighbourEval != (unsigned int)-1) {
             Instance_setSolution(&currentInstance, bestNeighbour.solution);
             TabuList_insertTabu(&tabu, move, indexI, indexJ);
-            printf("%d\n", bestNeighbourEval);
+            if(args->print)
+                printf("%d\n", bestNeighbourEval);
         }
 
         if(bestNeighbourEval < bestInstanceEval && !diversification) {
             bestInstanceEval = bestNeighbourEval;
             Instance_setSolution(&bestInstance, currentInstance.solution);
-            printf("\t%d\n", bestInstanceEval);
+            if(args->print)
+                printf("\t%d\n", bestInstanceEval);
             improvment = 1;
             nbIterationWithoutImprovment = 0;
         }
@@ -417,7 +418,8 @@ void run_configTxt(Args * args){
                 diversification = 1;
                 TabuList_finalize(&tabu);
                 TabuList_setSize(&tabu, tabuListSize);
-                printf("Diversification\n");
+                if(args->print)
+                    printf("Diversification\n");
             }
         }
 
@@ -771,13 +773,15 @@ void run_configPreproc(Args * args)
         if(bestNeighbourEval != (unsigned int)-1) {
             Instance_setSolution(&currentInstance, bestNeighbour.solution);
             TabuList_insertTabu(&tabu, move, indexI, indexJ);
-            printf("%d\n", bestNeighbourEval);
+            if(args->print)
+                printf("%d\n", bestNeighbourEval);
         }
 
         if(bestNeighbourEval < bestInstanceEval && !diversification) {
             bestInstanceEval = bestNeighbourEval;
             Instance_setSolution(&bestInstance, currentInstance.solution);
-            printf("\t%d\n", bestInstanceEval);
+            if(args->print)
+                printf("\t%d\n", bestInstanceEval);
             improvment = 1;
             nbIterationWithoutImprovment = 0;
         }
@@ -795,7 +799,8 @@ void run_configPreproc(Args * args)
 			diversification = 1;
 			TabuList_finalize(&tabu);
 			TabuList_setSize(&tabu, tabuListSize);
-			printf("Diversification\n");
+            if(args->print)
+                printf("Diversification\n");
 		#endif
         }
 
