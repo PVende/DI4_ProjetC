@@ -145,18 +145,18 @@ elif nbjobs == 50:
 else:
     NB_ITE_SANS_AMEL_MAX = 12
 
-AVEC_DIVERSIFICATION = 1
-FLAG_SWAP_SEQ = 1
-FLAG_SWAP_BATCH = 1
-FLAG_SWAP_BOTH = 1
-FLAG_EBSR_BOTH = 1
-FLAG_EBSR_SEQ = 1
-FLAG_EBSR_BATCH = 1
-FLAG_EFSR_BOTH = 1
-FLAG_EFSR_SEQ = 1
-FLAG_EFSR_BATCH = 1
-FLAG_2OPT = 1
-FLAG_FIRST_IMPROVE = 1
+AVEC_DIVERSIFICATION = 0
+FLAG_SWAP_SEQ = 0
+FLAG_SWAP_BATCH = 0
+FLAG_SWAP_BOTH = 0
+FLAG_EBSR_BOTH = 0
+FLAG_EBSR_SEQ = 0
+FLAG_EBSR_BATCH = 0
+FLAG_EFSR_BOTH = 0
+FLAG_EFSR_SEQ = 0
+FLAG_EFSR_BATCH = 0
+FLAG_2OPT = 0
+FLAG_FIRST_IMPROVE = 0
 TABOU_LOGIQUE = 0
 
 
@@ -192,9 +192,9 @@ def set_flag(tag, value):
     elif tag == "EFSR_SEQ":
         FLAG_EFSR_SEQ = int(value)
     elif tag == "EFSR_BATCH":
-        FLAG_SWAP_SEQ = int(value)
-    elif tag == "TWO_OPT":
         FLAG_EFSR_BATCH = int(value)
+    elif tag == "TWO_OPT":
+        FLAG_2OPT = int(value)
     elif tag == "DIVERSIFICATION":
         AVEC_DIVERSIFICATION = int(value)
     elif tag == "FIRST_IMPROVE":
@@ -203,9 +203,54 @@ def set_flag(tag, value):
         TABOU_LOGIQUE = int(value)
 
 
+def default_configs():
+    global AVEC_DIVERSIFICATION
+    global FLAG_SWAP_BOTH
+    global FLAG_EBSR_BOTH
+    global FLAG_EFSR_BOTH
+    global FLAG_FIRST_IMPROVE
+    global TABOU_LOGIQUE
+
+    AVEC_DIVERSIFICATION = 1
+    FLAG_SWAP_BOTH = 1
+    FLAG_EBSR_BOTH = 1
+    FLAG_EFSR_BOTH = 1
+    FLAG_FIRST_IMPROVE = 1
+    TABOU_LOGIQUE = 1
+
+
 def prepare_flags():
+    global AVEC_DIVERSIFICATION
+    global FLAG_SWAP_SEQ
+    global FLAG_SWAP_BATCH
+    global FLAG_SWAP_BOTH
+    global FLAG_EBSR_BOTH
+    global FLAG_EBSR_SEQ
+    global FLAG_EBSR_BATCH
+    global FLAG_EFSR_BOTH
+    global FLAG_EFSR_SEQ
+    global FLAG_EFSR_BATCH
+    global FLAG_2OPT
+    global FLAG_FIRST_IMPROVE
+    global TABOU_LOGIQUE
+
     if not args["config"]:
+        default_configs()
         return
+
+    AVEC_DIVERSIFICATION = 0
+    FLAG_SWAP_SEQ = 0
+    FLAG_SWAP_BATCH = 0
+    FLAG_SWAP_BOTH = 0
+    FLAG_EBSR_BOTH = 0
+    FLAG_EBSR_SEQ = 0
+    FLAG_EBSR_BATCH = 0
+    FLAG_EFSR_BOTH = 0
+    FLAG_EFSR_SEQ = 0
+    FLAG_EFSR_BATCH = 0
+    FLAG_2OPT = 0
+    FLAG_FIRST_IMPROVE = 0
+    TABOU_LOGIQUE = 0
 
     config_file = open(args["config"], "r")
     lines = config_file.readlines()
@@ -225,9 +270,9 @@ def prepare_flags():
 def debug_config():
     print("--------------- CONFIG ---------------")
     print("AVEC_DIVERSIFICATION : ", AVEC_DIVERSIFICATION)
+    print("FLAG_SWAP_BOTH : ", FLAG_SWAP_BOTH)
     print("FLAG_SWAP_SEQ : ", FLAG_SWAP_SEQ)
     print("FLAG_SWAP_BATCH : ", FLAG_SWAP_BATCH)
-    print("FLAG_SWAP_BOTH : ", FLAG_SWAP_BOTH)
     print("FLAG_EBSR_BOTH : ", FLAG_EBSR_BOTH)
     print("FLAG_EBSR_SEQ : ", FLAG_EBSR_SEQ)
     print("FLAG_EBSR_BATCH : ", FLAG_EBSR_BATCH)
@@ -241,7 +286,7 @@ def debug_config():
 
 
 prepare_flags()
-
+debug_config()
 
 def InsereTabou(voisinage, indi, indj):
     ElemTabou = [voisinage, indi, indj]
