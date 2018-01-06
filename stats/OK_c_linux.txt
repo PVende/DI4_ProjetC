@@ -1,0 +1,140 @@
+I_1_5_20_0.txt
+5789	3,39	2000	all_on.txt
+6692	2,27	2000	sw-all_ef-all_div_logtabu.txt
+6000	0,74	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+6048	2,07	2000	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+5771	0,94	2000	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_5_20_1.txt
+4810	3,66	2000	all_on.txt
+5436	2,56	2000	sw-all_ef-all_div_logtabu.txt
+6087	0,79	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+5135	2,34	2000	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+5135	1,09	2000	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_5_50_1.txt
+24520	34,70	2000	all_on.txt
+26270	26,95	2000	sw-all_ef-all_div_logtabu.txt
+23539	6,84	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+24957	21,83	2000	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+23638	8,76	2000	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_5_50_2.txt
+20094	41,61	2000	all_on.txt
+21298	31,91	2000	sw-all_ef-all_div_logtabu.txt
+20722	7,35	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+20574	27,66	2000	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+20236	11,47	2000	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_5_100_1.txt
+61947	125,03	1936	all_on.txt
+70910	105,98	2000	sw-all_ef-all_div_logtabu.txt
+65825	27,63	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+69640	91,42	2000	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+63865	36,31	2000	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_5_100_2.txt
+44959	108,54	2000	all_on.txt
+49237	78,79	2000	sw-all_ef-all_div_logtabu.txt
+45806	22,79	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+45744	70,26	2000	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+44169	29,77	2000	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_5_150_1.txt
+52213	187,65	531	all_on.txt
+57824	187,55	684	sw-all_ef-all_div_logtabu.txt
+53240	141,28	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+55737	187,57	880	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+53480	155,53	2000	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_5_150_2.txt
+31208	187,77	482	all_on.txt
+33938	187,68	569	sw-all_ef-all_div_logtabu.txt
+34886	160,84	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+31339	187,62	785	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+31261	173,32	2000	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_5_200_1.txt
+91877	250,19	295	all_on.txt
+95003	250,45	378	sw-all_ef-all_div_logtabu.txt
+95182	250,07	1473	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+96812	250,43	485	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+93842	250,13	1348	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_5_200_2.txt
+110727	250,43	217	all_on.txt
+112791	250,82	278	sw-all_ef-all_div_logtabu.txt
+110017	250,08	1074	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+111373	250,60	355	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+110921	250,07	1011	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_10_20_1.txt
+12941	3,78	2000	all_on.txt
+12744	3,03	2000	sw-all_ef-all_div_logtabu.txt
+13192	0,98	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+12831	2,59	2000	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+12831	1,19	2000	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_10_20_2.txt
+12766	3,76	2000	all_on.txt
+13260	2,79	2000	sw-all_ef-all_div_logtabu.txt
+12710	0,87	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+12438	2,46	2000	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+12438	1,14	2000	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_10_50_1.txt
+32967	43,92	2000	all_on.txt
+34490	33,63	2000	sw-all_ef-all_div_logtabu.txt
+36338	9,09	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+33306	28,29	2000	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+33306	11,62	2000	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_10_50_2.txt
+56453	43,29	2000	all_on.txt
+54502	33,60	2000	sw-all_ef-all_div_logtabu.txt
+56012	8,90	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+56872	28,03	2000	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+56872	11,95	2000	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_10_100_1.txt
+78591	112,88	2000	all_on.txt
+76319	83,51	2000	sw-all_ef-all_div_logtabu.txt
+73617	22,99	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+80526	71,79	2000	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+80462	30,60	2000	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_10_100_2.txt
+79624	114,29	2000	all_on.txt
+89078	83,06	2000	sw-all_ef-all_div_logtabu.txt
+81386	24,06	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+82964	72,85	2000	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+82964	31,15	2000	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_10_150_1.txt
+127533	375,19	751	all_on.txt
+129029	375,34	977	sw-all_ef-all_div_logtabu.txt
+127912	191,44	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+130115	375,08	1193	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+127872	223,71	2000	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_10_150_2.txt
+172846	375,08	735	all_on.txt
+176111	375,25	985	sw-all_ef-all_div_logtabu.txt
+173523	194,88	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+177550	375,04	1216	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+176310	222,86	2000	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_10_200_1.txt
+196561	500,40	426	all_on.txt
+206680	500,62	529	sw-all_ef-all_div_logtabu.txt
+205404	466,08	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+207483	500,54	703	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+202568	500,14	1979	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+
+I_1_10_200_2.txt
+202369	500,49	511	all_on.txt
+199314	500,40	646	sw-all_ef-all_div_logtabu.txt
+192758	402,92	2000	sw-both_eb-batch_ef-seq_firstimpr_logtabu.txt
+206217	500,30	799	sw-seq-both_eb-seq-batch_ef-batch-both_twoopt.txt
+202474	424,77	2000	sw-seq_eb-seq_ef-seq_div_twoopt.txt
+

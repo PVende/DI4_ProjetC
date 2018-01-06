@@ -42,4 +42,5 @@ cmake-build-debug/
 test_files/output.txt
 output.txt
 
-stats/
+stats/py_*
+stats/c_*
