@@ -40,7 +40,7 @@ cmake-build-debug/
 *.settings/
 
 test_files/output.txt
-output.txt
+output*.txt
 
 stats/py_*
 stats/c_*
