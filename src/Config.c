@@ -47,6 +47,8 @@ void Config_parseFile(Config * cfg, char * filepath)
 
 		Config_parseLine(cfg, line);
 	}
+
+	fclose(file);
 }
 
 void Config_parseLine(Config * cfg, char * line)
