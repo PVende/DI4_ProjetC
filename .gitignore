@@ -44,3 +44,5 @@ output*.txt
 
 stats/py_*
 stats/c_*
+
+ValgrindOut.xml
