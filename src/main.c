@@ -33,7 +33,7 @@ int main(int argc, char * argv[])
 
     #ifndef NDEBUG
 
-	//TestRunner_runTests();
+	TestRunner_runTests();
 
 	#endif
 

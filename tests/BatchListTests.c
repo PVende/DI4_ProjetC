@@ -427,6 +427,7 @@ void BatchListTests_testDuplication(void)
 
 	custom_assert(BatchList_equals(&list, dup) == 1);
 
+	BatchList_finalize(dup);
 	free(dup);
 
 	// Classic duplication

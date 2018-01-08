@@ -21,6 +21,7 @@ void Batch_finalize(Batch * batch) {
 Batch * Batch_duplicate(Batch * batch)
 {
 	Batch * dup;
+	int i;
 
     if(batch == NULL)
         return NULL;
@@ -28,7 +29,17 @@ Batch * Batch_duplicate(Batch * batch)
     MALLOC(dup, Batch, 1);
     dup->size = batch->size;
     dup->allocatedSize = batch->allocatedSize;
-    dup->batch = duplicateArray(batch->batch, batch->size);
+//    dup->batch = duplicateArray(batch->batch, batch->size);
+
+    if(dup->size == 0)
+        dup->batch = NULL;
+    else{
+        MALLOC(dup->batch, unsigned int, batch->allocatedSize);
+        for(i = 0; i < batch->allocatedSize; i++)
+        {
+            dup->batch[i] = batch->batch[i];
+        }
+    }
 
     return dup;
 }
