@@ -46,6 +46,14 @@ BatchList * BatchList_duplicate(BatchList * list);
  */
 int BatchList_equals(BatchList * l1, BatchList * l2);
 
+
+/** \brief Write a batchlist in a file
+ *
+ * \param list BatchList* the batchlist to write
+ * \param file FILE* the target file
+ * \return void
+ *
+ */
 void BatchList_writeBatchList(BatchList * list, FILE * file);
 
 /** \brief add to a batchlist

@@ -17,6 +17,13 @@ Solution * Solution_duplicate(Solution * solution);
 
 int Solution_equals(Solution * s1, Solution * s2);
 
+/** \brief Write a solution in a file
+ *
+ * \param solution Solution* the solution to write
+ * \param file FILE* the target file
+ * \return void
+ *
+ */
 void Solution_writeSolution(Solution * solution, FILE * file);
 
 void Solution_setSequence(Solution * solution, Sequence * sequence);

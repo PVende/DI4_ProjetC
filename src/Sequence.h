@@ -39,6 +39,14 @@ void Sequence_finalize(Sequence * sequence);
  */
 int Sequence_equals(Sequence * s1, Sequence * s2);
 
+
+/** \brief Write a sequence in a file
+ *
+ * \param sequence Sequence* the sequence to write
+ * \param file FILE* the target file
+ * \return void
+ *
+ */
 void Sequence_writeSequence(Sequence * sequence, FILE * file);
 
 /** \brief Duplicate a sequence

@@ -1,7 +1,5 @@
 #ifndef FLAGS_H
 
-#define USE_PREPROC_FLAGS 1
-
 #define PREPROC_SWAP_SEQ 1
 #define PREPROC_SWAP_BATCH 1
 #define PREPROC_SWAP_BOTH 1

@@ -46,6 +46,14 @@ Batch * Batch_duplicate(Batch * batch);
  */
 int Batch_equals(Batch * b1, Batch * b2);
 
+
+/** \brief Write a batch in a file
+ *
+ * \param batch Batch* the batch to write
+ * \param file FILE* the target file
+ * \return void
+ *
+ */
 void Batch_writeBatch(Batch * batch, FILE * file);
 
 /** \brief Add a job to a batch

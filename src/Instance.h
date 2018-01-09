@@ -73,6 +73,13 @@ void Instance_setSolution(Instance * instance, Solution * solution);
  */
 void Instance_parseInstance(Instance * instance, char * inputFileName, char * cfgFile);
 
+/** \brief Write an instance in a file
+ *
+ * \param instance Instance* the instance to write
+ * \param file FILE* the target file
+ * \return void
+ *
+ */
 void Instance_writeInstance(Instance * instance, FILE * file);
 
 /** \brief Objective function, used to evaluate a solution

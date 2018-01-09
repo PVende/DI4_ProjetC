@@ -639,7 +639,7 @@ void run_configPreproc(Args * args)
 				}
 #endif // PREPROC_EBSR_BOTH
 
-	stop = 0;
+        stop = 0;
 
 #if PREPROC_EBSR_SEQ == 1
 		for(i = 0; i < bestInstance.nbJobs - 1 && !stop; i++)
@@ -667,7 +667,7 @@ void run_configPreproc(Args * args)
 				}
 #endif // PREPROC_EBSR_SEQ
 
-	stop = 0;
+        stop = 0;
 
 #if PREPROC_EBSR_BATCH == 1
 		for(i = 0; i < bestInstance.nbJobs - 1 && !stop; i++)
