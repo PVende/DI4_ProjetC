@@ -1,7 +1,9 @@
 #################
 ## openFrameworks
 #################
-
+**/.exe
+**/DI4_ProjetC
+bin/app/Debug/*.exe
 [Bb]in/**/*.exe
 ![Bb]in/data/
 [Bb]uild/
