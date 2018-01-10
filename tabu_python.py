@@ -951,6 +951,12 @@ print(str(Best_val) + "\t" + str(cpu) + " s\t" + str(nb_ite) + " iterations")
 
 mesresultats = open("output_py.txt", "w")
 
+# ecriture de la valeur
+ch_Best_val = str(Best_val)
+for i in range(0, len(ch_Best_val)):
+    mesresultats.write(ch_Best_val[i])
+mesresultats.write('\t')
+
 # ecriture du cpu
 NB_CAR_CPU = 8
 if cpu > 0:
@@ -959,18 +965,6 @@ if cpu > 0:
         mesresultats.write(ch_cpu[i])
 else:
     mesresultats.write('0')
-mesresultats.write('\t')
-
-# ecriture du nombre d'iteration
-ch_nb_ite = str(nb_ite)
-for i in range(0, len(ch_nb_ite)):
-    mesresultats.write(ch_nb_ite[i])
-mesresultats.write('\t')
-
-# ecriture de la valeur
-ch_Best_val = str(Best_val)
-for i in range(0, len(ch_Best_val)):
-    mesresultats.write(ch_Best_val[i])
 mesresultats.write('\t')
 
 # ecriture de la solution
