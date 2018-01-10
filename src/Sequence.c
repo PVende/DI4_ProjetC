@@ -65,8 +65,9 @@ Sequence * Sequence_duplicate(Sequence * sequence){
     dup->size = sequence->size;
     Sequence_allocate(dup, sequence->size);
 
-    for(i = 0; i < sequence->size; i++)
+    for(i = 0; i < sequence->size; i++){
         dup->sequence[i] = sequence->sequence[i];
+    }
 
 	return dup;
 }

@@ -18,14 +18,6 @@ void helpersTests_launchTests(void)
 
 void helpersTests_stringIsEmpty(void)
 {
-	char * empty = "";
-	char * linebreak = "\n";
-	char * lineBreak2 = "\r\n";
-	char * spaces = "  ";
-	char * multiSpaceTypes = " \t \n ";
-	char * notEmpty = "abc";
-	char * notEmptyRoundedBySpaces = "   abc  ";
-
 	custom_assert(stringIsEmpty("") == 1);
 	custom_assert(stringIsEmpty("\n") == 1);
 	custom_assert(stringIsEmpty("\r\n") == 1);

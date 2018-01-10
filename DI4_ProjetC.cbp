@@ -49,6 +49,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/BatchList.h" />
+		<Unit filename="src/Checker.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/Checker.h" />
 		<Unit filename="src/Config.c">
 			<Option compilerVar="CC" />
 		</Unit>

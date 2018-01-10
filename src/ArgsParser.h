@@ -6,6 +6,8 @@ typedef struct _Args{
     char configFile[1024];
     char inputFile[1024];
     int print;
+    char check[1024];
+    int help;
 } Args;
 
 /** \brief Create the Args structure
@@ -39,5 +41,13 @@ void Args_destroy(Args ** args);
  *
  */
 void Args_debug(Args * args);
+
+
+/** \brief Display command line help
+ *
+ * \return void
+ *
+ */
+void Args_showHelp(void);
 
 #endif // ARGSPARSER_H_INCLUDED

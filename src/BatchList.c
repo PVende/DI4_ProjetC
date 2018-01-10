@@ -27,8 +27,9 @@ void BatchList_finalize(BatchList * list){
 
 BatchList * BatchList_duplicate(BatchList * list)
 {
-    if(list == NULL)
+    if(list == NULL){
         return NULL;
+    }
 
 	BatchList * dup;
 	unsigned int i;

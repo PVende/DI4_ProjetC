@@ -78,3 +78,9 @@ unsigned int * duplicateArray(unsigned int * array, unsigned int size)
 
 	return dup;
 }
+
+unsigned int fileExists(const char * filepath)
+{
+    FILE * file = fopen(filepath, "r");
+    return file != NULL;
+}

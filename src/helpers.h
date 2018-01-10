@@ -182,4 +182,13 @@ void on_sigabrt(int signum);
  */
 unsigned int * duplicateArray(unsigned int * array, unsigned int size);
 
+
+/** \brief Check if a file exist
+ *
+ * \param filepath const char* the path of the file
+ * \return unsigned int 1 if the file exists, 0 otherwise
+ *
+ */
+unsigned int fileExists(const char * filepath);
+
 #endif //DI4_PROJETC_HELPERS_H

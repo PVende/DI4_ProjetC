@@ -21,7 +21,7 @@ void Batch_finalize(Batch * batch) {
 Batch * Batch_duplicate(Batch * batch)
 {
 	Batch * dup;
-	int i;
+	unsigned int i;
 
     if(batch == NULL)
         return NULL;
@@ -92,8 +92,9 @@ void Batch_addJob(Batch * batch, unsigned int job)
 void Batch_addJobAt(Batch * batch, unsigned int job, unsigned int position) {
     unsigned int i;
 
-    if(position > batch->size)
+    if(position > batch->size){
         fatalError("Error argument");
+    }
 
 	if(batch->size == batch->allocatedSize){
 		REALLOC(batch->batch, unsigned int, batch->size + batchAllocationStep)

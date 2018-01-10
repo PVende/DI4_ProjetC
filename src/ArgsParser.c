@@ -10,7 +10,9 @@ Args * Args_create()
 
     strcpy(args->configFile, "");
     strcpy(args->inputFile, "");
+    strcpy(args->check, "");
     args->print = 1;
+    args->help = 0;
 
     return args;
 }
@@ -41,6 +43,15 @@ Args * Args_build(int argc, char * argv[])
             args->print = 1;
             i--;
         }
+        else if(strcmp(arg, "--check") == 0)
+        {
+            strcpy(args->check, argv[i + 1]);
+        }
+        else if(strcmp(arg, "-?") == 0 || strcmp(arg, "-h") == 0 || strcmp(arg, "--help") == 0)
+        {
+            args->help = 1;
+            i--;
+        }
     }
 
     return args;
@@ -60,15 +71,34 @@ void Args_debug(Args * args)
     if(*args->configFile != 0)
         printf("%s\n", args->configFile);
     else
-        printf("default\n");
+        printf("none\n");
 
     printf("Input: ");
     if(*args->inputFile != 0)
         printf("%s\n", args->inputFile);
     else
-        printf("default\n");
+        printf("none\n");
+
+    printf("Check: ");
+    if(*args->check != 0)
+        printf("%s\n", args->check);
+    else
+        printf("none\n");
 
     printf("Print: %s\n", (args->print ? "yes" : "no"));
+    printf("Help: %s\n", (args->help ? "yes" : "no"));
 
     printf("========================================\n");
 }
+
+void Args_showHelp(){
+    printf("\n./DI4_ProjetC [-?|-h|--help] [-i|--input <input file>] [-c|--config <config file>] [-p|-dp] [--check <output file>]\n\n");
+    printf("Options : \n");
+    printf("\t-?, -h, --help\t\tDisplay command help\n");
+    printf("\t-i, --input <file>\tSpecify the input file (default is the file 'input.txt' at the execution context)\n");
+    printf("\t-c, --config <file>\tSeccify the config file (default is the file 'config.txt' at the execution context)\n");
+    printf("\t-p, --print\t\tEnable prints during research (by default)\n");
+    printf("\t-dp, --disable-print\tDisable prints during research\n");
+    printf("\t--check <file>\t\tCheck a solution stored in an output file\n");
+}
+

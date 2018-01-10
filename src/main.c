@@ -14,6 +14,7 @@
 #include "TabuList.h"
 #include "flags.h"
 #include "ArgsParser.h"
+#include "Checker.h"
 
 #include "../tests/TestsRunner.h"
 
@@ -43,36 +44,45 @@ int main(int argc, char * argv[])
 
 	int withCfg = 0;
 
+    if(args->help){
+        Args_showHelp();
+        exit(0);
+    }
+
+	if(*args->check != 0){
+        if(fileExists(args->check)){
+                if(*args->inputFile != 0 && fileExists(args->inputFile)){
+                    Check_checkSolution(args->inputFile, args->check);
+                }
+                else{
+                    fatalError("Can't check the output file : the input file is missing or invalid.");
+                }
+        }
+        else{
+            fatalError("Invalid file for option --check");
+        }
+    }
+
 	// with configs
-	if(*args->configFile != 0)
-    {
-        FILE * cfgFile = fopen(args->configFile, "r");
-        if(cfgFile){
+	if(*args->configFile != 0){
+        if(fileExists(args->configFile)){
             withCfg = 1;
-            fclose(cfgFile);
         }
         else
-            strcpy(args->configFile, "configs.txt");
+            fatalError("Invalid config file");
     }
-    else
-    {
+    else{
         strcpy(args->configFile, "configs.txt");
     }
 
-    if(*args->inputFile != 0)
-    {
-        FILE * inputFile = fopen(args->inputFile, "r");
-        if(!inputFile)
-            strcpy(args->inputFile, "input.txt");
-        else
-            fclose(inputFile);
+    if(*args->inputFile != 0 && !fileExists(args->inputFile)){
+        fatalError("Invalid input file");
     }
-    else
-    {
+    else{
         strcpy(args->inputFile, "input.txt");
     }
 
-    // Args_debug(args);
+    // -----------
 
     if(!withCfg)
     {

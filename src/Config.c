@@ -14,6 +14,11 @@
 
 void Config_parseFile(Config * cfg, char * filepath)
 {
+    if(filepath == NULL){
+        cfg = NULL;
+        return;
+    }
+
 	FILE * file;
 	char line[NB_CHARS_TO_READ];
 
