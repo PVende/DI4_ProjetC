@@ -18,10 +18,6 @@
 
 #include "../tests/TestsRunner.h"
 
-#define INPUT_FILENAME "input.txt"
-#define OUTPUT_FILENAME "output.txt"
-#define CONFIG_FILENAME "configs.txt"
-
 void run_configPreproc(Args * args);
 void run_configTxt(Args * args);
 
@@ -31,6 +27,9 @@ int main(int argc, char * argv[])
 	signal(SIGABRT, &on_sigabrt);
 
     Args * args = Args_build(argc, argv);
+
+    if(args->debugArgs)
+        Args_debug(args);
 
     #ifndef NDEBUG
 
@@ -52,7 +51,7 @@ int main(int argc, char * argv[])
 	if(*args->check != 0){
         if(fileExists(args->check)){
                 if(*args->inputFile != 0 && fileExists(args->inputFile)){
-                    Check_checkSolution(args->inputFile, args->check);
+                    Check_checkSolution(args->inputFile, args->check, args);
                 }
                 else{
                     fatalError("Can't check the output file : the input file is missing or invalid.");
@@ -75,8 +74,14 @@ int main(int argc, char * argv[])
         strcpy(args->configFile, "configs.txt");
     }
 
-    if(*args->inputFile != 0 && !fileExists(args->inputFile)){
-        fatalError("Invalid input file");
+
+    if(*args->outputFile == 0){
+        strcpy(args->outputFile, "output.txt");
+    }
+
+    if(*args->inputFile != 0){
+        if(!fileExists(args->inputFile))
+            fatalError("Invalid input file");
     }
     else{
         strcpy(args->inputFile, "input.txt");
@@ -444,19 +449,19 @@ void run_configTxt(Args * args){
 
 	printf("%u\t%f s\t%u iterations\n", bestInstanceEval, cpuTime, nbIteration);
 
-    if((outputFile = fopen(OUTPUT_FILENAME, "w")) == NULL)
+    if((outputFile = fopen(args->outputFile, "w")) == NULL)
         fatalError("error open output file");
 
     //ordre a remettre comme avant FO->cpu->sol
 
+    if(fprintf(outputFile, "%u\t", bestInstanceEval) == 0)
+        fatalError("error write file");
+
     if(fprintf(outputFile, "%f\t", cpuTime) == 0)
         fatalError("error write file");
 
-    if(fprintf(outputFile, "%u\t", nbIteration) == 0)
-        fatalError("error write file");
-
-    if(fprintf(outputFile, "%u\t", bestInstanceEval) == 0)
-        fatalError("error write file");
+    // if(fprintf(outputFile, "%u\t", nbIteration) == 0)
+    //     fatalError("error write file");
 
     Instance_writeInstance(&bestInstance, outputFile);
 
@@ -825,7 +830,7 @@ void run_configPreproc(Args * args)
 
 	printf("%u\t%f s\t%u iterations\n", bestInstanceEval, cpuTime, nbIteration);
 
-    if((outputFile = fopen(OUTPUT_FILENAME, "w")) == NULL)
+    if((outputFile = fopen(args->outputFile, "w")) == NULL)
         fatalError("error open output file");
 
     //ordre a remettre comme avant FO->cpu->sol

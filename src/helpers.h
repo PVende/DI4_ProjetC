@@ -191,4 +191,21 @@ unsigned int * duplicateArray(unsigned int * array, unsigned int size);
  */
 unsigned int fileExists(const char * filepath);
 
+/** \brief Place the cursor to the next int
+ *
+ * \param file FILE* the file (not NULL)
+ * \return void
+ *
+ */
+void cursorOnNextInt(FILE * file);
+
+/** \brief Place the cursor to the next int or closing brace
+ *
+ * \param file FILE* the file (not NULL)
+ * \return char the the next int or closing brace character
+ *
+ */
+char cursorOnNextIntOrClosingBrace(FILE * file);
+
+
 #endif //DI4_PROJETC_HELPERS_H

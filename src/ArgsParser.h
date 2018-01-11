@@ -5,9 +5,12 @@
 typedef struct _Args{
     char configFile[1024];
     char inputFile[1024];
+    char outputFile[1024];
     int print;
     char check[1024];
+    int checkDetails;
     int help;
+    int debugArgs;
 } Args;
 
 /** \brief Create the Args structure

@@ -84,3 +84,34 @@ unsigned int fileExists(const char * filepath)
     FILE * file = fopen(filepath, "r");
     return file != NULL;
 }
+
+void cursorOnNextInt(FILE * file)
+{
+    if(!file)
+        return;
+
+    char c;
+
+    do{
+        c = fgetc(file);
+    }while((c < '0' || c > '9') && c != EOF);
+
+    if(fseek(file, -1, SEEK_CUR) != 0)
+        fatalError("fseek failed");
+}
+
+
+char cursorOnNextIntOrClosingBrace(FILE * file)
+{
+    char c;
+
+    do{
+        c = fgetc(file);
+    }while((c < '0' || c > '9') && c != ']' && c != EOF);
+
+    if(fseek(file, -1, SEEK_CUR) != 0){
+        fatalError("fseek failed");
+    }
+
+        return c;
+}
