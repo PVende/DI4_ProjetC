@@ -12,6 +12,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="--check output.txt -i input.txt" />
 				<Compiler>
 					<Add option="-Wextra" />
 					<Add option="-g" />
@@ -104,6 +105,7 @@
 		</Unit>
 		<Unit filename="tests/InstanceTests.c">
 			<Option compilerVar="CC" />
+			<Option target="Debug" />
 		</Unit>
 		<Unit filename="tests/InstanceTests.h">
 			<Option target="Debug" />
@@ -124,8 +126,11 @@
 		</Unit>
 		<Unit filename="tests/TabuListTests.c">
 			<Option compilerVar="CC" />
+			<Option target="Debug" />
 		</Unit>
-		<Unit filename="tests/TabuListTests.h" />
+		<Unit filename="tests/TabuListTests.h">
+			<Option target="Debug" />
+		</Unit>
 		<Unit filename="tests/TestsRunner.c">
 			<Option compilerVar="CC" />
 			<Option target="Debug" />
@@ -135,8 +140,11 @@
 		</Unit>
 		<Unit filename="tests/helpersTests.c">
 			<Option compilerVar="CC" />
+			<Option target="Debug" />
 		</Unit>
-		<Unit filename="tests/helpersTests.h" />
+		<Unit filename="tests/helpersTests.h">
+			<Option target="Debug" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
