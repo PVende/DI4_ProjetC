@@ -159,7 +159,7 @@ void Instance_parseInstance(Instance * instance, char * inputFileName, char * cf
 
         for(j = 0; j < instance->nbJobs + 1; j++)
             if(fscanf(inputFile, "%u", &instance->distances[i][j]) != 1)
-            fatalError("error read file");
+                fatalError("error read file");
     }
 
     MALLOC(instance->config, Config, 1);
