@@ -222,7 +222,7 @@ void run(Args * args){
                             bestNeighbourEval = currentInstanceEval;
                             Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
-                            move = 't';
+                            move = 's';
                             indexI = currentInstance.solution->sequence->sequence[i];
                             indexJ = currentInstance.solution->sequence->sequence[j];
 
@@ -302,7 +302,7 @@ void run(Args * args){
                             bestNeighbourEval = currentInstanceEval;
                             Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
-                            move = 'c';
+                            move = 'b';
                             indexI = currentInstance.solution->sequence->sequence[i];
                             indexJ = currentInstance.solution->sequence->sequence[j];
 
