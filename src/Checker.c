@@ -69,7 +69,7 @@ void Check_parseFile(Checker * checker, char * inputFilePath, char * outputFileP
     printf(" OK\n");
 
     printf("Parsing instance from file '%s'...", inputFilePath);
-    Instance_parseInstance(checker->instance, inputFilePath, NULL);
+    Instance_parseInstance(checker->instance, inputFilePath);
     printf(" OK\n");
 
     printf("Parsing solution from file '%s'...", outputFilePath);

@@ -5,6 +5,8 @@
 #ifndef DI4_PROJETC_CONFIG_H
 #define DI4_PROJETC_CONFIG_H
 
+#include "ArgsParser.h"
+
 /** \struct The program's configuration */
 typedef struct {
     int SWAP_SEQ;
@@ -20,6 +22,8 @@ typedef struct {
     int DIVERSIFICATION;
     int FIRST_IMPROVE;
     int LOGICAL_TABU;
+    int ITERATIONS;
+    int RANDOM_DIVERSIFICATION;
 } Config;
 
 /** \brief Parse a config file and set the values of the config variable in parameter
@@ -29,7 +33,7 @@ typedef struct {
  * \return void
  *
  */
-void Config_parseFile(Config * cfg, char * filepath);
+void Config_parseFile(Config * cfg, char * filepath, Args * args);
 
 /** \brief parse a line and update the config variable if necessary
  *
@@ -38,7 +42,7 @@ void Config_parseFile(Config * cfg, char * filepath);
  * \return void
  *
  */
-void Config_parseLine(Config * cfg, char * line);
+void Config_parseLine(Config * cfg, char * line, Args * args);
 
 /** \brief Duplicate a config
  *

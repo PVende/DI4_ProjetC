@@ -12,7 +12,7 @@
 
 #define NB_CHARS_TO_READ 256
 
-void Config_parseFile(Config * cfg, char * filepath)
+void Config_parseFile(Config * cfg, char * filepath, Args * args)
 {
     if(filepath == NULL){
         cfg = NULL;
@@ -35,6 +35,11 @@ void Config_parseFile(Config * cfg, char * filepath)
 	cfg->DIVERSIFICATION = 0;
 	cfg->FIRST_IMPROVE = 0;
 	cfg->LOGICAL_TABU = 0;
+	cfg->ITERATIONS = 0;
+	cfg->RANDOM_DIVERSIFICATION = 0;
+
+	if(args && args->nbIterations > 0)
+        cfg->ITERATIONS = args->nbIterations;
 
 	file = fopen(filepath, "r");
 
@@ -50,13 +55,16 @@ void Config_parseFile(Config * cfg, char * filepath)
 		if(lineBreak != NULL)
 			*lineBreak = '\0';
 
-		Config_parseLine(cfg, line);
+		Config_parseLine(cfg, line, args);
 	}
 
 	fclose(file);
+
+	if(cfg->ITERATIONS == 0)
+        cfg->ITERATIONS = 2001;
 }
 
-void Config_parseLine(Config * cfg, char * line)
+void Config_parseLine(Config * cfg, char * line, Args * args)
 {
 
 	while(isspace(*line)){
@@ -103,6 +111,8 @@ void Config_parseLine(Config * cfg, char * line)
 	else if(strcmp(line, "DIVERSIFICATION") == 0) cfg->DIVERSIFICATION = intValue;
 	else if(strcmp(line, "FIRST_IMPROVE") == 0) cfg->FIRST_IMPROVE = intValue;
 	else if(strcmp(line, "LOGICAL_TABU") == 0) cfg->LOGICAL_TABU = intValue;
+	else if(strcmp(line, "ITERATIONS") == 0 && cfg->ITERATIONS == 0) cfg->ITERATIONS = intValue;
+	else if(strcmp(line, "RANDOM_DIVERSIFICATION") == 0) cfg->RANDOM_DIVERSIFICATION = intValue;
 }
 
 Config * Config_duplicate(Config * config) {
@@ -122,38 +132,15 @@ Config * Config_duplicate(Config * config) {
     dup->DIVERSIFICATION = config->DIVERSIFICATION;
     dup->FIRST_IMPROVE = config->FIRST_IMPROVE;
     dup->LOGICAL_TABU = config->LOGICAL_TABU;
+    dup->RANDOM_DIVERSIFICATION = config->RANDOM_DIVERSIFICATION;
+    dup->ITERATIONS = config->ITERATIONS;
 
     return dup;
 }
 
 int Config_equals(Config * c1, Config * c2) {
-    if(c1->SWAP_SEQ != c2->SWAP_SEQ)
-        return 0;
-    if(c1->SWAP_BATCH != c2->SWAP_BATCH)
-        return 0;
-    if(c1->SWAP_BOTH != c2->SWAP_BOTH)
-        return 0;
-    if(c1->EBSR_BOTH != c2->EBSR_BOTH)
-        return 0;
-    if(c1->EBSR_SEQ != c2->EBSR_SEQ)
-        return 0;
-    if(c1->EBSR_BATCH != c2->EBSR_BATCH)
-        return 0;
-    if(c1->EFSR_BOTH != c2->EFSR_BOTH)
-        return 0;
-    if(c1->EFSR_SEQ != c2->EFSR_SEQ)
-        return 0;
-    if(c1->EFSR_BATCH != c2->EFSR_BATCH)
-        return 0;
-    if(c1->TWO_OPT != c2->TWO_OPT)
-        return 0;
-    if(c1->DIVERSIFICATION != c2->DIVERSIFICATION)
-        return 0;
-    if(c1->FIRST_IMPROVE != c2->FIRST_IMPROVE)
-        return 0;
-    if(c1->LOGICAL_TABU != c2->LOGICAL_TABU)
-        return 0;
-
+    (void) c1;
+    (void) c2;
     return 1;
 }
 
@@ -173,5 +160,7 @@ void Config_debug(Config * cfg)
     printf("diversification: %d\n", cfg->DIVERSIFICATION);
     printf("FIRST_IMPROVE: %d\n", cfg->FIRST_IMPROVE);
     printf("LOGICAL_TABU: %d\n", cfg->LOGICAL_TABU);
+    printf("ITERATIONS: %d\n", cfg->ITERATIONS);
+    printf("RANDOM_DIVERSIFICATION: %d\n", cfg->RANDOM_DIVERSIFICATION);
     printf(DEBUG_SEPARATOR);
 }

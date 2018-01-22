@@ -16,7 +16,7 @@ Args * Args_create()
     args->help = 0;
     args->checkDetails = 0;
     args->debugArgs = 0;
-    args->nbIterations = 20000;
+    args->nbIterations = 0;
 
     return args;
 }

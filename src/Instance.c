@@ -38,9 +38,6 @@ void Instance_finalize(Instance * instance) {
         free(instance->deliveryDates);
         instance->deliveryDates = NULL;
     }
-
-    free(instance->config);
-
 }
 
 Instance * Instance_duplicate(Instance * instance) {
@@ -67,8 +64,6 @@ Instance * Instance_duplicate(Instance * instance) {
 
     dup->solution = Solution_duplicate(instance->solution);
 
-    dup->config = Config_duplicate(instance->config);
-
     return dup;
 }
 
@@ -78,32 +73,7 @@ int Instance_equals(Instance * i1, Instance * i2) {
     else if(i1 == NULL || i2 == NULL)
         return 0;
 
-    if(i1->nbJobs != i2->nbJobs || i1->nbMachine != i2->nbMachine)
-        return 0;
-
-    unsigned int i, j;
-
-	if(i1->deliveryDates != i2->deliveryDates)
-		for(i = 0; i < i1->nbJobs; i++)
-			if(i1->deliveryDates[i] != i2->deliveryDates[i])
-				return 0;
-
-	if(i1->times != i2->times)
-		for(i = 0; i < i1->nbJobs; i++)
-			for(j = 0; j < i1->nbMachine; j++)
-				if(i1->times[i][j] != i2->times[i][j])
-					return 0;
-
-	if(i1->distances != i2->distances)
-		for(i = 0; i < i1->nbJobs + 1; i++)
-			for(j = 0; j < i1->nbJobs + 1; j++)
-				if(i1->distances[i][j] != i2->distances[i][j])
-					return 0;
-
     if(Solution_equals(i1->solution, i2->solution) == 0)
-        return 0;
-
-    if(Config_equals(i1->config, i2->config) == 0)
         return 0;
 
     return 1;
@@ -122,7 +92,7 @@ void Instance_setSolution(Instance * instance, Solution * solution){
     }
 }
 
-void Instance_parseInstance(Instance * instance, char * inputFileName, char * cfgFile) {
+void Instance_parseInstance(Instance * instance, char * inputFileName) {
     unsigned int i, j;
     FILE * inputFile;
 
@@ -161,9 +131,6 @@ void Instance_parseInstance(Instance * instance, char * inputFileName, char * cf
             if(fscanf(inputFile, "%u", &instance->distances[i][j]) != 1)
             fatalError("error read file");
     }
-
-    MALLOC(instance->config, Config, 1);
-    Config_parseFile(instance->config, cfgFile);
 
     if(fclose(inputFile) != 0)
        fatalError("error close input file");
@@ -268,7 +235,7 @@ unsigned int Instance_eval(Instance * instance, unsigned int diversification) {
     return lagTotal;
 }
 
-void Instance_firstSolution(Instance * instance){
+void Instance_firstSolution(Instance * instance, Config * cfg){
 	Batch batch;
 	BatchList batchList;
 	Solution solution;
@@ -285,7 +252,7 @@ void Instance_firstSolution(Instance * instance){
 				evalBestSolution = infinity,
 				counter;
 
-    Instance_init(&currentSolution);
+//    Instance_init(&currentSolution);
     currentSolution = *instance;
     currentSolution.solution = NULL;
 
@@ -346,7 +313,7 @@ void Instance_firstSolution(Instance * instance){
         nbJobBatch++;
     }
 
-    if(instance->config->TWO_OPT) {
+    if(cfg && cfg->TWO_OPT) {
         evalBestSolution = Instance_eval(instance, 0);
         Solution_init(&solution);
 
@@ -370,4 +337,181 @@ void Instance_firstSolution(Instance * instance){
 
     Solution_finalize(currentSolution.solution);
     free(currentSolution.solution);
+}
+
+void Instance_randomizeSolution(Instance * instance)
+{
+    int i;
+    Config * cfg = instance->config;
+
+    srand(time(NULL));
+
+    if(cfg->SWAP_BOTH){
+        int nbSwaps = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
+        for(i = 0; i < nbSwaps; i++){
+            int swap_i, swap_j;
+            int batch_i, batch_j;
+            Batch * batch1, * batch2;
+
+            // SEQ
+
+            TWO_RAND_INT(swap_i, swap_j, 0, instance->nbJobs - 1);
+
+            Sequence_swap(instance->solution->sequence, swap_i, swap_j);
+
+            // BATCH LIST
+
+            TWO_RAND_INT(batch_i, batch_j, 0, instance->solution->batchList->size - 1);
+            batch1 = instance->solution->batchList->batches[batch_i];
+            batch2 = instance->solution->batchList->batches[batch_j];
+
+            swap_i = RAND(0, batch1->size - 1);
+            swap_j = RAND(0, batch2->size - 1);
+
+            BatchList_swap(instance->solution->batchList, batch_i, swap_i, batch_j, swap_j);
+        }
+    }
+
+    if(cfg->SWAP_BATCH){
+        int nbSwaps = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
+        for(i = 0; i < nbSwaps; i++){
+            int swap_i, swap_j;
+            int batch_i, batch_j;
+            Batch * batch1, * batch2;
+
+            TWO_RAND_INT(batch_i, batch_j, 0, instance->solution->batchList->size - 1);
+            batch1 = instance->solution->batchList->batches[batch_i];
+            batch2 = instance->solution->batchList->batches[batch_j];
+
+            swap_i = RAND(0, batch1->size - 1);
+            swap_j = RAND(0, batch2->size - 1);
+
+            BatchList_swap(instance->solution->batchList, batch_i, swap_i, batch_j, swap_j);
+        }
+    }
+
+    if(cfg->SWAP_SEQ){
+        int nbSwaps = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
+        for(i = 0; i < nbSwaps; i++){
+            int swap_i, swap_j;
+            TWO_RAND_INT(swap_i, swap_j, 0, instance->nbJobs - 1);
+            Sequence_swap(instance->solution->sequence, swap_i, swap_j);
+        }
+    }
+
+    // if(cfg->EBSR_BOTH)
+    // {
+    //     int nbEbsr = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
+    //     for(i = 0; i < nbEbsr; i++)
+    //     {
+    //         int ebsr_i, ebsr_j;
+    //         int batch_i, batch_j;
+    //         Batch * batch1, * batch2;
+
+    //         // SEQ
+    //         TWO_RAND_INT(ebsr_i, ebsr_j, 0, instance->nbJobs - 1);
+    //         Sequence_ebsr(instance->solution->sequence, ebsr_i, ebsr_j);
+
+    //         // BATCH LIST
+    //         TWO_RAND_INT(batch_i, batch_j, 0, instance->solution->batchList->size - 1);
+    //         batch1 = instance->solution->batchList->batches[batch_i];
+    //         batch2 = instance->solution->batchList->batches[batch_j];
+
+    //         ebsr_i = RAND(0, batch1->size - 1);
+    //         ebsr_j = RAND(0, batch2->size - 1);
+
+    //         BatchList_ebsr(instance->solution->batchList, batch_i, ebsr_i, batch_j, ebsr_j);
+    //     }
+    // }
+
+
+    if(cfg->EBSR_BATCH)
+    {
+        int nbEbsr = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
+        for(i = 0; i < nbEbsr; i++)
+        {
+            int ebsr_i, ebsr_j;
+            int batch_i, batch_j;
+            Batch * batch1, * batch2;
+
+            TWO_RAND_INT(batch_i, batch_j, 0, instance->solution->batchList->size - 1);
+            batch1 = instance->solution->batchList->batches[batch_i];
+            batch2 = instance->solution->batchList->batches[batch_j];
+
+            ebsr_i = RAND(0, batch1->size - 1);
+            ebsr_j = RAND(0, batch2->size - 1);
+
+            BatchList_ebsr(instance->solution->batchList, batch_i, ebsr_i, batch_j, ebsr_j);
+        }
+    }
+
+
+    if(cfg->EBSR_SEQ)
+    {
+        int nbEbsr = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
+        for(i = 0; i < nbEbsr; i++)
+        {
+            int ebsr_i, ebsr_j;
+            TWO_RAND_INT(ebsr_i, ebsr_j, 0, instance->nbJobs - 1);
+            Sequence_ebsr(instance->solution->sequence, ebsr_i, ebsr_j);
+        }
+    }
+
+    // if(cfg->EFSR_BOTH)
+    // {
+    //     int nbEfsr = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
+    //     for(i = 0; i < nbEfsr; i++)
+    //     {
+    //         int efsr_i, efsr_j;
+    //         int batch_i, batch_j;
+    //         Batch * batch1, * batch2;
+
+    //         // SEQ
+    //         TWO_RAND_INT(efsr_i, efsr_j, 0, instance->nbJobs - 1);
+    //         Sequence_efsr(instance->solution->sequence, efsr_i, efsr_j);
+
+    //         // BATCH LIST
+    //         TWO_RAND_INT(batch_i, batch_j, 0, instance->solution->batchList->size - 1);
+    //         batch1 = instance->solution->batchList->batches[batch_i];
+    //         batch2 = instance->solution->batchList->batches[batch_j];
+
+    //         efsr_i = RAND(0, batch1->size - 1);
+    //         efsr_j = RAND(0, batch2->size - 1);
+
+    //         BatchList_efsr(instance->solution->batchList, batch_i, efsr_i, batch_j, efsr_j);
+    //     }
+    // }
+
+
+    // if(cfg->EFSR_BATCH)
+    // {
+    //     int nbEfsr = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
+    //     for(i = 0; i < nbEfsr; i++)
+    //     {
+    //         int efsr_i, efsr_j;
+    //         int batch_i, batch_j;
+    //         Batch * batch1, * batch2;
+
+    //         TWO_RAND_INT(batch_i, batch_j, 0, instance->solution->batchList->size - 1);
+    //         batch1 = instance->solution->batchList->batches[batch_i];
+    //         batch2 = instance->solution->batchList->batches[batch_j];
+
+    //         efsr_i = RAND(0, batch1->size - 1);
+    //         efsr_j = RAND(0, batch2->size - 1);
+
+    //         BatchList_efsr(instance->solution->batchList, batch_i, efsr_i, batch_j, efsr_j);
+    //     }
+    // }
+
+
+    if(cfg->EFSR_SEQ)
+    {
+        int nbEfsr = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
+        for(i = 0; i < nbEfsr; i++)
+        {
+            int efsr_i, efsr_j;
+            TWO_RAND_INT(efsr_i, efsr_j, 0, instance->nbJobs - 1);
+            Sequence_efsr(instance->solution->sequence, efsr_i, efsr_j);
+        }
+    }
 }

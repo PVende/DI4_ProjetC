@@ -3,9 +3,12 @@
 
 #include "Solution.h"
 #include "Config.h"
+#include "ArgsParser.h"
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <time.h>
 
 /**
  * \brief Type representing an Instance
@@ -71,7 +74,7 @@ void Instance_setSolution(Instance * instance, Solution * solution);
  * \return void
  *
  */
-void Instance_parseInstance(Instance * instance, char * inputFileName, char * cfgFile);
+void Instance_parseInstance(Instance * instance, char * inputFileName);
 
 /** \brief Write an instance in a file
  *
@@ -97,6 +100,15 @@ unsigned int Instance_eval(Instance * instance, unsigned int diversification);
  * \return void
  *
  */
-void Instance_firstSolution(Instance * instance);
+void Instance_firstSolution(Instance * instance, Config * cfg);
+
+
+/** \brief Replace the solution with a new one randomly generated
+ *
+ * \param instance Instance* the instance
+ * \return void
+ *
+ */
+void Instance_randomizeSolution(Instance * instance);
 
 #endif

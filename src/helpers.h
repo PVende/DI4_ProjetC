@@ -105,6 +105,7 @@
  */
 #define REALLOC(varname, type, size) REALLOC_M(varname, type, size, NULL)
 
+
 #define DEBUG_SEPARATOR "============================================================\n"
 
 #define custom_assert(expr) assert(expr); printf(".");
@@ -114,10 +115,30 @@
  *
  * \param a the first variable
  * \param b the second variable
- * \def #define MAX(a, b)
  *
  */
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
+
+/** \brief Rand int between to integers
+ *
+ * \param min from
+ * \param max to
+ *
+ */
+#define RAND(min, max) min + (rand() / ((long double) RAND_MAX)) * ((max) - (min))
+
+/** \brief generate 2 different random ints
+ *
+ * \param a first int
+ * \param b second int
+ * \param min min value
+ * \param max max value
+ *
+ */
+#define TWO_RAND_INT(a, b, min, max) { a = RAND(min, max);\
+                                        do{\
+                                            b = RAND(min, max);\
+                                        }while(a == b); }
 
 
 /** \brief Stop the program and display an error message to the output
