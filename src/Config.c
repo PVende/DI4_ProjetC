@@ -55,7 +55,7 @@ void Config_parseFile(Config * cfg, char * filepath, Args * args)
 		if(lineBreak != NULL)
 			*lineBreak = '\0';
 
-		Config_parseLine(cfg, line, args);
+		Config_parseLine(cfg, line);
 	}
 
 	fclose(file);
@@ -64,9 +64,8 @@ void Config_parseFile(Config * cfg, char * filepath, Args * args)
         cfg->ITERATIONS = 2001;
 }
 
-void Config_parseLine(Config * cfg, char * line, Args * args)
+void Config_parseLine(Config * cfg, char * line)
 {
-
 	while(isspace(*line)){
 		line++;
 	}
