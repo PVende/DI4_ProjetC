@@ -95,6 +95,8 @@ void Solution_getBatchInfo(Solution * solution, unsigned int jobNumber, int * in
                     infos[1] = j;
                     return;
                 }
+        infos[0] = -1;
+        infos[1] = -1;
 	}
 }
 
@@ -114,9 +116,8 @@ void Solution_efsr_sequence(Solution * solution, unsigned int j1, unsigned int j
 }
 
 void Solution_swap_batchList(Solution * solution, unsigned int j1, unsigned int j2) {
-    unsigned int * infosJ1, * infosJ2;
     if(solution != NULL && solution->batchList != NULL){
-        int infosJ1[2] = {-1, -1}, infosJ2[2] = {-1, -1};
+        int infosJ1[2], infosJ2[2];
 		Solution_getBatchInfo(solution, solution->sequence->sequence[j1], infosJ1);
 		Solution_getBatchInfo(solution, solution->sequence->sequence[j2], infosJ2);
 		if(*infosJ1 != -1 && *infosJ2 != -1)
@@ -125,9 +126,8 @@ void Solution_swap_batchList(Solution * solution, unsigned int j1, unsigned int 
 }
 
 void Solution_ebsr_batchList(Solution * solution, unsigned int j1, unsigned int j2) {
-    unsigned int * infosJ1, * infosJ2;
     if(solution != NULL && solution->batchList != NULL){
-        int infosJ1[2] = {-1, -1}, infosJ2[2] = {-1, -1};
+        int infosJ1[2], infosJ2[2];
         Solution_getBatchInfo(solution, solution->sequence->sequence[j1], infosJ1);
         Solution_getBatchInfo(solution, solution->sequence->sequence[j2], infosJ2);
         if(*infosJ1 != -1 && *infosJ2 != -1)
@@ -136,9 +136,8 @@ void Solution_ebsr_batchList(Solution * solution, unsigned int j1, unsigned int 
 }
 
 void Solution_efsr_batchList(Solution * solution, unsigned int j1, unsigned int j2) {
-    unsigned int * infosJ1, * infosJ2;
     if(solution != NULL && solution->batchList != NULL){
-        int infosJ1[2] = {-1, -1}, infosJ2[2] = {-1, -1};
+        int infosJ1[2], infosJ2[2];
         Solution_getBatchInfo(solution, solution->sequence->sequence[j1], infosJ1);
         Solution_getBatchInfo(solution, solution->sequence->sequence[j2], infosJ2);
         if(*infosJ1 != -1 && *infosJ2 != -1)

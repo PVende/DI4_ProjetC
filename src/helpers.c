@@ -22,13 +22,6 @@ int areArraysEqual(unsigned int * a1, unsigned int size1, unsigned int * a2, uns
 	if(size1 != size2)
 		return 0;
 
-	// unsigned int i;
-	// for(i = 0; i < size1; i++)
-	// {
-	// 	if(a1[i] != a2[i])
-	// 		return 0;
-	// }
-	// return 1;
     return memcmp(a1, a2, sizeof(*a1) * size1) == 0;
 }
 
@@ -66,16 +59,9 @@ unsigned int * duplicateArray(unsigned int * array, unsigned int size)
 			fatalError("Error in duplicateArray(): array is NULL but size > 0.");
 	}
 
-	unsigned int i;
 	unsigned int * dup;
 
 	MALLOC(dup, unsigned int, size);
-
-	// for(i = 0; i < size; i++)
-	// {
-	// 	dup[i] = array[i];
-	// }
-
     MEMCPY(dup, array, *array, size)
 
 	return dup;

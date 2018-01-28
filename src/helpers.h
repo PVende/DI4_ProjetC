@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 /** \brief allocate a pointer with malloc() and check the value
@@ -140,8 +141,46 @@
  * \endcode
  */
 #define MEMCPY_M(dest_varname, from_varname, type, size, msg) {dest_varname = memcpy(dest_varname, from_varname, sizeof(type) * (size)); \
-							                                     if(dest_varname == NULL && size != 0) \
+							                                     if(dest_varname == NULL) \
 							                                         fatalError(msg != NULL ? msg : "The macro Memcpy failed");}
+
+
+/** \brief move memory from a pointer to another and check the result value
+ *
+ * \param dest_varname the name of the destination variable
+ * \param from_varname the name of the source variable
+ * \param type the type of each element
+ * \param size the number of element to move
+ * \def #define MEMMOVE(dest_varname, from_varname, type, size)
+ * \code
+ * // Copy an array of 5 integer to another:
+ * int from[5] = {1, 3, 2, 5, 4};
+ * int dup[5];
+ * MEMMOVE(dup, from, *from, 5); 
+ * MEMMOVE(dup, from, int, 5);
+ * \endcode
+ */
+#define MEMMOVE(dest_varname, from_varname, type, size) MEMMOVE_M(dest_varname, from_varname, type, size, NULL)
+
+/** \brief move memory from a pointer to another and check the result value
+ *
+ * \param dest_varname the name of the destination variable
+ * \param from_varname the name of the source variable
+ * \param type the type of each element
+ * \param size the number of element to move
+ * \param msg the message to display in case of error
+ * \def #define MEMMOVE_m(dest_varname, from_varname, type, size, msg)
+ * \code
+ * // Copy an array of 5 integer to another:
+ * int from[5] = {1, 3, 2, 5, 4};
+ * int dup[5];
+ * MEMMOVE(dup, from, *from, 5, "It Failed"); 
+ * MEMMOVE(dup, from, int, 5, "It Failed");
+ * \endcode
+ */
+#define MEMMOVE_M(dest_varname, from_varname, type, size, msg) {type * test_memmove_result = memmove(dest_varname, from_varname, sizeof(type) * (size)); \
+							                                     if(test_memmove_result == NULL) \
+							                                         fatalError(msg != NULL ? msg : "The macro Memmove failed");}
 
 
 #define DEBUG_SEPARATOR "============================================================\n"

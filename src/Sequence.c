@@ -1,6 +1,5 @@
 #include "Sequence.h"
 #include "helpers.h"
-#include "string.h"
 
 unsigned int allocationStep = 5;
 
@@ -50,7 +49,6 @@ void Sequence_writeSequence(Sequence * sequence, FILE * file) {
 
 Sequence * Sequence_duplicate(Sequence * sequence){
     Sequence *dup;
-    unsigned int i;
 
     if(sequence == NULL)
         return NULL;
