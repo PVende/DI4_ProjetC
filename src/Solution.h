@@ -80,10 +80,12 @@ void Solution_setBatchList(Solution * solution, BatchList * batchList);
 /** \brief Retrieve the number of batch and the position in this batch of the job
  *
  * \param solution Solution* the target solution
+ * \param jobNumber int the job number
+ * \param infos int* the array where to put the infos
  * \return unsigned int the number of the job
  *
  */
-unsigned int * Solution_getBatchInfo(Solution * solution, unsigned int jobNumber);
+void Solution_getBatchInfo(Solution * solution, unsigned int jobNumber, int * infos);
 
 
 /** \brief Swap to elements in the sequence's solution

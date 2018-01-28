@@ -1,5 +1,6 @@
 #include "Batch.h"
 #include "helpers.h"
+#include "string.h"
 
 unsigned int batchAllocationStep = 1;
 
@@ -34,11 +35,13 @@ Batch * Batch_duplicate(Batch * batch)
     if(dup->size == 0)
         dup->batch = NULL;
     else{
-        MALLOC(dup->batch, unsigned int, batch->allocatedSize);
-        for(i = 0; i < batch->allocatedSize; i++)
-        {
-            dup->batch[i] = batch->batch[i];
-        }
+        MALLOC(dup->batch, *dup->batch, batch->allocatedSize);
+        MEMCPY(dup->batch, batch->batch, *dup->batch, batch->size)
+        // dup->batch = memcpy(dup->batch, batch->batch, sizeof(*dup->batch) * batch->size);
+        // for(i = 0; i < batch->allocatedSize; i++)
+        // {
+        //     dup->batch[i] = batch->batch[i];
+        // }
     }
 
     return dup;
@@ -47,7 +50,7 @@ Batch * Batch_duplicate(Batch * batch)
 
 int Batch_equals(Batch * b1, Batch * b2)
 {
-    unsigned int i;
+    // unsigned int i;
 
     if(b1 == b2)
 		return 1;
@@ -56,13 +59,14 @@ int Batch_equals(Batch * b1, Batch * b2)
     else if(b1->size != b2->size)
         return 0;
 
-    for(i = 0; i < b1->size; i++)
-    {
-        if(b1->batch[i] != b2->batch[i])
-            return 0;
-    }
-
-    return 1;
+    // unsigned int i;
+    // for(i = 0; i < b1->size; i++)
+    // {
+    //     if(b1->batch[i] != b2->batch[i])
+    //         return 0;
+    // }
+    // return 1;
+    return memcmp(b1->batch, b2->batch, sizeof(*b1->batch) * b1->size) == 0;
 }
 
 void Batch_writeBatch(Batch * batch, FILE * file) {
@@ -103,6 +107,7 @@ void Batch_addJobAt(Batch * batch, unsigned int job, unsigned int position) {
 
     for(i = batch->size; i > position; i--)
         batch->batch[i] = batch->batch[i - 1];
+    // memcpy(&batch->batch[position], &batch->batch[position-1], sizeof(unsigned int) * (batch->size - position));
 
     batch->batch[position] = job;
 

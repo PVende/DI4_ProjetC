@@ -42,7 +42,7 @@ void Config_parseFile(Config * cfg, char * filepath, Args * args);
  * \return void
  *
  */
-void Config_parseLine(Config * cfg, char * line, Args * args);
+void Config_parseLine(Config * cfg, char * line);
 
 /** \brief Duplicate a config
  *

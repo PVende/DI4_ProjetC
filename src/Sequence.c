@@ -1,5 +1,6 @@
 #include "Sequence.h"
 #include "helpers.h"
+#include "string.h"
 
 unsigned int allocationStep = 5;
 
@@ -18,22 +19,16 @@ void Sequence_finalize(Sequence * sequence) {
 }
 
 int Sequence_equals(Sequence * s1, Sequence * s2){
-    unsigned int i;
 
     if(s1 == s2)
-		return 1;
+        return 1;
     else if(s1 == NULL || s2 == NULL)
         return 0;
     else if(s1->size != s2->size)
         return 0;
 
-    for(i = 0; i < s1->size; i++)
-    {
-        if(s1->sequence[i] != s2->sequence[i])
-            return 0;
-    }
+    return memcmp(s1->sequence, s2->sequence, sizeof(*s1->sequence) * s1->size) == 0;
 
-    return 1;
 }
 
 void Sequence_writeSequence(Sequence * sequence, FILE * file) {
@@ -65,9 +60,7 @@ Sequence * Sequence_duplicate(Sequence * sequence){
     dup->size = sequence->size;
     Sequence_allocate(dup, sequence->size);
 
-    for(i = 0; i < sequence->size; i++){
-        dup->sequence[i] = sequence->sequence[i];
-    }
+    MEMCPY(dup->sequence, sequence->sequence, *sequence->sequence, sequence->size)
 
 	return dup;
 }
@@ -115,9 +108,8 @@ void Sequence_ebsr(Sequence * sequence, unsigned int pos1, unsigned int pos2) {
             sequence->sequence[i + 1] = sequence->sequence[i];
 
         sequence->sequence[pos1] = value;
-    }
-
-    if(pos1 > pos2 + 1) {
+    } 
+    else if (pos1 > pos2 + 1) {
         for(i = pos2 + 1; i < pos1; i++)
             sequence->sequence[i - 1] = sequence->sequence[i];
 

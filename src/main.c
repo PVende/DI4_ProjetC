@@ -15,7 +15,9 @@
 #include "ArgsParser.h"
 #include "Checker.h"
 
-#include "../tests/TestsRunner.h"
+#ifndef NDEBUG
+    #include "../tests/TestsRunner.h"
+#endif
 
 void run(Args * args);
 
@@ -31,7 +33,8 @@ int main(int argc, char * argv[])
 
     #ifndef NDEBUG
 
-	TestRunner_runTests();
+    // if(!args->disableTests)
+	   // TestRunner_runTests();
 
 	#endif
 

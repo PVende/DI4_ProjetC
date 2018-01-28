@@ -22,7 +22,7 @@
  * MALLOC(2DArray, int*, 5, "error");
  * \endcode
  */
-#define MALLOC_M(varname, type, size, msg) {varname = (type*) malloc((size) * sizeof(type)); \
+#define MALLOC_M(varname, type, size, msg) {varname = malloc(sizeof(type) * (size)); \
                                     if(varname == NULL) \
                                         fatalError(msg != NULL ? msg : "The macro Malloc failed");}
 
@@ -55,7 +55,7 @@
  * CALLOC_M(2DArray, int*, 5, "error");
  * \endcode
  */
-#define CALLOC_M(varname, type, size, msg) {varname = (type*) calloc(size, sizeof(type)); \
+#define CALLOC_M(varname, type, size, msg) {varname = calloc(size, sizeof(type)); \
                                     if(varname == NULL && size != 0) \
                                         fatalError(msg != NULL ? msg : "The macro Calloc failed");}
 
@@ -88,7 +88,7 @@
  * REALLOC_M(2DArray, int*, 10, NULL);
  * \endcode
  */
-#define REALLOC_M(varname, type, size, msg) {varname = (type*) realloc(varname, (size) * sizeof(type)); \
+#define REALLOC_M(varname, type, size, msg) {varname = realloc(varname, sizeof(type) * (size)); \
                                      if(varname == NULL && size != 0) \
                                          fatalError(msg != NULL ? msg : "The macro Realloc failed");}
 
@@ -104,6 +104,44 @@
  * \endcode
  */
 #define REALLOC(varname, type, size) REALLOC_M(varname, type, size, NULL)
+
+
+/** \brief copy memory from a pointer to another and check the result value
+ *
+ * \param dest_varname the name of the destination variable
+ * \param from_varname the name of the source variable
+ * \param type the type of each element
+ * \param size the number of element to copy
+ * \def #define MEMCPY(dest_varname, from_varname, type, size)
+ * \code
+ * // Copy an array of 5 integer to another:
+ * int from[5] = {1, 3, 2, 5, 4};
+ * int dup[5];
+ * MEMCPY(dup, from, *from, 5); 
+ * MEMCPY(dup, from, int, 5);
+ * \endcode
+ */
+#define MEMCPY(dest_varname, from_varname, type, size) MEMCPY_M(dest_varname, from_varname, type, size, NULL)
+
+/** \brief copy memory from a pointer to another and check the result value
+ *
+ * \param dest_varname the name of the destination variable
+ * \param from_varname the name of the source variable
+ * \param type the type of each element
+ * \param size the number of element to copy
+ * \param msg the message to display in case of error
+ * \def #define MEMCPY_m(dest_varname, from_varname, type, size, msg)
+ * \code
+ * // Copy an array of 5 integer to another:
+ * int from[5] = {1, 3, 2, 5, 4};
+ * int dup[5];
+ * MEMCPY(dup, from, *from, 5, "It Failed"); 
+ * MEMCPY(dup, from, int, 5, "It Failed");
+ * \endcode
+ */
+#define MEMCPY_M(dest_varname, from_varname, type, size, msg) {dest_varname = memcpy(dest_varname, from_varname, sizeof(type) * (size)); \
+							                                     if(dest_varname == NULL && size != 0) \
+							                                         fatalError(msg != NULL ? msg : "The macro Memcpy failed");}
 
 
 #define DEBUG_SEPARATOR "============================================================\n"
