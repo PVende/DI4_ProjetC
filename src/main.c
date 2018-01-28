@@ -422,7 +422,8 @@ void run(Args * args){
                 diversification = 1;
                 TabuList_finalize(&tabu);
                 TabuList_setSize(&tabu, tabuListSize);
-                //Instance_randomizeSolution(&bestInstance);
+                if(cfg.RANDOM_DIVERSIFICATION)
+                    Instance_randomizeSolution(&bestInstance, &cfg);
                 if(args->print)
                     printf("Diversification\n");
             }

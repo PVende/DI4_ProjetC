@@ -66,7 +66,6 @@ void Config_parseFile(Config * cfg, char * filepath, Args * args)
 
 void Config_parseLine(Config * cfg, char * line)
 {
-
 	while(isspace(*line)){
 		line++;
 	}
