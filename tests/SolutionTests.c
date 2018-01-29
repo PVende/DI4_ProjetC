@@ -61,9 +61,9 @@ void SolutionTests_testDuplication(void) {
 void SolutionTests_testBatchInfo(void) {
     unsigned int i;
     int infoBatch1[2],
-                infoBatch2[2],
-                infoBatch3[2],
-                infoBatch4[2];
+        infoBatch2[2],
+        infoBatch3[2],
+        infoBatch4[2];
     Solution sol;
     Sequence seq;
     BatchList list;
@@ -109,7 +109,7 @@ void SolutionTests_testBatchInfo(void) {
     custom_assert(infoBatch3[0] == 1);
     custom_assert(infoBatch3[1] == 1);
 
-    custom_assert(*infoBatch4 == -1);
+    custom_assert(infoBatch4[0] == -1);
 
     Solution_finalize(&sol);
 }

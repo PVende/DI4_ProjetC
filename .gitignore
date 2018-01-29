@@ -1,8 +1,6 @@
 #################
 ## openFrameworks
 #################
-bin/app/Debug/DI4_ProjectC*
-bin/app/Release/DI4_ProjectC*
 ![Bb]in/data/
 [Bb]uild/
 [Oo]bj/
@@ -13,6 +11,7 @@ bin/app/Release/DI4_ProjectC*
 *.app/
 *.pyc
 *.log
+bin
 
 #################
 ## Code::Blocks

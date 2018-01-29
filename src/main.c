@@ -33,8 +33,8 @@ int main(int argc, char * argv[])
 
     #ifndef NDEBUG
 
-    // if(!args->disableTests)
-	   // TestRunner_runTests();
+    if(!args->disableTests)
+	   TestRunner_runTests();
 
 	#endif
 

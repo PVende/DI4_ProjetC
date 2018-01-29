@@ -179,13 +179,92 @@ void BatchList_efsr(BatchList * list, unsigned int batchPos1, unsigned int jobPo
 	BatchList_ebsr(list, batchPos2, jobPos2, batchPos1, jobPos1);
 }
 
+void BatchList_split(BatchList * list, unsigned int batchPos) {
+	Batch * new;
+	Batch * toSplit = list->batches[batchPos];
+	unsigned int batchSize = toSplit->size;
+	unsigned int splitAt = batchSize / 2; 
+	unsigned int i;
 
-void BatchList_split(BatchList * list, unsigned int batchPos){
+	if(batchSize == 1)
+		return;
 
+	MALLOC(new, *new, 1);
+	Batch_init(new);
+	for(i = splitAt; i < toSplit->size; i++){
+		Batch_addJob(new, toSplit->batch[i]);
+	}
+	toSplit->size -= (toSplit->size - splitAt);
+
+	// Realloc if necessary
+	if(list->size == list->allocatedSize){
+		list->allocatedSize += batchListAllocationStep;
+		REALLOC(list->batches, *list->batches, list->allocatedSize);
+	}
+	
+	// Shift and insertion
+	for(i = list->size; i > batchPos; i--){
+		list->batches[i] = list->batches[i - 1];
+	}
+
+	list->batches[batchPos + 1] = new; 
+	list->size++;
 }
 
-void BatchList_merge(BatchList * list, unsigned int batchPos){
+/** 
+ * Fonctionne et + opti je pense. A tester 
+ */
+
+// void BatchList_split(BatchList * list, unsigned int batchPos){
+// 	Batch * new;
+// 	Batch * batch = list->batches[batchPos];
+// 	unsigned int batchSize = batch->size;
+// 	unsigned int splitAt = batchSize / 2; 
+// 	unsigned int i;
+
+// 	if(batchSize == 1)
+// 		return;
+
+// 	// Creation of the new batch
+// 	MALLOC(new, *new, 1);
+// 	Batch_init(new);
+// 	new->allocatedSize = MAX(batchAllocationStep, batch->allocatedSize);
+// 	MALLOC(new->batch, *batch->batch, new->allocatedSize);
+// 	MEMCPY(new->batch, &batch->batch[splitAt], *batch->batch, batchSize - splitAt);
+// 	new->size = batchSize - splitAt;
+
+// 	// Shrink the old one
+// 	batch->size = batchSize - new->size;
+
+// 	// Realloc if necessary
+// 	if(list->size == list->allocatedSize){
+// 		list->allocatedSize += batchListAllocationStep;
+// 		REALLOC(list->batches, *list->batches, list->allocatedSize);
+// 	}
 	
+// 	// Shift and insertion
+// 	for(i = list->size; i > batchPos; i--){
+// 		list->batches[i] = list->batches[i - 1];
+// 	}
+// 	list->batches[batchPos + 1] = new; 
+// 	list->size++;
+// }
+
+void BatchList_merge(BatchList * list, unsigned int batchPos){
+	if(batchPos == list->size - 1)
+		return;
+
+	Batch * left = list->batches[batchPos],
+		  * right = list->batches[batchPos + 1];
+	unsigned int i;
+
+	// Copy of right's elements into left's elements
+	for(i = 0; i < right->size; i++){
+		Batch_addJob(left, right->batch[i]);
+	}
+
+	// Remove right's Batch from the list
+	BatchList_removeBatch(list, right);
 }
 
 

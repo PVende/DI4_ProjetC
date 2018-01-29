@@ -47,27 +47,27 @@ unsigned int TabuList_isTabu(TabuList * list, char move, unsigned int indexI, un
     return 0;
 }
 
-// void TabuList_insertTabu(TabuList * list, char move, unsigned int indexI, unsigned int indexJ) {
-//     unsigned int i;
-
-//     if(list->sizeList == list->sizeListLimit)
-//         for(i = 1; i < list->sizeList; i++) {
-//             list->moves[i - 1] = list->moves[i];
-//             list->indexI[i - 1] = list->indexI[i];
-//             list->indexJ[i - 1] = list->indexJ[i];
-//         }
-//     else
-//         list->sizeList++;
-
-//     list->moves[list->sizeList - 1] = move;
-//     list->indexI[list->sizeList - 1] = indexI;
-//     list->indexJ[list->sizeList - 1] = indexJ;
-// }
-
 void TabuList_insertTabu(TabuList * list, char move, unsigned int indexI, unsigned int indexJ) {
-    list->moves[list->cursor] = move;
-    list->indexI[list->cursor] = indexI;
-    list->indexJ[list->cursor] = indexJ;
-    list->cursor++;
-    list->cursor %= list->sizeListLimit;
+    unsigned int i;
+
+    if(list->sizeList == list->sizeListLimit)
+        for(i = 1; i < list->sizeList; i++) {
+            list->moves[i - 1] = list->moves[i];
+            list->indexI[i - 1] = list->indexI[i];
+            list->indexJ[i - 1] = list->indexJ[i];
+        }
+    else
+        list->sizeList++;
+
+    list->moves[list->sizeList - 1] = move;
+    list->indexI[list->sizeList - 1] = indexI;
+    list->indexJ[list->sizeList - 1] = indexJ;
 }
+
+// void TabuList_insertTabu(TabuList * list, char move, unsigned int indexI, unsigned int indexJ) {
+//     list->moves[list->cursor] = move;
+//     list->indexI[list->cursor] = indexI;
+//     list->indexJ[list->cursor] = indexJ;
+//     list->cursor++;
+//     list->cursor %= list->sizeListLimit;
+// }

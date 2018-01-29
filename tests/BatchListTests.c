@@ -11,6 +11,8 @@ void BatchListTests_launchTests(void){
 	BatchListTests_testEbsrAndEfsrOnEmptyBatches();
 	BatchListTests_testComparison();
 	BatchListTests_testDuplication();
+	BatchListTests_testSplit();
+	BatchListTests_testMerge();
 }
 
 void BatchListTests_basicOperations(void){
@@ -447,6 +449,94 @@ void BatchListTests_testDuplication(void)
 	BatchList_finalize(&list);
 	BatchList_finalize(dup);
 	free(dup);
+}
+
+
+
+void BatchListTests_testSplit(void){
+	BatchList list;
+	Batch b1, b2, b3;
+
+	Batch_addJob(&b1, 1);
+
+	Batch_addJob(&b2, 2);
+	Batch_addJob(&b2, 3);
+
+	Batch_addJob(&b3, 4);
+	Batch_addJob(&b3, 5);
+	Batch_addJob(&b3, 6);
+
+	BatchList_addBatch(&list, &b1);
+	BatchList_addBatch(&list, &b2);
+	BatchList_addBatch(&list, &b3);
+
+	//---
+
+	BatchList_split(&list, 1); // b2
+
+	custom_assert(list.size == 4);
+	custom_assert(list.batches[1]->size == 1);
+	custom_assert(list.batches[1]->batch[0] == 2);
+	custom_assert(list.batches[2]->size == 1);
+	custom_assert(list.batches[2]->batch[0] == 3);
+	custom_assert(Batch_equals(&b3, list.batches[3]));
+
+	BatchList_split(&list, 0); // b1;
+
+	custom_assert(list.size == 4);
+
+	BatchList_split(&list, 3); // b3
+
+	custom_assert(list.size == 5);
+	custom_assert(list.batches[4]->batch[0] == 5);
+
+	//---
+
+	Batch_finalize(&b1);
+	Batch_finalize(&b2);
+	Batch_finalize(&b3);
+
+	BatchList_finalize(&list);
+}
+
+void BatchListTests_testMerge(void){
+	BatchList list;
+	Batch b1, b2, b3;
+
+	Batch_addJob(&b1, 1);
+
+	Batch_addJob(&b2, 2);
+	Batch_addJob(&b2, 3);
+
+	Batch_addJob(&b3, 4);
+	Batch_addJob(&b3, 5);
+	Batch_addJob(&b3, 6);
+
+	BatchList_addBatch(&list, &b1);
+	BatchList_addBatch(&list, &b2);
+	BatchList_addBatch(&list, &b3);
+
+	//---
+
+	BatchList_merge(&list, 0);
+
+	custom_assert(list.size == 2);
+	custom_assert(list.batches[0]->size == 3);
+	custom_assert(list.batches[0]->batch[0] == 1);
+	custom_assert(list.batches[0]->batch[1] == 2);
+
+	BatchList_merge(&list, 1);
+
+	custom_assert(list.size == 2);
+	custom_assert(list.batches[1]->size == 3);
+
+	//---
+
+	Batch_finalize(&b1);
+	Batch_finalize(&b2);
+	Batch_finalize(&b3);
+
+	BatchList_finalize(&list);
 }
 
 void prepareJobs(Batch * b1, Batch * b2, Batch * b3)

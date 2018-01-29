@@ -19,6 +19,10 @@ void BatchListTests_testDuplication(void);
 
 void BatchListTests_testComparison(void);
 
+void BatchListTests_testSplit(void);
+
+void BatchListTests_testMerge(void);
+
 void prepareJobs(Batch * b1, Batch * b2, Batch * b3);
 
 #endif

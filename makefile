@@ -9,6 +9,9 @@ BIN_FOLDER=bin
 SRC_FOLDER=src
 TESTS_FOLDER=tests
 
+DEFAULT_INSTANCE="data/I_1_5_20_0.txt"
+DEFAULT_CONFIG="configs/all_on.txt"
+
 OBJ_DEBUG_FOLDER=$(OBJ_FOLDER)/$(DEBUG_FOLDER)
 OBJ_RELEASE_FOLDER=$(OBJ_FOLDER)/$(RELEASE_FOLDER)
 
@@ -92,18 +95,20 @@ TabuListTests.o :
 all:
 	make debug
 
-debug: 
-	@make install-debug
+debug: install-debug
 	@make ARGS="-g -Wall -Wextra" TARGET="debug" SOURCE="debug" debug-target
 
-release: 
-	@make install-release
+release: install-release
 	@make ARGS="-O3 -DNDEBUG" TARGET="release" SOURCE="release" release-target
 
 install-release:
+	@cp $(DEFAULT_INSTANCE) $(BIN_RELEASE_FOLDER)/input.txt
+	@cp $(DEFAULT_CONFIG) $(BIN_RELEASE_FOLDER)/configs.txt
 	@mkdir -p $(OBJ_RELEASE_FOLDER) $(BIN_RELEASE_FOLDER)
 
 install-debug:
+	@cp $(DEFAULT_INSTANCE) $(BIN_DEBUG_FOLDER)/input.txt
+	@cp $(DEFAULT_CONFIG) $(BIN_DEBUG_FOLDER)/configs.txt
 	@mkdir -p $(OBJ_DEBUG_FOLDER) $(BIN_DEBUG_FOLDER)
 
 clean:

@@ -44,6 +44,7 @@ void ConfigTests_launchTests(void){
 		    int EFSR_BATCH = 1
 		}
 	*/
+	
 	fclose(file);
 
 	Config_parseFile(&cfg, TEST_FILENAME, NULL);
@@ -59,4 +60,6 @@ void ConfigTests_launchTests(void){
 
 	// not specified, should be 0
 	custom_assert(cfg.EBSR_BOTH == 0);
+
+	remove(TEST_FILENAME);
 }

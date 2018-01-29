@@ -95,9 +95,10 @@ void Solution_getBatchInfo(Solution * solution, unsigned int jobNumber, int * in
                     infos[1] = j;
                     return;
                 }
-        infos[0] = -1;
-        infos[1] = -1;
-	}
+    }
+    
+    infos[0] = -1;
+    infos[1] = -1;
 }
 
 void Solution_swap_sequence(Solution * solution, unsigned int j1, unsigned int j2) {
