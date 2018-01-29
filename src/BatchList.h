@@ -115,6 +115,25 @@ void BatchList_ebsr(BatchList * list, unsigned int batchPos1, unsigned int jobPo
 void BatchList_efsr(BatchList * list, unsigned int batchPos1, unsigned int jobPos1, unsigned int batchPos2, unsigned int jobPos2);
 
 
+/** \brief split a batch into two batchs of the same (+-1) size
+ *
+ * \param list BatchList* the batchlist
+ * \param batchPos unsigned int the index of the batch to split
+ * \return void
+ *
+ */
+void BatchList_split(BatchList * list, unsigned int batchPos);
+
+
+/** \brief merge a batch with the next one
+ *
+ * \param list BatchList* the batchlist
+ * \param batchPos unsigned int the position of the batch to merge with the next one
+ * \return void
+ *
+ */
+void BatchList_merge(BatchList * list, unsigned int batchPos);
+
 /** \brief Print a batchlist in the console
  *
  * \param list BatchList* the batchlist to print to the console

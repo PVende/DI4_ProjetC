@@ -180,6 +180,15 @@ void BatchList_efsr(BatchList * list, unsigned int batchPos1, unsigned int jobPo
 }
 
 
+void BatchList_split(BatchList * list, unsigned int batchPos){
+
+}
+
+void BatchList_merge(BatchList * list, unsigned int batchPos){
+	
+}
+
+
 void BatchList_debug(BatchList * list)
 {
 	printf("\n"DEBUG_SEPARATOR"BATCH LIST\n"DEBUG_SEPARATOR);
