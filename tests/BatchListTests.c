@@ -457,6 +457,11 @@ void BatchListTests_testSplit(void){
 	BatchList list;
 	Batch b1, b2, b3;
 
+	BatchList_init(&list);
+	Batch_init(&b1);
+	Batch_init(&b2);
+	Batch_init(&b3);
+
 	Batch_addJob(&b1, 1);
 
 	Batch_addJob(&b2, 2);
@@ -502,6 +507,11 @@ void BatchListTests_testSplit(void){
 void BatchListTests_testMerge(void){
 	BatchList list;
 	Batch b1, b2, b3;
+
+	BatchList_init(&list);
+	Batch_init(&b1);
+	Batch_init(&b2);
+	Batch_init(&b3);
 
 	Batch_addJob(&b1, 1);
 

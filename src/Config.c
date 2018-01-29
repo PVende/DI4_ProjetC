@@ -37,6 +37,8 @@ void Config_parseFile(Config * cfg, char * filepath, Args * args)
 	cfg->LOGICAL_TABU = 0;
 	cfg->ITERATIONS = 0;
 	cfg->RANDOM_DIVERSIFICATION = 0;
+	cfg->SPLIT = 0;
+	cfg->MERGE = 0;
 
 	if(args && args->nbIterations > 0)
         cfg->ITERATIONS = args->nbIterations;
@@ -92,10 +94,10 @@ void Config_parseLine(Config * cfg, char * line)
 	param = trim(param);
 	value = trim(value);
 
-	intValue = (int) strtol(value, NULL, 10); // Vaut bien 1 ou 0
+	intValue = (int) strtol(value, NULL, 10);
 
-	if(intValue != 0 && intValue != 1)
-		fatalError("Syntax Error: the config values should either be '0' or '1'.");
+	// if(intValue != 0 && intValue != 1)
+	// 	fatalError("Syntax Error: the config values should either be '0' or '1'.");
 
 	if(	strcmp(line, "SWAP_SEQ") == 0) cfg->SWAP_SEQ = intValue;
 	else if(strcmp(line, "SWAP_BATCH") == 0) cfg->SWAP_BATCH = intValue;
@@ -112,6 +114,8 @@ void Config_parseLine(Config * cfg, char * line)
 	else if(strcmp(line, "LOGICAL_TABU") == 0) cfg->LOGICAL_TABU = intValue;
 	else if(strcmp(line, "ITERATIONS") == 0 && cfg->ITERATIONS == 0) cfg->ITERATIONS = intValue;
 	else if(strcmp(line, "RANDOM_DIVERSIFICATION") == 0) cfg->RANDOM_DIVERSIFICATION = intValue;
+	else if(strcmp(line, "SPLIT") == 0) cfg->SPLIT = intValue;
+	else if(strcmp(line, "MERGE") == 0) cfg->MERGE = intValue;
 }
 
 Config * Config_duplicate(Config * config) {
@@ -133,6 +137,8 @@ Config * Config_duplicate(Config * config) {
     dup->LOGICAL_TABU = config->LOGICAL_TABU;
     dup->RANDOM_DIVERSIFICATION = config->RANDOM_DIVERSIFICATION;
     dup->ITERATIONS = config->ITERATIONS;
+    dup->SPLIT = config->SPLIT;
+    dup->MERGE = config->MERGE;
 
     return dup;
 }
@@ -161,5 +167,7 @@ void Config_debug(Config * cfg)
     printf("LOGICAL_TABU: %d\n", cfg->LOGICAL_TABU);
     printf("ITERATIONS: %d\n", cfg->ITERATIONS);
     printf("RANDOM_DIVERSIFICATION: %d\n", cfg->RANDOM_DIVERSIFICATION);
+    printf("SPLIT: %d\n", cfg->SPLIT);
+    printf("MERGE: %d\n", cfg->MERGE);
     printf(DEBUG_SEPARATOR);
 }

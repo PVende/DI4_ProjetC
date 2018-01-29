@@ -4,6 +4,12 @@
 #include <stdlib.h>
 #include "helpers.h"
 
+#define TABU_MOVE_SWAP 's'
+#define TABU_MOVE_EBSR 'b'
+#define TABU_MOVE_EFSR 'f'
+#define TABU_MOVE_SPLIT 'p'
+#define TABU_MOVE_MERGE 'm'
+
 /** \brief Represents a Tabu List
  */
 typedef struct _TabuList {

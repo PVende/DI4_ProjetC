@@ -202,7 +202,7 @@
  * \param max to
  *
  */
-#define RAND(min, max) min + (rand() / ((long double) RAND_MAX)) * ((max) - (min))
+#define RAND(min, max) (int)( min + (rand() / ((long double) RAND_MAX)) * ((max) - (min)))
 
 /** \brief generate 2 different random ints
  *

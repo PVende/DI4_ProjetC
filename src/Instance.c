@@ -337,180 +337,118 @@ void Instance_firstSolution(Instance * instance, Config * cfg){
 
     Solution_finalize(currentSolution.solution);
     free(currentSolution.solution);
+
+    // BatchList_debug(instance->solution->batchList);
 }
 
 void Instance_randomizeSolution(Instance * instance, Config * cfg)
 {
     int i;
-
-    srand(time(NULL));
-
-//    if(cfg->SWAP_BOTH){
-//        int nbSwaps = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
-//        for(i = 0; i < nbSwaps; i++){
-//            int swap_i, swap_j;
-//            int batch_i, batch_j;
-//            Batch * batch1, * batch2;
-//
-//            // SEQ
-//
-//            TWO_RAND_INT(swap_i, swap_j, 0, instance->nbJobs - 1);
-//
-//            Sequence_swap(instance->solution->sequence, swap_i, swap_j);
-//
-//            // BATCH LIST
-//
-//            TWO_RAND_INT(batch_i, batch_j, 0, instance->solution->batchList->size - 1);
-//            batch1 = instance->solution->batchList->batches[batch_i];
-//            batch2 = instance->solution->batchList->batches[batch_j];
-//
-//            swap_i = RAND(0, batch1->size - 1);
-//            swap_j = RAND(0, batch2->size - 1);
-//
-//            BatchList_swap(instance->solution->batchList, batch_i, swap_i, batch_j, swap_j);
-//        }
-//    }
-//
-//    if(cfg->SWAP_BATCH){
-//        int nbSwaps = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
-//        for(i = 0; i < nbSwaps; i++){
-//            int swap_i, swap_j;
-//            int batch_i, batch_j;
-//            Batch * batch1, * batch2;
-//
-//            TWO_RAND_INT(batch_i, batch_j, 0, instance->solution->batchList->size - 1);
-//            batch1 = instance->solution->batchList->batches[batch_i];
-//            batch2 = instance->solution->batchList->batches[batch_j];
-//
-//            swap_i = RAND(0, batch1->size - 1);
-//            swap_j = RAND(0, batch2->size - 1);
-//
-//            BatchList_swap(instance->solution->batchList, batch_i, swap_i, batch_j, swap_j);
-//        }
-//    }
-
-//    if(cfg->SWAP_SEQ){
-//        int nbSwaps = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
-//        for(i = 0; i < nbSwaps; i++){
-//            int swap_i, swap_j;
-//            TWO_RAND_INT(swap_i, swap_j, 0, instance->nbJobs - 1);
-//            Sequence_swap(instance->solution->sequence, swap_i, swap_j);
-//        }
-//    }
-//
-//     if(cfg->EBSR_BOTH)
-//     {
-//         int nbEbsr = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
-//         for(i = 0; i < nbEbsr; i++)
-//         {
-//             int ebsr_i, ebsr_j;
-//             int batch_i, batch_j;
-//             Batch * batch1, * batch2;
-//
-//             // SEQ
-//             TWO_RAND_INT(ebsr_i, ebsr_j, 0, instance->nbJobs - 1);
-//             Sequence_ebsr(instance->solution->sequence, ebsr_i, ebsr_j);
-//
-//             // BATCH LIST
-//             TWO_RAND_INT(batch_i, batch_j, 0, instance->solution->batchList->size - 1);
-//             batch1 = instance->solution->batchList->batches[batch_i];
-//             batch2 = instance->solution->batchList->batches[batch_j];
-//
-//             ebsr_i = RAND(0, batch1->size - 1);
-//             ebsr_j = RAND(0, batch2->size - 1);
-//
-//             BatchList_ebsr(instance->solution->batchList, batch_i, ebsr_i, batch_j, ebsr_j);
-//         }
-//     }
+    int nbSwaps = RAND(instance->nbJobs * 5, instance->nbJobs * 5 * 3);
+    int nbEbsr =  RAND(instance->nbJobs / 4, instance->nbJobs / 2);
 
 
-    if(cfg->EBSR_BATCH)
-    {
-        int nbEbsr = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
-        for(i = 0; i < nbEbsr; i++)
-        {
-            int ebsr_i, ebsr_j;
-            int batch_i, batch_j;
-            Batch * batch1, * batch2;
+    for(i = 0; i < nbSwaps; i++){
+        int swap_i, swap_j;
+        int batch_i, batch_j;
+        Batch * batch1, * batch2;
 
-            TWO_RAND_INT(batch_i, batch_j, 0, instance->solution->batchList->size - 1);
-            batch1 = instance->solution->batchList->batches[batch_i];
-            batch2 = instance->solution->batchList->batches[batch_j];
+        // SEQ
 
-            ebsr_i = RAND(0, batch1->size - 1);
-            ebsr_j = RAND(0, batch2->size - 1);
+        TWO_RAND_INT(swap_i, swap_j, 0, instance->nbJobs - 1);
 
-            BatchList_ebsr(instance->solution->batchList, batch_i, ebsr_i, batch_j, ebsr_j);
-        }
+        Sequence_swap(instance->solution->sequence, swap_i, swap_j);
+
+        // BATCH LIST
+
+        batch_i = RAND(0, instance->solution->batchList->size - 1);
+        batch_j = RAND(0, instance->solution->batchList->size - 1);
+
+        batch1 = instance->solution->batchList->batches[batch_i];
+        batch2 = instance->solution->batchList->batches[batch_j];
+
+        swap_i = RAND(0, batch1->size - 1);
+        swap_j = RAND(0, batch2->size - 1);
+
+        BatchList_swap(instance->solution->batchList, batch_i, swap_i, batch_j, swap_j);
     }
 
 
-//    if(cfg->EBSR_SEQ)
-//    {
-//        int nbEbsr = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
-//        for(i = 0; i < nbEbsr; i++)
-//        {
-//            int ebsr_i, ebsr_j;
-//            TWO_RAND_INT(ebsr_i, ebsr_j, 0, instance->nbJobs - 1);
-//            Sequence_ebsr(instance->solution->sequence, ebsr_i, ebsr_j);
-//        }
-//    }
+   for(i = 0; i < nbSwaps; i++){
+        int swap_i, swap_j;
+        int batch_i, batch_j;
+        Batch * batch1, * batch2;
 
-//     if(cfg->EFSR_BOTH)
-//     {
-//         int nbEfsr = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
-//         for(i = 0; i < nbEfsr; i++)
-//         {
-//             int efsr_i, efsr_j;
-//             int batch_i, batch_j;
-//             Batch * batch1, * batch2;
-//
-//             // SEQ
-//             TWO_RAND_INT(efsr_i, efsr_j, 0, instance->nbJobs - 1);
-//             Sequence_efsr(instance->solution->sequence, efsr_i, efsr_j);
-//
-//             // BATCH LIST
-//             TWO_RAND_INT(batch_i, batch_j, 0, instance->solution->batchList->size - 1);
-//             batch1 = instance->solution->batchList->batches[batch_i];
-//             batch2 = instance->solution->batchList->batches[batch_j];
-//
-//             efsr_i = RAND(0, batch1->size - 1);
-//             efsr_j = RAND(0, batch2->size - 1);
-//
-//             BatchList_efsr(instance->solution->batchList, batch_i, efsr_i, batch_j, efsr_j);
-//         }
-//     }
+        batch_i = RAND(0, instance->solution->batchList->size - 1);
+        batch_j = RAND(0, instance->solution->batchList->size - 1);
+
+        batch1 = instance->solution->batchList->batches[batch_i];
+        batch2 = instance->solution->batchList->batches[batch_j];
+
+        swap_i = RAND(0, batch1->size - 1);
+        swap_j = RAND(0, batch2->size - 1);
+
+        BatchList_swap(instance->solution->batchList, batch_i, swap_i, batch_j, swap_j);
+   }
+
+    for(i = 0; i < nbSwaps; i++){
+        int swap_i, swap_j;
+        TWO_RAND_INT(swap_i, swap_j, 0, instance->nbJobs - 1);
+        Sequence_swap(instance->solution->sequence, swap_i, swap_j);
+    }
 
 
-     if(cfg->EFSR_BATCH)
-     {
-         int nbEfsr = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
-         for(i = 0; i < nbEfsr; i++)
-         {
-             int efsr_i, efsr_j;
-             int batch_i, batch_j;
-             Batch * batch1, * batch2;
 
-             TWO_RAND_INT(batch_i, batch_j, 0, instance->solution->batchList->size - 1);
-             batch1 = instance->solution->batchList->batches[batch_i];
-             batch2 = instance->solution->batchList->batches[batch_j];
+  //   ////////////////
+  //  for(i = 0; i < nbEbsr; i++)
+  //  {
+  //      int ebsr_i, ebsr_j;
+  //      int batch_i, batch_j;
+  //      Batch * batch1, * batch2;
 
-             efsr_i = RAND(0, batch1->size - 1);
-             efsr_j = RAND(0, batch2->size - 1);
+  //      // SEQ
+  //      TWO_RAND_INT(ebsr_i, ebsr_j, 0, instance->nbJobs);
+  //      Sequence_ebsr(instance->solution->sequence, ebsr_i, ebsr_j);
 
-             BatchList_efsr(instance->solution->batchList, batch_i, efsr_i, batch_j, efsr_j);
-         }
-     }
+  //      // BATCH LIST
+  //      batch_i = RAND(0, instance->solution->batchList->size);
+  //      batch_j = RAND(0, instance->solution->batchList->size );
+
+  //      batch1 = instance->solution->batchList->batches[batch_i];
+  //      batch2 = instance->solution->batchList->batches[batch_j];
+
+  //      ebsr_i = RAND(0, batch1->size);
+  //      ebsr_j = RAND(0, batch2->size);
+
+  //      if(batch_i != batch_j || ebsr_i != ebsr_j)
+  //          BatchList_ebsr(instance->solution->batchList, batch_i, ebsr_i, batch_j, ebsr_j);
+  //  }
+
+  //  for(i = 0; i < nbEbsr; i++){
+  //      int swap_i, swap_j;
+  //      int batch_i, batch_j;
+  //      Batch * batch1, * batch2;
+
+  //      batch_i = RAND(0, instance->solution->batchList->size - 1);
+  //      batch_j = RAND(0, instance->solution->batchList->size - 1);
+
+  //      batch1 = instance->solution->batchList->batches[batch_i];
+  //      batch2 = instance->solution->batchList->batches[batch_j];
+
+  //      swap_i = RAND(0, batch1->size - 1);
+  //      swap_j = RAND(0, batch2->size - 1);
+
+  //      if(batch_i != batch_j || swap_i != swap_j)
+  //          BatchList_ebsr(instance->solution->batchList, batch_i, swap_i, batch_j, swap_j);
+  // }
 
 
-//    if(cfg->EFSR_SEQ)
-//    {
-//        int nbEfsr = RAND(instance->nbJobs / 4, instance->nbJobs * 4);
-//        for(i = 0; i < nbEfsr; i++)
-//        {
-//            int efsr_i, efsr_j;
-//            TWO_RAND_INT(efsr_i, efsr_j, 0, instance->nbJobs - 1);
-//            Sequence_efsr(instance->solution->sequence, efsr_i, efsr_j);
-//        }
-//    }
+  //  for(i = 0; i < nbEbsr; i++)
+  //  {
+  //      int ebsr_i, ebsr_j;
+
+  //      TWO_RAND_INT(ebsr_i, ebsr_j, 0, instance->nbJobs - 1);
+
+  //      Sequence_ebsr(instance->solution->sequence, ebsr_i, ebsr_j);
+  //  }
 }

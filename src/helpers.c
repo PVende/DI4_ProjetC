@@ -69,8 +69,11 @@ unsigned int * duplicateArray(unsigned int * array, unsigned int size)
 
 unsigned int fileExists(const char * filepath)
 {
+    int exists;
     FILE * file = fopen(filepath, "r");
-    return file != NULL;
+    exists = file != NULL;
+    fclose(file);
+    return exists;
 }
 
 void cursorOnNextInt(FILE * file)

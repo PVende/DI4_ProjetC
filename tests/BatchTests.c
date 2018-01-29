@@ -21,7 +21,7 @@ void BatchTests_basics(void)
 	custom_assert(b.size == 0);
 	custom_assert(b.batch == NULL);
 
-	// Adding of a job
+	// Adding a job
 
 	Batch_addJob(&b, 2);
 	Batch_addJob(&b, 7);
@@ -32,7 +32,7 @@ void BatchTests_basics(void)
 	custom_assert(b.batch[1] == 7);
 	custom_assert(b.batch[2] == 4);
 
-	// Adding of a job at a specific position
+	// Adding a job at a specific position
 
 	Batch_addJobAt(&b, 3, 2);
 
@@ -42,7 +42,7 @@ void BatchTests_basics(void)
 	custom_assert(b.batch[2] == 3);
 	custom_assert(b.batch[3] == 4);
 
-	// Removal of a job by value
+	// Removing a job by value
 
 	Batch_removeJob(&b, 3);
 
@@ -51,7 +51,7 @@ void BatchTests_basics(void)
 	custom_assert(b.batch[1] == 7);
 	custom_assert(b.batch[2] == 4);
 
-	// Removal of a job by position
+	// Removing a job by position
 
 	Batch_removeJobAt(&b, 1);
 
@@ -59,7 +59,7 @@ void BatchTests_basics(void)
 	custom_assert(b.batch[0] == 2);
 	custom_assert(b.batch[1] == 4);
 
-	// Removal of an absent job
+	// Removing an absent job
 
 	Batch_removeJob(&b, 3);
 
@@ -67,14 +67,14 @@ void BatchTests_basics(void)
 	custom_assert(b.batch[0] == 2);
 	custom_assert(b.batch[1] == 4);
 
-	// Extraction of a job
+	// Extracting a job
 
 	unsigned int extracted = Batch_extractJobAt(&b, 1);
 	custom_assert(extracted == 4);
 	custom_assert(b.size == 1);
 	custom_assert(b.batch[0] == 2);
 
-	// Comparison of two batches
+	// Comparing two batches
 
 	Batch_init(&equal);
 	unsigned int i;

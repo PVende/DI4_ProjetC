@@ -68,7 +68,6 @@ Sequence * Sequence_duplicate(Sequence * sequence){
 void Sequence_allocate(Sequence * sequence, unsigned int n)
 {
     sequence->allocatedSize = n;
-    //unsigned int * t = sequence->sequence;
     REALLOC(sequence->sequence, unsigned int, n);
 }
 
@@ -90,9 +89,7 @@ void Sequence_swap(Sequence * sequence, unsigned int pos1, unsigned int pos2) {
         unsigned int temp = sequence->sequence[pos1];
         sequence->sequence[pos1] = sequence->sequence[pos2];
         sequence->sequence[pos2] = temp;
-
     }
-
 }
 
 void Sequence_ebsr(Sequence * sequence, unsigned int pos1, unsigned int pos2) {

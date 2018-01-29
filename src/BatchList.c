@@ -180,14 +180,15 @@ void BatchList_efsr(BatchList * list, unsigned int batchPos1, unsigned int jobPo
 }
 
 void BatchList_split(BatchList * list, unsigned int batchPos) {
-	Batch * new;
 	Batch * toSplit = list->batches[batchPos];
 	unsigned int batchSize = toSplit->size;
-	unsigned int splitAt = batchSize / 2; 
-	unsigned int i;
 
 	if(batchSize == 1)
 		return;
+
+	Batch * new;
+	unsigned int splitAt = batchSize / 2; 
+	unsigned int i;
 
 	MALLOC(new, *new, 1);
 	Batch_init(new);

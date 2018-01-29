@@ -24,6 +24,8 @@ typedef struct {
     int LOGICAL_TABU;
     int ITERATIONS;
     int RANDOM_DIVERSIFICATION;
+    int SPLIT;
+    int MERGE;
 } Config;
 
 /** \brief Parse a config file and set the values of the config variable in parameter

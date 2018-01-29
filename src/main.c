@@ -25,6 +25,32 @@ void run(Args * args);
 int main(int argc, char * argv[])
 {
 	signal(SIGABRT, &on_sigabrt);
+    srand(time(NULL));
+
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // printf("%Lf\n", RAND(5, 50));
+    // exit(0);
 
     Args * args = Args_build(argc, argv);
 
@@ -175,12 +201,12 @@ void run(Args * args){
                         Solution_swap_both(currentInstance.solution, i, j);
                         currentInstanceEval = Instance_eval(&currentInstance, diversification);
                         if(currentInstanceEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 's', currentInstance.solution->sequence->sequence[i],
+                           !TabuList_isTabu(&tabu, TABU_MOVE_SWAP, currentInstance.solution->sequence->sequence[i],
                                                     currentInstance.solution->sequence->sequence[j], cfg.LOGICAL_TABU)) {
                             bestNeighbourEval = currentInstanceEval;
                             Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
-                            move = 's';
+                            move = TABU_MOVE_SWAP;
                             indexI = currentInstance.solution->sequence->sequence[i];
                             indexJ = currentInstance.solution->sequence->sequence[j];
 
@@ -199,12 +225,12 @@ void run(Args * args){
                         Solution_swap_both(currentInstance.solution, i, j);
                         currentInstanceEval = Instance_eval(&currentInstance, diversification);
                         if(currentInstanceEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 's', currentInstance.solution->sequence->sequence[i],
+                           !TabuList_isTabu(&tabu, TABU_MOVE_SWAP, currentInstance.solution->sequence->sequence[i],
                                                     currentInstance.solution->sequence->sequence[j], cfg.LOGICAL_TABU)) {
                             bestNeighbourEval = currentInstanceEval;
                             Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
-                            move = 's';
+                            move = TABU_MOVE_SWAP;
                             indexI = currentInstance.solution->sequence->sequence[i];
                             indexJ = currentInstance.solution->sequence->sequence[j];
 
@@ -223,12 +249,12 @@ void run(Args * args){
                         Solution_swap_both(currentInstance.solution, i, j);
                         currentInstanceEval = Instance_eval(&currentInstance, diversification);
                         if(currentInstanceEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 's', currentInstance.solution->sequence->sequence[i],
+                           !TabuList_isTabu(&tabu, TABU_MOVE_SWAP, currentInstance.solution->sequence->sequence[i],
                                                     currentInstance.solution->sequence->sequence[j], cfg.LOGICAL_TABU)) {
                             bestNeighbourEval = currentInstanceEval;
                             Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
-                            move = 's';
+                            move = TABU_MOVE_SWAP;
                             indexI = currentInstance.solution->sequence->sequence[i];
                             indexJ = currentInstance.solution->sequence->sequence[j];
 
@@ -247,12 +273,12 @@ void run(Args * args){
                         Solution_ebsr_both(currentInstance.solution, i, j);
                         currentInstanceEval = Instance_eval(&currentInstance, diversification);
                         if(currentInstanceEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 'b', currentInstance.solution->sequence->sequence[i],
+                           !TabuList_isTabu(&tabu, TABU_MOVE_EBSR, currentInstance.solution->sequence->sequence[i],
                                                     currentInstance.solution->sequence->sequence[j], cfg.LOGICAL_TABU)) {
                             bestNeighbourEval = currentInstanceEval;
                             Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
-                            move = 'b';
+                            move = TABU_MOVE_EBSR;
                             indexI = currentInstance.solution->sequence->sequence[i];
                             indexJ = currentInstance.solution->sequence->sequence[j];
 
@@ -275,12 +301,12 @@ void run(Args * args){
                         Solution_ebsr_sequence(currentInstance.solution, i, j);
                         currentInstanceEval = Instance_eval(&currentInstance, diversification);
                         if(currentInstanceEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 'b', currentInstance.solution->sequence->sequence[i],
+                           !TabuList_isTabu(&tabu, TABU_MOVE_EBSR, currentInstance.solution->sequence->sequence[i],
                                                     currentInstance.solution->sequence->sequence[j], cfg.LOGICAL_TABU)) {
                             bestNeighbourEval = currentInstanceEval;
                             Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
-                            move = 'b';
+                            move = TABU_MOVE_EBSR;
                             indexI = currentInstance.solution->sequence->sequence[i];
                             indexJ = currentInstance.solution->sequence->sequence[j];
 
@@ -303,12 +329,12 @@ void run(Args * args){
                         Solution_ebsr_sequence(currentInstance.solution, i, j);
                         currentInstanceEval = Instance_eval(&currentInstance, diversification);
                         if(currentInstanceEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 'b', currentInstance.solution->sequence->sequence[i],
+                           !TabuList_isTabu(&tabu, TABU_MOVE_EBSR, currentInstance.solution->sequence->sequence[i],
                                                     currentInstance.solution->sequence->sequence[j], cfg.LOGICAL_TABU)) {
                             bestNeighbourEval = currentInstanceEval;
                             Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
-                            move = 'b';
+                            move = TABU_MOVE_EBSR;
                             indexI = currentInstance.solution->sequence->sequence[i];
                             indexJ = currentInstance.solution->sequence->sequence[j];
 
@@ -329,12 +355,12 @@ void run(Args * args){
                         Solution_efsr_both(currentInstance.solution, i, j);
                         currentInstanceEval = Instance_eval(&currentInstance, diversification);
                         if(currentInstanceEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 'f', currentInstance.solution->sequence->sequence[i],
+                           !TabuList_isTabu(&tabu, TABU_MOVE_EFSR, currentInstance.solution->sequence->sequence[i],
                                                     currentInstance.solution->sequence->sequence[j], cfg.LOGICAL_TABU)) {
                             bestNeighbourEval = currentInstanceEval;
                             Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
-                            move = 'f';
+                            move = TABU_MOVE_EFSR;
                             indexI = currentInstance.solution->sequence->sequence[i];
                             indexJ = currentInstance.solution->sequence->sequence[j];
 
@@ -353,12 +379,12 @@ void run(Args * args){
                         Solution_efsr_both(currentInstance.solution, i, j);
                         currentInstanceEval = Instance_eval(&currentInstance, diversification);
                         if(currentInstanceEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 'f', currentInstance.solution->sequence->sequence[i],
+                           !TabuList_isTabu(&tabu, TABU_MOVE_EFSR, currentInstance.solution->sequence->sequence[i],
                                                     currentInstance.solution->sequence->sequence[j], cfg.LOGICAL_TABU)) {
                             bestNeighbourEval = currentInstanceEval;
                             Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
-                            move = 'f';
+                            move = TABU_MOVE_EFSR;
                             indexI = currentInstance.solution->sequence->sequence[i];
                             indexJ = currentInstance.solution->sequence->sequence[j];
 
@@ -377,12 +403,12 @@ void run(Args * args){
                         Solution_efsr_both(currentInstance.solution, i, j);
                         currentInstanceEval = Instance_eval(&currentInstance, diversification);
                         if(currentInstanceEval < bestNeighbourEval &&
-                           !TabuList_isTabu(&tabu, 'f', currentInstance.solution->sequence->sequence[i],
+                           !TabuList_isTabu(&tabu, TABU_MOVE_EFSR, currentInstance.solution->sequence->sequence[i],
                                                     currentInstance.solution->sequence->sequence[j], cfg.LOGICAL_TABU)) {
                             bestNeighbourEval = currentInstanceEval;
                             Instance_setSolution(&bestNeighbour, currentInstance.solution);
 
-                            move = 'f';
+                            move = TABU_MOVE_EFSR;
                             indexI = currentInstance.solution->sequence->sequence[i];
                             indexJ = currentInstance.solution->sequence->sequence[j];
 
@@ -392,6 +418,56 @@ void run(Args * args){
                         Instance_setSolution(&currentInstance, currentInstanceSave.solution);
                     }
         }
+
+        if(cfg.SPLIT) {
+            for(i = 0; i < currentInstance.solution->batchList->size && !stop; i++){
+                Instance_setSolution(&currentInstanceSave, currentInstance.solution);
+                BatchList_split(currentInstance.solution->batchList, i);
+                currentInstanceEval = Instance_eval(&currentInstance, diversification);
+                if(currentInstanceEval < bestNeighbourEval /*&&
+                   !TabuList_isTabu(&tabu, TABU_MOVE_SPLIT, currentInstance.solution->sequence->sequence[i],
+                                            currentInstance.solution->sequence->sequence[j], cfg.LOGICAL_TABU)*/) {
+                    bestNeighbourEval = currentInstanceEval;
+                    Instance_setSolution(&bestNeighbour, currentInstance.solution);
+
+                    // move = TABU_MOVE_SPLIT;
+                    // indexI = currentInstance.solution->sequence->sequence[i];
+                    // indexJ = currentInstance.solution->sequence->sequence[j];
+
+                    if(cfg.FIRST_IMPROVE) {
+                        stop = 1;
+                        Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
+                    }
+                }
+                Instance_setSolution(&currentInstance, currentInstanceSave.solution);
+            }
+        }
+
+
+        if(cfg.MERGE) {
+            for(i = 0; i < currentInstance.solution->batchList->size - 1 && !stop; i++){
+                Instance_setSolution(&currentInstanceSave, currentInstance.solution);
+                BatchList_merge(currentInstance.solution->batchList, i);
+                currentInstanceEval = Instance_eval(&currentInstance, diversification);
+                if(currentInstanceEval < bestNeighbourEval /*&&
+                   !TabuList_isTabu(&tabu, TABU_MOVE_SPLIT, currentInstance.solution->sequence->sequence[i],
+                                            currentInstance.solution->sequence->sequence[j], cfg.LOGICAL_TABU)*/) {
+                    bestNeighbourEval = currentInstanceEval;
+                    Instance_setSolution(&bestNeighbour, currentInstance.solution);
+
+                    // move = TABU_MOVE_SPLIT;
+                    // indexI = currentInstance.solution->sequence->sequence[i];
+                    // indexJ = currentInstance.solution->sequence->sequence[j];
+
+                    if(cfg.FIRST_IMPROVE) {
+                        stop = 1;
+                        Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
+                    }
+                }
+                Instance_setSolution(&currentInstance, currentInstanceSave.solution);
+            }
+        }
+
 
         if(bestNeighbourEval != (unsigned int)-1) {
             Instance_setSolution(&currentInstance, bestNeighbour.solution);
@@ -422,8 +498,11 @@ void run(Args * args){
                 diversification = 1;
                 TabuList_finalize(&tabu);
                 TabuList_setSize(&tabu, tabuListSize);
-                if(cfg.RANDOM_DIVERSIFICATION)
-                    Instance_randomizeSolution(&bestInstance, &cfg);
+                if(cfg.RANDOM_DIVERSIFICATION){
+                    // Instance_randomizeSolution(&bestInstance, &cfg);
+                    Instance_firstSolution(&currentInstance, &cfg);
+                    Instance_randomizeSolution(&currentInstance, &cfg);
+                }
                 if(args->print)
                     printf("Diversification\n");
             }

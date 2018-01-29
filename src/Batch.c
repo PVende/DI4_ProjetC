@@ -96,7 +96,7 @@ void Batch_removeJobAt(Batch * batch, unsigned int position) {
     if(position >= batch->size)
         fatalError("Error argument");
 
-    MEMMOVE(&batch->batch[position], &batch->batch[position + 1], unsigned int, batch->size - position);
+    MEMMOVE(&batch->batch[position], &batch->batch[position + 1], unsigned int, batch->size - position - 1);
     batch->size--;
 }
 

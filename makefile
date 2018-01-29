@@ -102,14 +102,20 @@ release: install-release
 	@make ARGS="-O3 -DNDEBUG" TARGET="release" SOURCE="release" release-target
 
 install-release:
+	@mkdir -p $(OBJ_RELEASE_FOLDER) $(BIN_RELEASE_FOLDER)
 	@cp $(DEFAULT_INSTANCE) $(BIN_RELEASE_FOLDER)/input.txt
 	@cp $(DEFAULT_CONFIG) $(BIN_RELEASE_FOLDER)/configs.txt
-	@mkdir -p $(OBJ_RELEASE_FOLDER) $(BIN_RELEASE_FOLDER)
+	@rm configs.txt input.txt
+	@cp $(DEFAULT_INSTANCE) input.txt
+	@cp $(DEFAULT_CONFIG) configs.txt
 
 install-debug:
+	@mkdir -p $(OBJ_DEBUG_FOLDER) $(BIN_DEBUG_FOLDER)
 	@cp $(DEFAULT_INSTANCE) $(BIN_DEBUG_FOLDER)/input.txt
 	@cp $(DEFAULT_CONFIG) $(BIN_DEBUG_FOLDER)/configs.txt
-	@mkdir -p $(OBJ_DEBUG_FOLDER) $(BIN_DEBUG_FOLDER)
+	@rm configs.txt input.txt
+	@cp $(DEFAULT_INSTANCE) input.txt
+	@cp $(DEFAULT_CONFIG) configs.txt
 
 clean:
 	@rm -vrf $(OBJ_FOLDER) $(BIN_FOLDER)
