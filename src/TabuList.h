@@ -12,6 +12,7 @@ typedef struct _TabuList {
     char * moves;
     unsigned int * indexI;
     unsigned int * indexJ;
+    unsigned int cursor;
 } TabuList;
 
 /** \brief Initialize a tabuList

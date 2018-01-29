@@ -116,7 +116,7 @@ void Args_debug(Args * args)
     printf("Check: ");
     if(*args->check != 0){
         printf("%s", args->check);
-        if(args->check)
+        if(args->checkDetails)
         	printf(", with details: %s", args->checkDetails ? "yes" : "no");
 
         printf("\n");
