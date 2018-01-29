@@ -46,7 +46,7 @@ void ConfigTests_launchTests(void){
 	*/
 	fclose(file);
 
-	Config_parseFile(&cfg, TEST_FILENAME);
+	Config_parseFile(&cfg, TEST_FILENAME, NULL);
 
 	custom_assert(cfg.SWAP_SEQ == 1);
 	custom_assert(cfg.SWAP_BATCH == 1);

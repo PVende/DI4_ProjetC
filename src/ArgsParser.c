@@ -16,6 +16,8 @@ Args * Args_create()
     args->help = 0;
     args->checkDetails = 0;
     args->debugArgs = 0;
+    args->nbIterations = 0;
+    args->disableTests = 0;
 
     return args;
 }
@@ -69,6 +71,15 @@ Args * Args_build(int argc, char * argv[])
             args->debugArgs = 1;
             i--;
         }
+        else if(strcmp(arg, "--iterations") == 0 || strcmp(arg, "-it") == 0)
+        {
+            args->nbIterations = atoi(argv[i + 1]);
+        }
+        else if(strcmp(arg, "--disable-tests") == 0 || strcmp(arg, "-dt") == 0)
+        {
+            args->disableTests = 1;
+            i--;
+        }
     }
 
     return args;
@@ -105,7 +116,7 @@ void Args_debug(Args * args)
     printf("Check: ");
     if(*args->check != 0){
         printf("%s", args->check);
-        if(args->check)
+        if(args->checkDetails)
         	printf(", with details: %s", args->checkDetails ? "yes" : "no");
 
         printf("\n");
@@ -116,6 +127,8 @@ void Args_debug(Args * args)
     printf("Print: %s\n", (args->print ? "yes" : "no"));
     printf("Help: %s\n", (args->help ? "yes" : "no"));
     printf("Debug args: %s\n", (args->debugArgs ? "yes" : "no"));
+    printf("Nb iterations: %d\n", args->nbIterations);
+    printf("Tests disabled: %s\n", (args->disableTests ? "yes" : "no"));
 
     printf("========================================\n");
 }
@@ -127,8 +140,10 @@ void Args_showHelp(){
     printf(" [-c|--config <config file>]");
     printf(" [-o|--output <output file>]");
     printf(" [-p|-dp|--disable-print]");
+    printf(" [-dt|--disable-tests]");
     printf(" [--check <output file> [-d|--details]]");
     printf(" [--debug-args]");
+    printf(" [-it|--iterations <nb iterations>]");
     printf("\n\n");
 
     printf("Options : \n");
@@ -137,9 +152,11 @@ void Args_showHelp(){
     printf("\t-c, --config <file>	Specify the config file (default is the file 'config.txt' at the execution context)\n");
     printf("\t-o, --output <file>	Specify the output file (default is the file 'output.txt' at the execution context)\n");
     printf("\t-p, --print		Enable prints during research (by default)\n");
-    printf("\t-dp, --disable-print	Disable prints during research\n");
+    printf("\t-dp, --disable-print  Disable prints during research\n");
+    printf("\t-dt, --disable-tests	Disable unit tests\n");
     printf("\t--check <file>		Check a solution stored in an output file\n");
     printf("\t-d, --details		Display the parsed solution details during the check\n");
     printf("\t--debug-args		Display the command line args details\n");
+    printf("\t-it, --iterations	Define the number of iterations\n");
 }
 

@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 /** \brief allocate a pointer with malloc() and check the value
@@ -22,7 +23,7 @@
  * MALLOC(2DArray, int*, 5, "error");
  * \endcode
  */
-#define MALLOC_M(varname, type, size, msg) {varname = (type*) malloc((size) * sizeof(type)); \
+#define MALLOC_M(varname, type, size, msg) {varname = malloc(sizeof(type) * (size)); \
                                     if(varname == NULL) \
                                         fatalError(msg != NULL ? msg : "The macro Malloc failed");}
 
@@ -55,7 +56,7 @@
  * CALLOC_M(2DArray, int*, 5, "error");
  * \endcode
  */
-#define CALLOC_M(varname, type, size, msg) {varname = (type*) calloc(size, sizeof(type)); \
+#define CALLOC_M(varname, type, size, msg) {varname = calloc(size, sizeof(type)); \
                                     if(varname == NULL && size != 0) \
                                         fatalError(msg != NULL ? msg : "The macro Calloc failed");}
 
@@ -88,7 +89,7 @@
  * REALLOC_M(2DArray, int*, 10, NULL);
  * \endcode
  */
-#define REALLOC_M(varname, type, size, msg) {varname = (type*) realloc(varname, (size) * sizeof(type)); \
+#define REALLOC_M(varname, type, size, msg) {varname = realloc(varname, sizeof(type) * (size)); \
                                      if(varname == NULL && size != 0) \
                                          fatalError(msg != NULL ? msg : "The macro Realloc failed");}
 
@@ -105,6 +106,83 @@
  */
 #define REALLOC(varname, type, size) REALLOC_M(varname, type, size, NULL)
 
+
+/** \brief copy memory from a pointer to another and check the result value
+ *
+ * \param dest_varname the name of the destination variable
+ * \param from_varname the name of the source variable
+ * \param type the type of each element
+ * \param size the number of element to copy
+ * \def #define MEMCPY(dest_varname, from_varname, type, size)
+ * \code
+ * // Copy an array of 5 integer to another:
+ * int from[5] = {1, 3, 2, 5, 4};
+ * int dup[5];
+ * MEMCPY(dup, from, *from, 5); 
+ * MEMCPY(dup, from, int, 5);
+ * \endcode
+ */
+#define MEMCPY(dest_varname, from_varname, type, size) MEMCPY_M(dest_varname, from_varname, type, size, NULL)
+
+/** \brief copy memory from a pointer to another and check the result value
+ *
+ * \param dest_varname the name of the destination variable
+ * \param from_varname the name of the source variable
+ * \param type the type of each element
+ * \param size the number of element to copy
+ * \param msg the message to display in case of error
+ * \def #define MEMCPY_m(dest_varname, from_varname, type, size, msg)
+ * \code
+ * // Copy an array of 5 integer to another:
+ * int from[5] = {1, 3, 2, 5, 4};
+ * int dup[5];
+ * MEMCPY(dup, from, *from, 5, "It Failed"); 
+ * MEMCPY(dup, from, int, 5, "It Failed");
+ * \endcode
+ */
+#define MEMCPY_M(dest_varname, from_varname, type, size, msg) {dest_varname = memcpy(dest_varname, from_varname, sizeof(type) * (size)); \
+							                                     if(dest_varname == NULL) \
+							                                         fatalError(msg != NULL ? msg : "The macro Memcpy failed");}
+
+
+/** \brief move memory from a pointer to another and check the result value
+ *
+ * \param dest_varname the name of the destination variable
+ * \param from_varname the name of the source variable
+ * \param type the type of each element
+ * \param size the number of element to move
+ * \def #define MEMMOVE(dest_varname, from_varname, type, size)
+ * \code
+ * // Copy an array of 5 integer to another:
+ * int from[5] = {1, 3, 2, 5, 4};
+ * int dup[5];
+ * MEMMOVE(dup, from, *from, 5); 
+ * MEMMOVE(dup, from, int, 5);
+ * \endcode
+ */
+#define MEMMOVE(dest_varname, from_varname, type, size) MEMMOVE_M(dest_varname, from_varname, type, size, NULL)
+
+/** \brief move memory from a pointer to another and check the result value
+ *
+ * \param dest_varname the name of the destination variable
+ * \param from_varname the name of the source variable
+ * \param type the type of each element
+ * \param size the number of element to move
+ * \param msg the message to display in case of error
+ * \def #define MEMMOVE_m(dest_varname, from_varname, type, size, msg)
+ * \code
+ * // Copy an array of 5 integer to another:
+ * int from[5] = {1, 3, 2, 5, 4};
+ * int dup[5];
+ * MEMMOVE(dup, from, *from, 5, "It Failed"); 
+ * MEMMOVE(dup, from, int, 5, "It Failed");
+ * \endcode
+ */
+#define MEMMOVE_M(dest_varname, from_varname, type, size, msg) {type * test_memmove_result = memmove(dest_varname, from_varname, sizeof(type) * (size)); \
+							                                     if(test_memmove_result == NULL) \
+							                                         fatalError(msg != NULL ? msg : "The macro Memmove failed");}
+
+
 #define DEBUG_SEPARATOR "============================================================\n"
 
 #define custom_assert(expr) assert(expr); printf(".");
@@ -114,10 +192,30 @@
  *
  * \param a the first variable
  * \param b the second variable
- * \def #define MAX(a, b)
  *
  */
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
+
+/** \brief Rand int between to integers
+ *
+ * \param min from
+ * \param max to
+ *
+ */
+#define RAND(min, max) min + (rand() / ((long double) RAND_MAX)) * ((max) - (min))
+
+/** \brief generate 2 different random ints
+ *
+ * \param a first int
+ * \param b second int
+ * \param min min value
+ * \param max max value
+ *
+ */
+#define TWO_RAND_INT(a, b, min, max) { a = RAND(min, max);\
+                                        do{\
+                                            b = RAND(min, max);\
+                                        }while(a == b); }
 
 
 /** \brief Stop the program and display an error message to the output

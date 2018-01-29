@@ -60,10 +60,10 @@ void SolutionTests_testDuplication(void) {
 
 void SolutionTests_testBatchInfo(void) {
     unsigned int i;
-    unsigned int * infoBatch1,
-                * infoBatch2,
-                * infoBatch3,
-                * infoBatch4;
+    int infoBatch1[2],
+                infoBatch2[2],
+                infoBatch3[2],
+                infoBatch4[2];
     Solution sol;
     Sequence seq;
     BatchList list;
@@ -95,10 +95,10 @@ void SolutionTests_testBatchInfo(void) {
     Solution_setBatchList(&sol, &list);
     BatchList_finalize(&list);
 
-    infoBatch1 = Solution_getBatchInfo(&sol, 0);
-    infoBatch2 = Solution_getBatchInfo(&sol, 1);
-    infoBatch3 = Solution_getBatchInfo(&sol, 2);
-    infoBatch4 = Solution_getBatchInfo(&sol, 3);
+    Solution_getBatchInfo(&sol, 0, infoBatch1);
+    Solution_getBatchInfo(&sol, 1, infoBatch2);
+    Solution_getBatchInfo(&sol, 2, infoBatch3);
+    Solution_getBatchInfo(&sol, 3, infoBatch4);
 
     custom_assert(infoBatch1[0] == 0);
     custom_assert(infoBatch1[1] == 0);
@@ -109,12 +109,9 @@ void SolutionTests_testBatchInfo(void) {
     custom_assert(infoBatch3[0] == 1);
     custom_assert(infoBatch3[1] == 1);
 
-    custom_assert(infoBatch4 == NULL);
+    custom_assert(*infoBatch4 == -1);
 
     Solution_finalize(&sol);
-    free(infoBatch1);
-    free(infoBatch2);
-    free(infoBatch3);
 }
 
 void SolutionTests_testSwapEbsrEfsr(void) {

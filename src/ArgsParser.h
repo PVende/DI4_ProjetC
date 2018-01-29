@@ -11,6 +11,8 @@ typedef struct _Args{
     int checkDetails;
     int help;
     int debugArgs;
+    int nbIterations;
+    int disableTests;
 } Args;
 
 /** \brief Create the Args structure

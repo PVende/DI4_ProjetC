@@ -21,7 +21,6 @@ void Batch_finalize(Batch * batch) {
 Batch * Batch_duplicate(Batch * batch)
 {
 	Batch * dup;
-	unsigned int i;
 
     if(batch == NULL)
         return NULL;
@@ -29,16 +28,12 @@ Batch * Batch_duplicate(Batch * batch)
     MALLOC(dup, Batch, 1);
     dup->size = batch->size;
     dup->allocatedSize = batch->allocatedSize;
-//    dup->batch = duplicateArray(batch->batch, batch->size);
 
     if(dup->size == 0)
         dup->batch = NULL;
     else{
-        MALLOC(dup->batch, unsigned int, batch->allocatedSize);
-        for(i = 0; i < batch->allocatedSize; i++)
-        {
-            dup->batch[i] = batch->batch[i];
-        }
+        MALLOC(dup->batch, *dup->batch, batch->allocatedSize);
+        MEMCPY(dup->batch, batch->batch, *dup->batch, batch->size)
     }
 
     return dup;
@@ -47,8 +42,6 @@ Batch * Batch_duplicate(Batch * batch)
 
 int Batch_equals(Batch * b1, Batch * b2)
 {
-    unsigned int i;
-
     if(b1 == b2)
 		return 1;
     else if(b1 == NULL || b2 == NULL)
@@ -56,13 +49,7 @@ int Batch_equals(Batch * b1, Batch * b2)
     else if(b1->size != b2->size)
         return 0;
 
-    for(i = 0; i < b1->size; i++)
-    {
-        if(b1->batch[i] != b2->batch[i])
-            return 0;
-    }
-
-    return 1;
+    return memcmp(b1->batch, b2->batch, sizeof(*b1->batch) * b1->size) == 0;
 }
 
 void Batch_writeBatch(Batch * batch, FILE * file) {
@@ -90,8 +77,6 @@ void Batch_addJob(Batch * batch, unsigned int job)
 
 
 void Batch_addJobAt(Batch * batch, unsigned int job, unsigned int position) {
-    unsigned int i;
-
     if(position > batch->size){
         fatalError("Error argument");
     }
@@ -101,11 +86,8 @@ void Batch_addJobAt(Batch * batch, unsigned int job, unsigned int position) {
 		batch->allocatedSize += batchAllocationStep;
 	}
 
-    for(i = batch->size; i > position; i--)
-        batch->batch[i] = batch->batch[i - 1];
-
+    MEMMOVE(&batch->batch[position + 1], &batch->batch[position], unsigned int, batch->size - position);
     batch->batch[position] = job;
-
     batch->size++;
 }
 
@@ -114,11 +96,7 @@ void Batch_removeJobAt(Batch * batch, unsigned int position) {
     if(position >= batch->size)
         fatalError("Error argument");
 
-    unsigned int i;
-
-    for(i = position + 1; i < batch->size; i++)
-        batch->batch[i - 1] =  batch->batch[i];
-
+    MEMMOVE(&batch->batch[position], &batch->batch[position + 1], unsigned int, batch->size - position);
     batch->size--;
 }
 

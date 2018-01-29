@@ -26,7 +26,7 @@ void InstanceTests_parserTests(void) {
     custom_assert(instance.distances == NULL);
     custom_assert(instance.solution == NULL);
 
-    Instance_parseInstance(&instance, TEST_FILENAME, TEST_FILENAME_CONFIG);
+    Instance_parseInstance(&instance, TEST_FILENAME);
 
     custom_assert(instance.nbJobs == 5);
     custom_assert(instance.nbMachine == 2);
@@ -49,8 +49,8 @@ void InstanceTests_testDuplication(void) {
     Instance instance,
             * dup;
     Instance_init(&instance);
-    Instance_parseInstance(&instance, TEST_FILENAME, TEST_FILENAME_CONFIG);
-    Instance_firstSolution(&instance);
+    Instance_parseInstance(&instance, TEST_FILENAME);
+    Instance_firstSolution(&instance, NULL);
 
     dup = Instance_duplicate(&instance);
     custom_assert(Instance_equals(dup, &instance) == 1);
@@ -66,8 +66,8 @@ void InstanceTests_testDuplication(void) {
 void InstanceTests_firstSolutionTests(void) {
     Instance instance;
     Instance_init(&instance);
-    Instance_parseInstance(&instance, TEST_FILENAME, TEST_FILENAME_CONFIG);
-    Instance_firstSolution(&instance);
+    Instance_parseInstance(&instance, TEST_FILENAME);
+    Instance_firstSolution(&instance, NULL);
 
     custom_assert(Instance_eval(&instance, 0) == 125);
 

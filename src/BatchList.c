@@ -158,8 +158,8 @@ void BatchList_ebsr(BatchList * list, unsigned int batchPos1, unsigned int jobPo
 	unsigned int extractedJob;
 	Batch * batchInsertion, * batchExtraction;
 
-	batchInsertion = BatchList_getBatch(list, batchPos1);
-	batchExtraction = BatchList_getBatch(list, batchPos2);
+	batchInsertion = list->batches[batchPos1];
+	batchExtraction = list->batches[batchPos2];
 	extractedJob = Batch_extractJobAt(batchExtraction, jobPos2);
 
 	if(batchExtraction->size == 0)
