@@ -40,7 +40,7 @@ void Config_parseFile(Config * cfg, char * filepath, Args * args)
 	cfg->SPLIT = 0;
 	cfg->MERGE = 0;
 
-	if(args && args->nbIterations > 0)
+	if(args && args->nbIterations != 0)
         cfg->ITERATIONS = args->nbIterations;
 
 	file = fopen(filepath, "r");
@@ -95,9 +95,6 @@ void Config_parseLine(Config * cfg, char * line)
 	value = trim(value);
 
 	intValue = (int) strtol(value, NULL, 10);
-
-	// if(intValue != 0 && intValue != 1)
-	// 	fatalError("Syntax Error: the config values should either be '0' or '1'.");
 
 	if(	strcmp(line, "SWAP_SEQ") == 0) cfg->SWAP_SEQ = intValue;
 	else if(strcmp(line, "SWAP_BATCH") == 0) cfg->SWAP_BATCH = intValue;
@@ -167,6 +164,11 @@ void Config_debug(Config * cfg)
     printf("LOGICAL_TABU: %d\n", cfg->LOGICAL_TABU);
     printf("ITERATIONS: %d\n", cfg->ITERATIONS);
     printf("RANDOM_DIVERSIFICATION: %d\n", cfg->RANDOM_DIVERSIFICATION);
+    printf("SPLIT: %d\n", cfg->SPLIT);
+    printf("MERGE: %d\n", cfg->MERGE);
+    printf(DEBUG_SEPARATOR);
+}
+FICATION);
     printf("SPLIT: %d\n", cfg->SPLIT);
     printf("MERGE: %d\n", cfg->MERGE);
     printf(DEBUG_SEPARATOR);
