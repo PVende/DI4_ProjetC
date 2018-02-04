@@ -35,8 +35,9 @@ void Config_parseFile(Config * cfg, char * filepath, Args * args)
 	cfg->DIVERSIFICATION = 0;
 	cfg->FIRST_IMPROVE = 0;
 	cfg->LOGICAL_TABU = 0;
-	cfg->ITERATIONS = 0;
+	cfg->ITERATIONS = 200000;
 	cfg->RANDOM_DIVERSIFICATION = 0;
+	cfg->IMPROVEMENT_BASED_ON_DIVERSIFICATION = 0;
 	cfg->SPLIT = 0;
 	cfg->MERGE = 0;
 
@@ -111,6 +112,7 @@ void Config_parseLine(Config * cfg, char * line)
 	else if(strcmp(line, "LOGICAL_TABU") == 0) cfg->LOGICAL_TABU = intValue;
 	else if(strcmp(line, "ITERATIONS") == 0 && cfg->ITERATIONS == 0) cfg->ITERATIONS = intValue;
 	else if(strcmp(line, "RANDOM_DIVERSIFICATION") == 0) cfg->RANDOM_DIVERSIFICATION = intValue;
+	else if(strcmp(line, "IMPROVEMENT_BASED_ON_DIVERSIFICATION") == 0) cfg->IMPROVEMENT_BASED_ON_DIVERSIFICATION = intValue;
 	else if(strcmp(line, "SPLIT") == 0) cfg->SPLIT = intValue;
 	else if(strcmp(line, "MERGE") == 0) cfg->MERGE = intValue;
 }
@@ -136,6 +138,7 @@ Config * Config_duplicate(Config * config) {
     dup->ITERATIONS = config->ITERATIONS;
     dup->SPLIT = config->SPLIT;
     dup->MERGE = config->MERGE;
+    dup->IMPROVEMENT_BASED_ON_DIVERSIFICATION = config->IMPROVEMENT_BASED_ON_DIVERSIFICATION;
 
     return dup;
 }
@@ -164,11 +167,7 @@ void Config_debug(Config * cfg)
     printf("LOGICAL_TABU: %d\n", cfg->LOGICAL_TABU);
     printf("ITERATIONS: %d\n", cfg->ITERATIONS);
     printf("RANDOM_DIVERSIFICATION: %d\n", cfg->RANDOM_DIVERSIFICATION);
-    printf("SPLIT: %d\n", cfg->SPLIT);
-    printf("MERGE: %d\n", cfg->MERGE);
-    printf(DEBUG_SEPARATOR);
-}
-FICATION);
+    printf("IMPROVEMENT_BASED_ON_DIVERSIFICATION: %d\n", cfg->IMPROVEMENT_BASED_ON_DIVERSIFICATION);
     printf("SPLIT: %d\n", cfg->SPLIT);
     printf("MERGE: %d\n", cfg->MERGE);
     printf(DEBUG_SEPARATOR);

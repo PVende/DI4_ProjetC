@@ -337,118 +337,90 @@ void Instance_firstSolution(Instance * instance, Config * cfg){
 
     Solution_finalize(currentSolution.solution);
     free(currentSolution.solution);
-
-    // BatchList_debug(instance->solution->batchList);
 }
 
-void Instance_randomizeSolution(Instance * instance, Config * cfg)
+void Instance_randomizeSolution(Instance * instance)
 {
     int i;
-    int nbSwaps = RAND(instance->nbJobs * 5, instance->nbJobs * 5 * 3);
-    int nbEbsr =  RAND(instance->nbJobs / 4, instance->nbJobs / 2);
+    int nbOperations = RAND(instance->nbJobs, instance->nbJobs * 3);
+
+    // I. Shuffle
+
+    for(i = 0; i < nbOperations; i++){
+        int type = RAND(0, 12); // both + seq + batch + merge + split = 5
+
+        if(type == 0 || type == 1 || type == 2){ // both
+            int operatorType = RAND(0, 3); // swap OR ebsr OR efsr
+
+            int job_i = RAND(0, instance->nbJobs);
+            int job_j = RAND(0, instance->nbJobs);
+
+            if(job_i == job_j) continue;
+
+            switch(operatorType){
+                case 0: Solution_swap_both(instance->solution, job_i, job_j); break;
+                case 1: Solution_ebsr_both(instance->solution, job_i, job_j); break;
+                case 2: Solution_efsr_both(instance->solution, job_i, job_j); break;
+            }
+
+        }
+        else if(type == 3 || type == 4 || type == 5){ // seq 
+            int operatorType = RAND(0, 3); // swap OR ebsr OR efsr
+
+            int pos_i = RAND(0, instance->nbJobs);
+            int pos_j = RAND(0, instance->nbJobs);
+
+            if(pos_i == pos_j) continue;
+
+            switch(operatorType){
+                case 0: Sequence_swap(instance->solution->sequence, pos_i, pos_j); break;
+                case 1: Sequence_ebsr(instance->solution->sequence, pos_i, pos_j); break;
+                case 2: Sequence_efsr(instance->solution->sequence, pos_i, pos_j); break;
+            }
+        }
+        else if(type == 6 || type == 7 || type == 8){ // batch 
+            int operatorType = RAND(0, 3); // swap OR ebsr OR efsr
+
+            int batch_i = RAND(0, instance->solution->batchList->size);
+            int batch_j = RAND(0, instance->solution->batchList->size);
+
+            int pos_i = RAND(0, instance->solution->batchList->batches[batch_i]->size);
+            int pos_j = RAND(0, instance->solution->batchList->batches[batch_j]->size);
+
+            if(batch_i == batch_j && pos_i == pos_j) continue;
 
 
-    for(i = 0; i < nbSwaps; i++){
-        int swap_i, swap_j;
-        int batch_i, batch_j;
-        Batch * batch1, * batch2;
+            switch(operatorType){
+                case 0: BatchList_swap(instance->solution->batchList, batch_i, pos_i, batch_j, pos_j); break;
+                case 1: BatchList_ebsr(instance->solution->batchList, batch_i, pos_i, batch_j, pos_j); break;
+                case 2: BatchList_efsr(instance->solution->batchList, batch_i, pos_i, batch_j, pos_j); break;
+            }
+            
+        }
+        else if(type == 9){ // merge
+            int batch = RAND(0, instance->solution->batchList->size - 1);
+            // printf("\tDIV -> BatchList_merge\n"); 
+            BatchList_merge(instance->solution->batchList, batch);            
+        }
+        else { // split
+            int batch = RAND(0, instance->solution->batchList->size);
+            // printf("\tDIV -> BatchList_split\n"); 
+            BatchList_split(instance->solution->batchList, batch);  
+        }
 
-        // SEQ
-
-        TWO_RAND_INT(swap_i, swap_j, 0, instance->nbJobs - 1);
-
-        Sequence_swap(instance->solution->sequence, swap_i, swap_j);
-
-        // BATCH LIST
-
-        batch_i = RAND(0, instance->solution->batchList->size - 1);
-        batch_j = RAND(0, instance->solution->batchList->size - 1);
-
-        batch1 = instance->solution->batchList->batches[batch_i];
-        batch2 = instance->solution->batchList->batches[batch_j];
-
-        swap_i = RAND(0, batch1->size - 1);
-        swap_j = RAND(0, batch2->size - 1);
-
-        BatchList_swap(instance->solution->batchList, batch_i, swap_i, batch_j, swap_j);
     }
 
+    // II. merge lonely batches and split too populated batches
 
-   for(i = 0; i < nbSwaps; i++){
-        int swap_i, swap_j;
-        int batch_i, batch_j;
-        Batch * batch1, * batch2;
-
-        batch_i = RAND(0, instance->solution->batchList->size - 1);
-        batch_j = RAND(0, instance->solution->batchList->size - 1);
-
-        batch1 = instance->solution->batchList->batches[batch_i];
-        batch2 = instance->solution->batchList->batches[batch_j];
-
-        swap_i = RAND(0, batch1->size - 1);
-        swap_j = RAND(0, batch2->size - 1);
-
-        BatchList_swap(instance->solution->batchList, batch_i, swap_i, batch_j, swap_j);
-   }
-
-    for(i = 0; i < nbSwaps; i++){
-        int swap_i, swap_j;
-        TWO_RAND_INT(swap_i, swap_j, 0, instance->nbJobs - 1);
-        Sequence_swap(instance->solution->sequence, swap_i, swap_j);
+    nbOperations = instance->solution->batchList->size;
+    for(i = 0; i < nbOperations; i++){
+        if(instance->solution->batchList->batches[i]->size == 1){
+            BatchList_merge(instance->solution->batchList, i);
+            nbOperations--;
+        }
+        while(instance->solution->batchList->batches[i]->size > 3){
+            BatchList_split(instance->solution->batchList, i);
+            nbOperations++;
+        }
     }
-
-
-
-  //   ////////////////
-  //  for(i = 0; i < nbEbsr; i++)
-  //  {
-  //      int ebsr_i, ebsr_j;
-  //      int batch_i, batch_j;
-  //      Batch * batch1, * batch2;
-
-  //      // SEQ
-  //      TWO_RAND_INT(ebsr_i, ebsr_j, 0, instance->nbJobs);
-  //      Sequence_ebsr(instance->solution->sequence, ebsr_i, ebsr_j);
-
-  //      // BATCH LIST
-  //      batch_i = RAND(0, instance->solution->batchList->size);
-  //      batch_j = RAND(0, instance->solution->batchList->size );
-
-  //      batch1 = instance->solution->batchList->batches[batch_i];
-  //      batch2 = instance->solution->batchList->batches[batch_j];
-
-  //      ebsr_i = RAND(0, batch1->size);
-  //      ebsr_j = RAND(0, batch2->size);
-
-  //      if(batch_i != batch_j || ebsr_i != ebsr_j)
-  //          BatchList_ebsr(instance->solution->batchList, batch_i, ebsr_i, batch_j, ebsr_j);
-  //  }
-
-  //  for(i = 0; i < nbEbsr; i++){
-  //      int swap_i, swap_j;
-  //      int batch_i, batch_j;
-  //      Batch * batch1, * batch2;
-
-  //      batch_i = RAND(0, instance->solution->batchList->size - 1);
-  //      batch_j = RAND(0, instance->solution->batchList->size - 1);
-
-  //      batch1 = instance->solution->batchList->batches[batch_i];
-  //      batch2 = instance->solution->batchList->batches[batch_j];
-
-  //      swap_i = RAND(0, batch1->size - 1);
-  //      swap_j = RAND(0, batch2->size - 1);
-
-  //      if(batch_i != batch_j || swap_i != swap_j)
-  //          BatchList_ebsr(instance->solution->batchList, batch_i, swap_i, batch_j, swap_j);
-  // }
-
-
-  //  for(i = 0; i < nbEbsr; i++)
-  //  {
-  //      int ebsr_i, ebsr_j;
-
-  //      TWO_RAND_INT(ebsr_i, ebsr_j, 0, instance->nbJobs - 1);
-
-  //      Sequence_ebsr(instance->solution->sequence, ebsr_i, ebsr_j);
-  //  }
 }

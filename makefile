@@ -90,7 +90,7 @@ TabuListTests.o :
 
 
 
-.PHONY: debug release all install clean install-debug install-release valgrind-debug valgrind-release run-debug run-release help
+.PHONY: debug release all install clean install-debug install-release valgrind-debug valgrind-release run-debug run-release help run-release-nobuild run-debug-nobuild
 
 all:
 	make debug
@@ -103,19 +103,20 @@ release: install-release
 
 install-release:
 	@mkdir -p $(OBJ_RELEASE_FOLDER) $(BIN_RELEASE_FOLDER)
-	@cp $(DEFAULT_INSTANCE) $(BIN_RELEASE_FOLDER)/input.txt
-	@cp $(DEFAULT_CONFIG) $(BIN_RELEASE_FOLDER)/configs.txt
+	cp $(DEFAULT_INSTANCE) $(BIN_RELEASE_FOLDER)/input.txt
+	cp $(DEFAULT_CONFIG) $(BIN_RELEASE_FOLDER)/configs.txt
 	@rm configs.txt input.txt
-	@cp $(DEFAULT_INSTANCE) input.txt
-	@cp $(DEFAULT_CONFIG) configs.txt
+	cp $(DEFAULT_INSTANCE) input.txt
+	cp $(DEFAULT_CONFIG) configs.txt
 
 install-debug:
 	@mkdir -p $(OBJ_DEBUG_FOLDER) $(BIN_DEBUG_FOLDER)
-	@cp $(DEFAULT_INSTANCE) $(BIN_DEBUG_FOLDER)/input.txt
-	@cp $(DEFAULT_CONFIG) $(BIN_DEBUG_FOLDER)/configs.txt
+	@rm $(BIN_DEBUG_FOLDER)/input.txt $(BIN_DEBUG_FOLDER)/configs.txt
+	cp $(DEFAULT_INSTANCE) $(BIN_DEBUG_FOLDER)/input.txt
+	cp $(DEFAULT_CONFIG) $(BIN_DEBUG_FOLDER)/configs.txt
 	@rm configs.txt input.txt
-	@cp $(DEFAULT_INSTANCE) input.txt
-	@cp $(DEFAULT_CONFIG) configs.txt
+	cp $(DEFAULT_INSTANCE) input.txt
+	cp $(DEFAULT_CONFIG) configs.txt
 
 clean:
 	@rm -vrf $(OBJ_FOLDER) $(BIN_FOLDER)
@@ -127,10 +128,17 @@ valgrind-release: release
 	@valgrind --leak-check=yes --show-leak-kinds=all $(VALGRIND_OPTION) $(BIN_DEBUG_FOLDER)/$(EXEC) $(ARGS)
 
 run-debug: debug
-	@$(BIN_DEBUG_FOLDER)/$(EXEC) $(ARGS)
+	$(BIN_DEBUG_FOLDER)/$(EXEC) $(ARGS)
 
 run-release: release
-	@$(BIN_RELEASE_FOLDER)/$(EXEC) $(ARGS)
+	$(BIN_RELEASE_FOLDER)/$(EXEC) $(ARGS)
+
+run-release-nobuild: install-release
+	$(BIN_RELEASE_FOLDER)/$(EXEC) $(ARGS)
+
+run-debug-nobuild: install-debug
+	$(BIN_DEBUG_FOLDER)/$(EXEC) $(ARGS)
+
 
 help:
 	@echo "\t- make debug\t\tcompile in debug mode\n"

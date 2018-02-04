@@ -109,6 +109,6 @@ void Instance_firstSolution(Instance * instance, Config * cfg);
  * \return void
  *
  */
-void Instance_randomizeSolution(Instance * instance, Config * cfg);
+void Instance_randomizeSolution(Instance * instance);
 
 #endif

@@ -4,6 +4,7 @@
 #include <signal.h>
 #include <assert.h>
 #include <time.h>
+#include <limits.h>
 
 #include "Batch.h"
 #include "Sequence.h"
@@ -26,31 +27,6 @@ int main(int argc, char * argv[])
 {
 	signal(SIGABRT, &on_sigabrt);
     srand(time(NULL));
-
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // printf("%Lf\n", RAND(5, 50));
-    // exit(0);
 
     Args * args = Args_build(argc, argv);
 
@@ -128,6 +104,7 @@ void run(Args * args){
                 bestInstanceEval,
                 bestNeighbourEval,
                 currentInstanceEval,
+                bestInstanceEvalSinceDiversification,
                 stop,
                 i, j,
                 indexI, indexJ;
@@ -142,9 +119,12 @@ void run(Args * args){
 	FILE * outputFile;
 	Config cfg;
 
-	Config_parseFile(&cfg, args->configFile, args);
+    Config_parseFile(&cfg, args->configFile, args);
+    nbMaxIteration = cfg.ITERATIONS;
 
-	nbMaxIteration = cfg.ITERATIONS;
+    int increasedAt[nbMaxIteration];
+    unsigned int newValue[nbMaxIteration];
+    unsigned int increases = 0;
 
 	TabuList_init(&tabu);
 	TabuList_setSize(&tabu, tabuListSize);
@@ -153,7 +133,7 @@ void run(Args * args){
 
     Instance_parseInstance(&bestInstance, args->inputFile);
 
-	timeLimit = bestInstance.nbJobs * bestInstance.nbMachine / 4.0;
+    timeLimit = bestInstance.nbJobs * bestInstance.nbMachine / 4.0;
 
 	batchAllocationStep = 4;
 	batchListAllocationStep = bestInstance.nbJobs;
@@ -188,7 +168,13 @@ void run(Args * args){
 
 	printf("\t%d\n", bestInstanceEval);
 
-	while(cpuTime < timeLimit && nbIteration <= nbMaxIteration) {
+    bestInstanceEvalSinceDiversification = bestInstanceEval;
+
+    increasedAt[increases] = -1 ;
+    newValue[increases] = bestInstanceEval;
+    increases++;
+
+	while(cpuTime < timeLimit && nbIteration != nbMaxIteration) {
         improvment = 0;
         bestNeighbourEval = -1;
         stop = 0;
@@ -424,16 +410,9 @@ void run(Args * args){
                 Instance_setSolution(&currentInstanceSave, currentInstance.solution);
                 BatchList_split(currentInstance.solution->batchList, i);
                 currentInstanceEval = Instance_eval(&currentInstance, diversification);
-                if(currentInstanceEval < bestNeighbourEval /*&&
-                   !TabuList_isTabu(&tabu, TABU_MOVE_SPLIT, currentInstance.solution->sequence->sequence[i],
-                                            currentInstance.solution->sequence->sequence[j], cfg.LOGICAL_TABU)*/) {
+                if(currentInstanceEval < bestNeighbourEval) {
                     bestNeighbourEval = currentInstanceEval;
                     Instance_setSolution(&bestNeighbour, currentInstance.solution);
-
-                    // move = TABU_MOVE_SPLIT;
-                    // indexI = currentInstance.solution->sequence->sequence[i];
-                    // indexJ = currentInstance.solution->sequence->sequence[j];
-
                     if(cfg.FIRST_IMPROVE) {
                         stop = 1;
                         Instance_setSolution(&currentInstanceSave, bestNeighbour.solution);
@@ -449,15 +428,9 @@ void run(Args * args){
                 Instance_setSolution(&currentInstanceSave, currentInstance.solution);
                 BatchList_merge(currentInstance.solution->batchList, i);
                 currentInstanceEval = Instance_eval(&currentInstance, diversification);
-                if(currentInstanceEval < bestNeighbourEval /*&&
-                   !TabuList_isTabu(&tabu, TABU_MOVE_SPLIT, currentInstance.solution->sequence->sequence[i],
-                                            currentInstance.solution->sequence->sequence[j], cfg.LOGICAL_TABU)*/) {
+                if(currentInstanceEval < bestNeighbourEval) {
                     bestNeighbourEval = currentInstanceEval;
                     Instance_setSolution(&bestNeighbour, currentInstance.solution);
-
-                    // move = TABU_MOVE_SPLIT;
-                    // indexI = currentInstance.solution->sequence->sequence[i];
-                    // indexJ = currentInstance.solution->sequence->sequence[j];
 
                     if(cfg.FIRST_IMPROVE) {
                         stop = 1;
@@ -469,7 +442,7 @@ void run(Args * args){
         }
 
 
-        if(bestNeighbourEval != (unsigned int)-1) {
+        if(bestNeighbourEval != UINT_MAX) {
             Instance_setSolution(&currentInstance, bestNeighbour.solution);
             TabuList_insertTabu(&tabu, move, indexI, indexJ);
             if(args->print)
@@ -483,13 +456,28 @@ void run(Args * args){
                 printf("\t%d\n", bestInstanceEval);
             improvment = 1;
             nbIterationWithoutImprovment = 0;
+
+            increasedAt[increases] = nbIteration;
+            newValue[increases] = bestInstanceEval;
+            increases++;
         }
+
+        if(cfg.IMPROVEMENT_BASED_ON_DIVERSIFICATION){
+            if(bestNeighbourEval < bestInstanceEvalSinceDiversification){
+                improvment = 1;
+                bestInstanceEvalSinceDiversification = bestNeighbourEval;
+                nbIterationWithoutImprovment = 0;
+            }
+        }
+
 
         if(diversification)
             diversification = 0;
 
+
         if(!improvment)
             nbIterationWithoutImprovment++;
+
 
         if(nbIterationWithoutImprovment >= nbMaxIterationWithoutImprovment) {
             nbIterationWithoutImprovment = 0;
@@ -498,13 +486,14 @@ void run(Args * args){
                 diversification = 1;
                 TabuList_finalize(&tabu);
                 TabuList_setSize(&tabu, tabuListSize);
-                if(cfg.RANDOM_DIVERSIFICATION){
-                    // Instance_randomizeSolution(&bestInstance, &cfg);
-                    Instance_firstSolution(&currentInstance, &cfg);
-                    Instance_randomizeSolution(&currentInstance, &cfg);
-                }
+
+                if(cfg.RANDOM_DIVERSIFICATION)
+                    Instance_randomizeSolution(&currentInstance);
+                
                 if(args->print)
                     printf("Diversification\n");
+
+                bestInstanceEvalSinceDiversification = UINT_MAX;
             }
         }
 
@@ -517,21 +506,22 @@ void run(Args * args){
 	if(nbIteration == nbMaxIteration + 1)
         nbIteration--;
 
+    printf("\nIncreases profiler: \n");
+    for(i = 0; i < increases; i++){
+        printf("It# %d\t-->\t%d\n", increasedAt[i], newValue[i]);
+    }
+    printf("\n");
+
 	printf("%u\t%f s\t%u iterations\n", bestInstanceEval, cpuTime, nbIteration);
 
     if((outputFile = fopen(args->outputFile, "w")) == NULL)
         fatalError("error open output file");
-
-    //ordre a remettre comme avant FO->cpu->sol
 
     if(fprintf(outputFile, "%u\t", bestInstanceEval) == 0)
         fatalError("error write file");
 
     if(fprintf(outputFile, "%f\t", cpuTime) == 0)
         fatalError("error write file");
-
-    // if(fprintf(outputFile, "%u\t", nbIteration) == 0)
-    //     fatalError("error write file");
 
     Instance_writeInstance(&bestInstance, outputFile);
 

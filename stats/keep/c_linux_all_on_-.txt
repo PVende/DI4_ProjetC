@@ -1,0 +1,66 @@
+I_1_5_20_0.txt
+5026	25,00	16609	all_on.txt
+5024	25,00	19998	all_on_-basedon.txt
+5203	25,00	16269	all_on_-firstimpr.txt
+4958	25,00	16716	all_on_-merge.txt
+
+I_1_5_20_1.txt
+4171	25,00	18951	all_on.txt
+4219	25,00	21166	all_on_-basedon.txt
+4336	25,00	16929	all_on_-firstimpr.txt
+4209	25,00	18765	all_on_-merge.txt
+
+I_1_5_20_2.txt
+6341	25,00	16797	all_on.txt
+6433	25,00	20491	all_on_-basedon.txt
+6560	25,00	15981	all_on_-firstimpr.txt
+6316	25,00	16766	all_on_-merge.txt
+
+I_1_5_50_1.txt
+22681	62,50	6099	all_on.txt
+23474	62,50	7117	all_on_-basedon.txt
+24936	62,51	4824	all_on_-firstimpr.txt
+22252	62,51	6221	all_on_-merge.txt
+
+I_1_5_50_2.txt
+19889	62,51	5012	all_on.txt
+21275	62,51	7068	all_on_-basedon.txt
+20527	62,51	4225	all_on_-firstimpr.txt
+19567	62,51	4924	all_on_-merge.txt
+
+I_1_5_100_2.txt
+46241	125,02	4045	all_on.txt
+46241	125,02	4307	all_on_-basedon.txt
+45976	125,01	2990	all_on_-firstimpr.txt
+46241	125,02	4046	all_on_-merge.txt
+
+I_1_5_100_3.txt
+39132	125,02	4149	all_on.txt
+39132	125,01	4273	all_on_-basedon.txt
+40466	125,03	2889	all_on_-firstimpr.txt
+39132	125,02	4019	all_on_-merge.txt
+
+I_1_10_20_1.txt
+11214	50,00	30484	all_on.txt
+11260	50,00	37943	all_on_-basedon.txt
+11470	50,00	29589	all_on_-firstimpr.txt
+11112	50,00	31071	all_on_-merge.txt
+
+I_1_10_20_2.txt
+11892	50,00	31488	all_on.txt
+11957	50,00	37782	all_on_-basedon.txt
+12161	50,00	29521	all_on_-firstimpr.txt
+11813	50,00	31000	all_on_-merge.txt
+
+I_1_10_50_1.txt
+30143	125,01	9438	all_on.txt
+33750	125,01	13038	all_on_-basedon.txt
+32978	125,01	8079	all_on_-firstimpr.txt
+32136	125,00	9311	all_on_-merge.txt
+
+I_1_10_50_2.txt
+53761	125,01	9112	all_on.txt
+54596	125,00	12745	all_on_-basedon.txt
+55999	125,01	7885	all_on_-firstimpr.txt
+52748	125,01	9102	all_on_-merge.txt
+

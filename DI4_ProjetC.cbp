@@ -12,6 +12,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="-i ../../debug/input.txt -c ../../debug/configs.txt -it 0" />
 				<Compiler>
 					<Add option="-Wextra" />
 					<Add option="-g" />
@@ -23,7 +24,7 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-i ../../../data/I_1_5_100_1.txt -c ../../../configs/all_on.txt -it 1000" />
+				<Option parameters="-i ../../debug/input.txt -c ../../debug/configs.txt -it 0" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-DNDEBUG" />

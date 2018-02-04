@@ -24,6 +24,7 @@ typedef struct {
     int LOGICAL_TABU;
     int ITERATIONS;
     int RANDOM_DIVERSIFICATION;
+    int IMPROVEMENT_BASED_ON_DIVERSIFICATION;
     int SPLIT;
     int MERGE;
 } Config;
