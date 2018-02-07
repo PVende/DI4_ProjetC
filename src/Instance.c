@@ -5,7 +5,7 @@ void Instance_init(Instance * instance) {
     instance->nbJobs = 0;
     instance->nbMachine = 0;
     instance->times = NULL;
-    instance->distances = NULL;
+    distances = NULL;
     instance->deliveryDates = NULL;
     instance->config = NULL;
 
@@ -27,11 +27,11 @@ void Instance_finalize(Instance * instance) {
         instance->times = NULL;
     }
 
-    if(instance->distances != NULL) {
+    if(distances != NULL) {
         for(i = 0; i < instance->nbJobs + 1; i++)
-            free(instance->distances[i]);
-        free(instance->distances);
-        instance->distances = NULL;
+            free(distances[i]);
+        free(distances);
+        distances = NULL;
     }
 
     if(instance->deliveryDates != NULL) {
@@ -53,10 +53,6 @@ Instance * Instance_duplicate(Instance * instance) {
     dup->nbMachine = instance->nbMachine;
 
     dup->deliveryDates = duplicateArray(instance->deliveryDates, instance->nbJobs);
-
-    MALLOC(dup->distances, unsigned int *, dup->nbJobs + 1);
-    for(i = 0; i < dup->nbJobs + 1; i++)
-        dup->distances[i] = duplicateArray(instance->distances[i], instance->nbJobs + 1);
 
     MALLOC(dup->times, unsigned int *, dup->nbJobs);
     for(i = 0; i < dup->nbJobs; i++)
@@ -122,14 +118,15 @@ void Instance_parseInstance(Instance * instance, char * inputFileName) {
         if(fscanf(inputFile, "%u", &instance->deliveryDates[i]) != 1)
             fatalError("error read file");
 
-    MALLOC(instance->distances, unsigned int *, instance->nbJobs + 1);
+    MALLOC(distances, unsigned int *, instance->nbJobs + 1);
 
     for(i = 0; i < instance->nbJobs + 1; i++) {
-        MALLOC(instance->distances[i], unsigned int, instance->nbJobs + 1);
+        MALLOC(distances[i], unsigned int, instance->nbJobs + 1);
 
-        for(j = 0; j < instance->nbJobs + 1; j++)
-            if(fscanf(inputFile, "%u", &instance->distances[i][j]) != 1)
+        for(j = 0; j < instance->nbJobs + 1; j++) {
+            if(fscanf(inputFile, "%u", &distances[i][j]) != 1)
                 fatalError("error read file");
+        }
     }
 
     if(fclose(inputFile) != 0)
@@ -205,7 +202,7 @@ unsigned int Instance_eval(Instance * instance, unsigned int diversification) {
         startTime = MAX((int)endTime, (int)soonerStart[turnNb]);
 
         for(j = 0; j < currentBatch->size; j++) {
-            arrivedTime = startTime + instance->distances[startLocation][currentBatch->batch[j]];
+            arrivedTime = startTime + distances[startLocation][currentBatch->batch[j]];
             actualDelay[currentBatch->batch[j]] = arrivedTime;
 
             if(!diversification){
@@ -219,7 +216,7 @@ unsigned int Instance_eval(Instance * instance, unsigned int diversification) {
             startLocation = currentBatch->batch[j];
         }
 
-        endTime = arrivedTime + instance->distances[currentBatch->batch[currentBatch->size - 1]][stop];
+        endTime = arrivedTime + distances[currentBatch->batch[currentBatch->size - 1]][stop];
         turnNb++;
     }
 
@@ -364,7 +361,7 @@ void Instance_randomizeSolution(Instance * instance)
             }
 
         }
-        else if(type == 3 || type == 4 || type == 5){ // seq 
+        else if(type == 3 || type == 4 || type == 5){ // seq
             int operatorType = RAND(0, 3); // swap OR ebsr OR efsr
 
             int pos_i = RAND(0, instance->nbJobs);
@@ -378,7 +375,7 @@ void Instance_randomizeSolution(Instance * instance)
                 case 2: Sequence_efsr(instance->solution->sequence, pos_i, pos_j); break;
             }
         }
-        else if(type == 6 || type == 7 || type == 8){ // batch 
+        else if(type == 6 || type == 7 || type == 8){ // batch
             int operatorType = RAND(0, 3); // swap OR ebsr OR efsr
 
             int batch_i = RAND(0, instance->solution->batchList->size);
@@ -395,17 +392,17 @@ void Instance_randomizeSolution(Instance * instance)
                 case 1: BatchList_ebsr(instance->solution->batchList, batch_i, pos_i, batch_j, pos_j); break;
                 case 2: BatchList_efsr(instance->solution->batchList, batch_i, pos_i, batch_j, pos_j); break;
             }
-            
+
         }
         else if(type == 9){ // merge
             int batch = RAND(0, instance->solution->batchList->size - 1);
-            // printf("\tDIV -> BatchList_merge\n"); 
-            BatchList_merge(instance->solution->batchList, batch);            
+            // printf("\tDIV -> BatchList_merge\n");
+            BatchList_merge(instance->solution->batchList, batch);
         }
         else { // split
             int batch = RAND(0, instance->solution->batchList->size);
-            // printf("\tDIV -> BatchList_split\n"); 
-            BatchList_split(instance->solution->batchList, batch);  
+            // printf("\tDIV -> BatchList_split\n");
+            BatchList_split(instance->solution->batchList, batch);
         }
 
     }

@@ -18,11 +18,12 @@ typedef struct _Instance {
     unsigned int nbJobs;
     unsigned int nbMachine;
     unsigned int ** times;
-    unsigned int ** distances;
     unsigned int * deliveryDates;
     Config * config;
 
 } Instance;
+
+unsigned int ** distances;
 
 /** \brief Initialize an instance
  *

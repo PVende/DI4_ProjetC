@@ -33,7 +33,7 @@ Batch * Batch_duplicate(Batch * batch)
         dup->batch = NULL;
     else{
         MALLOC(dup->batch, *dup->batch, batch->allocatedSize);
-        MEMCPY(dup->batch, batch->batch, *dup->batch, batch->size)
+        MEMCPY(dup->batch, batch->batch, *dup->batch, batch->size);
     }
 
     return dup;

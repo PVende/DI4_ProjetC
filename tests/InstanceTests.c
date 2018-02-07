@@ -39,10 +39,11 @@ void InstanceTests_launchTests(void){
     InstanceTests_testDuplication();
 
     remove(TEST_FILENAME);
-    remove(TEST_FILENAME_CONFIG);    
+    remove(TEST_FILENAME_CONFIG);
 }
 
 void InstanceTests_parserTests(void) {
+    extern unsigned int ** distances;
     Instance instance;
 
     Instance_init(&instance);
@@ -52,7 +53,7 @@ void InstanceTests_parserTests(void) {
 
     custom_assert(instance.times == NULL);
     custom_assert(instance.deliveryDates == NULL);
-    custom_assert(instance.distances == NULL);
+    custom_assert(distances == NULL);
     custom_assert(instance.solution == NULL);
 
     Instance_parseInstance(&instance, TEST_FILENAME);
@@ -64,8 +65,8 @@ void InstanceTests_parserTests(void) {
     custom_assert(instance.times[4][1] == 10);
     custom_assert(instance.deliveryDates[0] == 549);
     custom_assert(instance.deliveryDates[4] == 103);
-    custom_assert(instance.distances[0][0] == 0);
-    custom_assert(instance.distances[5][0] == instance.distances[0][5]);
+    custom_assert(distances[0][0] == 0);
+    custom_assert(distances[5][0] == distances[0][5]);
 
     custom_assert(instance.solution == NULL);
 
