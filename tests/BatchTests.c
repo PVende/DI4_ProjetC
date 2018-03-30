@@ -6,6 +6,7 @@
 
 void BatchTests_launchTests(void)
 {
+    distances = NULL;
 	BatchTests_basics();
 	BatchTests_testDuplication();
 }
